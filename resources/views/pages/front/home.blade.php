@@ -156,8 +156,8 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
     <div class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <div class="flex items-end justify-between">
             <div>
-                <flux:heading level="2" size="xl" class="text-2xl font-light">
-                    4 pôles <span class="font-black">transversaux</span>
+                <flux:heading level="2" class="text-3xl! font-black! tracking-tight!">
+                    4 pôles transversaux
                 </flux:heading>
                 <flux:text class="mt-0 max-w-3xl text-xs leading-relaxed text-zinc-500">
                     Grâce à la transversalité de ces thématiques, SIBEA-CI offre des réponses concrètes et contextualisées aux enjeux urbains africains.
@@ -217,7 +217,7 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
     <div class="mx-auto max-w-7xl mb-12 px-4 py-12 lg:px-8 bg-amber-50/30 rounded-2xl border border-amber-100">
         <div class="flex items-end justify-between">
             <div>
-                <h2 class="text-2xl font-black">Terrains viabilisés — ACD sécurisé</h2>
+                <flux:heading level="2" class="text-2xl! font-black! tracking-tight!">Terrains viabilisés — ACD sécurisé</flux:heading>
                 <p class="text-xs tracking-widest text-zinc-500">Bingerville Abatta · Lotissements SIBEA-CI — viabilisation & titres fonciers</p>
             </div>
             <a href="{{ route('front.programs.index') }}" class="text-sm font-bold tracking-widest text-primary hover:underline">CATALOGUE COMPLET →</a>
@@ -363,7 +363,7 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
     <!-- Témoignages -->
     <div class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <div class="text-center">
-            <h2 class="text-3xl font-black">TÉMOIGNAGES CLIENTS</h2>
+            <flux:heading level="2" class="text-3xl! font-black! tracking-tight!">TÉMOIGNAGES CLIENTS</flux:heading>
             <div class="mx-auto mt-2 h-1 w-12 bg-secondary"></div>
         </div>
         <div class="mt-8 grid gap-6 md:grid-cols-3">
@@ -395,7 +395,7 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
                     @endif
                 </div>
                 <div>
-                    <h2 class="text-2xl font-black">{{ $whyChoose['title'] ?? 'POURQUOI NOUS CHOISIR ?' }}</h2>
+                    <flux:heading level="2" class="text-2xl! font-black! tracking-tight!">{{ $whyChoose['title'] ?? 'POURQUOI NOUS CHOISIR ?' }}</flux:heading>
                     <div class="mt-6 space-y-6">
                         @php $items = $whyChoose['items'] ?? [
                             ['label'=>"Des équipes aux années d'expérience", 'desc'=>'30 ans cumulés, chefs de chantier certifiés, formation sécurité continue. Chantiers Abidjan, Bouaké, Yamoussoukro.'],
@@ -418,7 +418,7 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
     <!-- Notre Équipe -->
     <div class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <div class="text-center">
-            <h2 class="text-3xl font-black">NOTRE ÉQUIPE</h2>
+            <flux:heading level="2" class="text-3xl! font-black! tracking-tight!">NOTRE ÉQUIPE</flux:heading>
             <div class="mx-auto mt-2 h-1 w-12 bg-secondary"></div>
         </div>
         <div class="mt-8 grid gap-6 md:grid-cols-4">
@@ -454,7 +454,7 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
         <div class="rounded-3xl bg-primary p-8 text-white lg:p-12">
             <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                    <h2 class="text-2xl font-bold">Un projet ? Un terrain ?</h2>
+                    <flux:heading level="2" class="text-2xl! font-bold!">Un projet ? Un terrain ?</flux:heading>
                     <p class="mt-2 text-[#e6ecf2]">Devis BTP ou réservation de lot — réponse sous 24h.</p>
                 </div>
                 <div class="flex gap-3">
