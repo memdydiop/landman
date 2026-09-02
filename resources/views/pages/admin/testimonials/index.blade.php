@@ -14,6 +14,8 @@ new #[Layout('layouts.app')] #[Title('Témoignages')] class extends Component {
     public string $content = '';
     public int $rating = 5;
     public bool $showCreate = false;
+    public bool $showEdit = false;
+    public ?int $editingId = null;
     public string $view = 'grid';
 
     public function save(): void
@@ -30,6 +32,36 @@ new #[Layout('layouts.app')] #[Title('Témoignages')] class extends Component {
         $this->reset(['name', 'role', 'content', 'rating', 'showCreate']);
         $this->rating = 5;
         session()->flash('success', 'Témoignage ajouté.');
+    }
+
+    public function startEdit(int $id): void
+    {
+        $this->authorize('testimonials.manage');
+        $t = Testimonial::findOrFail($id);
+        $this->editingId = $t->id;
+        $this->name = $t->name;
+        $this->role = $t->role ?? '';
+        $this->content = $t->content;
+        $this->rating = $t->rating;
+        $this->showEdit = true;
+        $this->showCreate = false;
+    }
+
+    public function update(): void
+    {
+        $this->authorize('testimonials.manage');
+        if (!$this->editingId) return;
+        $t = Testimonial::findOrFail($this->editingId);
+        $validated = $this->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'role' => ['nullable', 'string', 'max:255'],
+            'content' => ['required', 'string', 'max:1000'],
+            'rating' => ['required', 'integer', 'min:1', 'max:5'],
+        ]);
+        $t->update($validated);
+        $this->reset(['name', 'role', 'content', 'rating', 'showEdit', 'editingId']);
+        $this->rating = 5;
+        session()->flash('success', 'Témoignage mis à jour.');
     }
 
     public function delete(int $id): void
@@ -88,6 +120,25 @@ new #[Layout('layouts.app')] #[Title('Témoignages')] class extends Component {
         </form>
     </flux:modal>
 
+    <flux:modal wire:model="showEdit" class="md:w-[560px]">
+        <form wire:submit="update" class="space-y-6">
+            <div>
+                <flux:heading size="lg">Éditer témoignage</flux:heading>
+                <flux:text>Modifie nom, rôle ou avis</flux:text>
+            </div>
+            <flux:input wire:model="name" label="Nom *" required />
+            <flux:input wire:model="role" label="Rôle" />
+            <flux:select wire:model="rating" label="Note *">
+                @for($i=1;$i<=5;$i++)<flux:select.option value="{{ $i }}">{{ $i }}/5</flux:select.option>@endfor
+            </flux:select>
+            <flux:textarea wire:model="content" label="Contenu *" rows="4" required />
+            <div class="flex justify-end gap-2">
+                <flux:modal.close><flux:button variant="ghost">Annuler</flux:button></flux:modal.close>
+                <flux:button type="submit" variant="primary">Mettre à jour</flux:button>
+            </div>
+        </form>
+    </flux:modal>
+
     @if(session('success')) <div class="mb-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-700">{{ session('success') }}</div> @endif
 
     @if($view === 'grid')
@@ -105,6 +156,7 @@ new #[Layout('layouts.app')] #[Title('Témoignages')] class extends Component {
                     </div>
                     <div class="mt-3 rounded-xl bg-zinc-50 p-3 text-sm text-zinc-700 line-clamp-3">{{ $t->content }}</div>
                     <div class="mt-3 flex gap-1">
+                        <flux:button size="xs" variant="ghost" wire:click="startEdit({{ $t->id }})">Éditer</flux:button>
                         <flux:button size="xs" variant="ghost" wire:click="toggle({{ $t->id }})">Toggle</flux:button>
                         <flux:button size="xs" variant="ghost" wire:click="delete({{ $t->id }})" wire:confirm="Supprimer ?" class="text-red-600">Suppr</flux:button>
                     </div>
@@ -125,6 +177,7 @@ new #[Layout('layouts.app')] #[Title('Témoignages')] class extends Component {
                             <td class="px-3 py-2">{{ $t->rating }}/5</td>
                             <td class="px-3 py-2"><flux:badge :color="$t->is_published ? 'emerald' : 'zinc'" size="sm">{{ $t->is_published ? 'Oui' : 'Non' }}</flux:badge></td>
                             <td class="px-3 py-2 flex gap-1">
+                                <flux:button size="xs" variant="ghost" wire:click="startEdit({{ $t->id }})">Éditer</flux:button>
                                 <flux:button size="xs" variant="ghost" wire:click="toggle({{ $t->id }})">Toggle</flux:button>
                                 <flux:button size="xs" variant="ghost" wire:click="delete({{ $t->id }})" wire:confirm="Supprimer ?">Supprimer</flux:button>
                             </td>
