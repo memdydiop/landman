@@ -65,7 +65,7 @@ new #[Layout('layouts.front')] #[Title('Lotissements & Foncier — SIBEA-CI')] c
     }
 }; ?>
 
-<section class="bg-zinc-950 text-white min-h-screen pb-20">
+<section class=" text-white min-h-screen pb-20">
     {{-- Hero Page Foncier Sombre --}}
     <x-page-hero-simple
         :title="$hero['title'] ?: 'FONCIER & AMÉNAGEMENT URBAIN'"
@@ -78,31 +78,31 @@ new #[Layout('layouts.front')] #[Title('Lotissements & Foncier — SIBEA-CI')] c
 
     <div class="mx-auto max-w-7xl px-4 py-8 lg:px-8">
         <!-- Poste de Commandement Foncier / Filtres -->
-        <div class="rounded-2xl border border-zinc-800 bg-zinc-900/90 p-4 shadow-xl backdrop-blur-md">
+        <div class="rounded-2xl border border-zinc-300/80 bg-white p-4 shadow-xl backdrop-blur-md">
             <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div class="relative flex-1">
                     <input wire:model.live.debounce.300ms="search" 
                            type="text"
                            placeholder="Rechercher un programme, commune, site..." 
-                           class="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-4 py-2.5 text-xs font-mono text-zinc-100 placeholder-zinc-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500" />
+                           class="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-xs font-mono text-zinc-800 placeholder-zinc-500 bg-zinc-50 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500" />
                 </div>
                 
                 <div class="flex flex-wrap items-center gap-3">
-                    <select wire:model.live="city" class="rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-xs font-mono font-bold text-zinc-200 focus:border-amber-500 focus:outline-none">
+                    <select wire:model.live="city" class="rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-xs font-mono font-bold text-zinc-800 focus:border-amber-500 focus:outline-none">
                         <option value="">TOUTES LES VILLES / ZONES</option>
                         @foreach($cities as $c) 
                             <option value="{{ $c }}">{{ strtoupper($c) }}</option> 
                         @endforeach
                     </select>
 
-                    <select wire:model.live="availability" class="rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2.5 text-xs font-mono font-bold text-zinc-200 focus:border-amber-500 focus:outline-none">
+                    <select wire:model.live="availability" class="rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-xs font-mono font-bold text-zinc-800 focus:border-amber-500 focus:outline-none">
                         <option value="">TOUS LES PROGRAMMES</option>
                         <option value="available">AVEC LOTS DISPONIBLES</option>
                     </select>
 
                     @if($search || $city || $availability)
                         <button wire:click="$set('search',''); $set('city',''); $set('availability','')" 
-                                class="rounded-xl bg-zinc-800 px-3 py-2.5 text-xs font-mono font-bold tracking-wider text-amber-400 hover:bg-zinc-700 transition">
+                                class="rounded-xl bg-zinc-200 px-3 py-2.5 text-xs font-mono font-bold tracking-wider text-zinc-700 hover:bg-zinc-700 transition">
                             EFFACER
                         </button>
                     @endif
