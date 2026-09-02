@@ -15,70 +15,143 @@ new #[Layout('layouts.front')] class extends Component {
     }
 }; ?>
 
-<section class="mx-auto max-w-7xl px-4 py-8 lg:px-8">
-    <a href="{{ route('front.projects.index') }}" class="text-sm text-zinc-600 hover:underline">← Retour aux réalisations</a>
+<section class="bg-zinc-100/60 min-h-screen pb-16">
+    <!-- Fil d'Ariane Technique -->
+    <div class="border-b border-zinc-200 bg-white py-3">
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 text-xs font-mono lg:px-8">
+            <div class="flex items-center gap-2">
+                <a href="{{ route('home') }}" class="text-zinc-500 hover:text-amber-600">ACCUEIL</a> 
+                <span class="text-zinc-300">/</span>
+                <a href="{{ route('front.projects.index') }}" class="text-zinc-500 hover:text-amber-600">CHANTIERS</a> 
+                <span class="text-zinc-300">/</span>
+                <span class="font-bold text-zinc-900 uppercase truncate max-w-[200px] sm:max-w-none">{{ $project->title }}</span>
+            </div>
+            <a href="{{ route('front.projects.index') }}" class="hidden sm:inline-flex text-xs font-bold text-zinc-600 hover:text-amber-600">
+                ← RETOUR AU CATALOGUE
+            </a>
+        </div>
+    </div>
 
-    <div class="mt-6 grid gap-8 lg:grid-cols-5">
-        <div class="lg:col-span-3">
-            <div class="overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100">
-                @if($project->cover_path)
-                    <img src="{{ Storage::disk('public')->url($project->cover_path) }}" alt="{{ $project->title }}" class="w-full object-cover" loading="lazy" />
-                @else
-                    <div class="flex aspect-[16/10] items-center justify-center text-zinc-400">Aucune couverture</div>
+    <div class="mx-auto max-w-7xl px-4 py-8 lg:px-8">
+        
+        <!-- En-tête Fiche d'Exécution -->
+        <div class="rounded-2xl bg-zinc-900 p-6 text-white shadow-xl">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="rounded bg-amber-500 px-2 py-0.5 font-mono text-[10px] font-black text-zinc-950 uppercase">
+                            {{ is_object($project->service_type) ? $project->service_type->label() : $project->service_type }}
+                        </span>
+                        <span class="rounded font-mono text-[10px] font-bold px-2.5 py-0.5 uppercase
+                            @if(($project->status->value ?? $project->status) === 'livre') bg-emerald-600 text-white 
+                            @elseif(($project->status->value ?? $project->status) === 'en_cours') bg-amber-600 text-white 
+                            @else bg-zinc-700 text-zinc-200 @endif">
+                            ● {{ is_object($project->status) ? $project->status->label() : $project->status }}
+                        </span>
+                        @if($project->is_featured) 
+                            <span class="rounded bg-white/10 px-2 py-0.5 font-mono text-[10px] text-amber-300">À LA UNE</span> 
+                        @endif
+                    </div>
+                    <h1 class="mt-3 text-2xl font-black uppercase text-white sm:text-3xl tracking-tight">{{ $project->title }}</h1>
+                </div>
+
+                <a href="{{ route('front.contact', ['project' => $project->id]) }}" 
+                   class="inline-flex items-center justify-center rounded-xl bg-amber-500 px-5 py-3 text-xs font-black tracking-wider text-zinc-950 hover:bg-amber-400 transition">
+                    DEMANDER UNE PRESTATION SIMILAIRE
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-8 grid gap-8 lg:grid-cols-5">
+            <!-- Galerie Photos & Suivi de Chantier -->
+            <div class="lg:col-span-3 space-y-4">
+                <div class="overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-900 shadow-md">
+                    @if($project->cover_path && Storage::disk('public')->exists($project->cover_path))
+                        <img src="{{ Storage::disk('public')->url($project->cover_path) }}" alt="{{ $project->title }}" class="w-full object-cover max-h-[480px]" loading="eager" />
+                    @else
+                        <div class="flex aspect-[16/10] items-center justify-center font-mono text-xs text-zinc-500">
+                            AUCUNE PHOTO DE COUVERTURE DISPONIBLE
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Galerie des Vues Terrain -->
+                @if($project->media->isNotEmpty())
+                    <div class="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+                        <div class="font-mono text-xs font-bold text-zinc-700 uppercase tracking-wider mb-3">Vues du chantier & Suivi d'exécution</div>
+                        <div class="grid grid-cols-3 gap-3">
+                            @foreach($project->media as $media)
+                                <div class="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-900 group">
+                                    <img src="{{ Storage::disk($media->disk)->url($media->path) }}" alt="Vue chantier" class="aspect-[4/3] w-full object-cover group-hover:scale-105 transition duration-300" loading="lazy" />
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                 @endif
             </div>
 
-            @if($project->media->isNotEmpty())
-                <div class="mt-4 grid grid-cols-3 gap-3">
-                    @foreach($project->media as $media)
-                        <div class="overflow-hidden rounded-xl border border-zinc-200">
-                            <img src="{{ Storage::disk($media->disk)->url($media->path) }}" alt="" class="aspect-[4/3] w-full object-cover" loading="lazy" />
+            <!-- Fiche technique & Détails de Réalisation -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Métriques Clés du Projet -->
+                <div class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
+                    <h3 class="font-black text-zinc-900 text-sm uppercase tracking-wider">Données d'exécution</h3>
+                    <div class="mt-1 h-0.5 w-8 bg-amber-500"></div>
+
+                    <div class="mt-4 grid grid-cols-2 gap-4 font-mono text-xs">
+                        <div class="rounded-xl bg-zinc-50 p-3 border border-zinc-200/60">
+                            <div class="text-[10px] text-zinc-500 uppercase">Localisation</div>
+                            <div class="mt-1 font-bold text-zinc-900">{{ $project->location ?? 'Non précisée' }}</div>
                         </div>
-                    @endforeach
+                        <div class="rounded-xl bg-zinc-50 p-3 border border-zinc-200/60">
+                            <div class="text-[10px] text-zinc-500 uppercase">Surface Traitée</div>
+                            <div class="mt-1 font-bold text-zinc-900">{{ $project->surface_m2 ? $project->surface_m2.' m²' : '—' }}</div>
+                        </div>
+                        <div class="rounded-xl bg-zinc-50 p-3 border border-zinc-200/60">
+                            <div class="text-[10px] text-zinc-500 uppercase">Durée Travaux</div>
+                            <div class="mt-1 font-bold text-zinc-900">{{ $project->duration_months ? $project->duration_months.' mois' : '—' }}</div>
+                        </div>
+                        <div class="rounded-xl bg-zinc-50 p-3 border border-zinc-200/60">
+                            <div class="text-[10px] text-zinc-500 uppercase">Année Livraison</div>
+                            <div class="mt-1 font-bold text-zinc-900">{{ $project->year ?? '—' }}</div>
+                        </div>
+                    </div>
+
+                    @if($project->description)
+                        <div class="mt-6 border-t border-zinc-100 pt-4">
+                            <h4 class="font-bold text-xs uppercase text-zinc-900">Description du chantier</h4>
+                            <p class="mt-2 whitespace-pre-line text-xs text-zinc-700 leading-relaxed">{{ $project->description }}</p>
+                        </div>
+                    @endif
                 </div>
-            @endif
-        </div>
 
-        <div class="lg:col-span-2">
-            <div class="flex flex-wrap gap-2">
-                <span class="rounded-full bg-zinc-900 px-3 py-1 text-xs font-medium text-white">{{ $project->service_type->label() }}</span>
-                <span class="rounded-full px-3 py-1 text-xs font-medium @if($project->status->value === 'livre') bg-emerald-100 text-emerald-700 @elseif($project->status->value === 'en_cours') bg-[#e6ecf2] text-[#002244] @else bg-zinc-100 text-zinc-700 @endif">{{ $project->status->label() }}</span>
-                @if($project->is_featured) <span class="rounded-full bg-[#e6ecf2] px-3 py-1 text-xs text-[#002244]">À la une</span> @endif
-            </div>
+                <!-- Spécifications Techniques -->
+                @if($project->technical_sheet)
+                    <div class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
+                        <h3 class="font-black text-zinc-900 text-sm uppercase tracking-wider">Spécifications techniques</h3>
+                        <div class="mt-1 h-0.5 w-8 bg-amber-500"></div>
 
-            <h1 class="mt-4 text-3xl font-bold leading-tight">{{ $project->title }}</h1>
+                        <dl class="mt-4 space-y-2 font-mono text-xs">
+                            @foreach($project->technical_sheet as $key => $value)
+                                <div class="flex justify-between gap-4 border-b border-zinc-100 py-2 last:border-0">
+                                    <dt class="text-zinc-500 uppercase">{{ Str::headline($key) }}</dt>
+                                    <dd class="font-bold text-zinc-900 text-right">{{ is_array($value) ? json_encode($value) : $value }}</dd>
+                                </div>
+                            @endforeach
+                        </dl>
+                    </div>
+                @endif
 
-            <div class="mt-4 grid grid-cols-2 gap-3 rounded-2xl border border-zinc-200 p-4 text-sm">
-                <div><div class="text-xs text-zinc-500">Localisation</div><div class="font-medium">{{ $project->location ?? '—' }}</div></div>
-                <div><div class="text-xs text-zinc-500">Surface</div><div class="font-medium">{{ $project->surface_m2 ? $project->surface_m2.' m²' : '—' }}</div></div>
-                <div><div class="text-xs text-zinc-500">Durée</div><div class="font-medium">{{ $project->duration_months ? $project->duration_months.' mois' : '—' }}</div></div>
-                <div><div class="text-xs text-zinc-500">Année</div><div class="font-medium">{{ $project->year ?? '—' }}</div></div>
-            </div>
-
-            @if($project->description)
-                <div class="prose prose-zinc mt-6 max-w-none text-sm leading-relaxed">
-                    <h3 class="font-semibold">Description</h3>
-                    <p class="whitespace-pre-line text-zinc-700">{{ $project->description }}</p>
+                <!-- Navigation & Actions Directes -->
+                <div class="flex flex-col gap-3">
+                    <a href="{{ route('front.contact', ['project' => $project->id]) }}" 
+                       class="w-full text-center rounded-xl bg-zinc-900 py-3.5 text-xs font-black text-white hover:bg-amber-500 hover:text-zinc-950 transition uppercase">
+                        SOLLICITER L'ÉQUIPE DU CHANTIER
+                    </a>
+                    <a href="{{ route('front.programs.index') }}" 
+                       class="w-full text-center rounded-xl border border-zinc-300 bg-white py-3.5 text-xs font-bold text-zinc-700 hover:bg-zinc-50 transition uppercase">
+                        VOIR NOS PROGRAMMES IMMOBILIERS & LOTISSEMENTS
+                    </a>
                 </div>
-            @endif
-
-            @if($project->technical_sheet)
-                <div class="mt-6 rounded-2xl border border-zinc-200 p-4">
-                    <h3 class="text-sm font-semibold">Fiche technique</h3>
-                    <dl class="mt-3 space-y-2 text-sm">
-                        @foreach($project->technical_sheet as $key => $value)
-                            <div class="flex justify-between gap-4 border-b border-zinc-100 py-1 last:border-0">
-                                <dt class="text-zinc-500">{{ Str::headline($key) }}</dt>
-                                <dd class="font-medium">{{ is_array($value) ? json_encode($value) : $value }}</dd>
-                            </div>
-                        @endforeach
-                    </dl>
-                </div>
-            @endif
-
-            <div class="mt-8 flex gap-3">
-                <a href="{{ route('front.contact', ['project' => $project->id]) }}" class="rounded-full bg-[#003366] px-6 py-3 text-sm font-semibold text-white hover:bg-[#002244]">Demander un devis similaire</a>
-                <a href="{{ route('front.programs.index') }}" class="rounded-full border border-zinc-300 px-6 py-3 text-sm font-medium hover:bg-zinc-50">Voir nos lotissements</a>
             </div>
         </div>
     </div>
