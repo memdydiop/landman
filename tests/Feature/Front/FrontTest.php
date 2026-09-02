@@ -20,7 +20,7 @@ class FrontTest extends TestCase
 
     public function test_home_renders(): void
     {
-        $this->get(route('home'))->assertOk()->assertSee('SIBEA-CI')->assertSee('RÉALISATIONS RÉCENTES')->assertSee('POURQUOI NOUS CHOISIR');
+        $this->get(route('home'))->assertOk()->assertSee('SIBEA-CI')->assertSee('RÉALISATIONS RÉCENTES')->assertSee('TERRAINS VIABILISÉS');
     }
 
     public function test_programs_catalog_renders_and_filters(): void
