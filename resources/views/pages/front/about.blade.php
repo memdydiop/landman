@@ -6,59 +6,70 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-new #[Layout('layouts.front')] #[Title('À propos — SIBEA-CI Laboratoire')] class extends Component {
+new #[Layout('layouts.front')] #[Title('À Propos — SIBEA-CI Laboratoire & VRD')] class extends Component {
     public function render(): \Illuminate\View\View
     {
         $hero = Cache::remember('about.hero', 300, fn () => \App\Models\SiteSetting::get('about.hero', [
-            'title' => 'À propos — SIBEA-CI',
-            'body' => 'Laboratoire urbain ivoirien — BTP, VRD, foncier sécurisé. 30 ans cumulés, agréments, ACD.',
-            'badge' => 'LABORATOIRE URBAIN • ABIDJAN 2020',
+            'title' => 'LABORATOIRE URBAIN & INGENIERIE BTP',
+            'body' => 'Génie civil, aménagement foncier, VRD et construction clé en main en Côte d\'Ivoire. Sécurisation juridique ACD et traçabilité technique.',
+            'badge' => 'SIBEA-CI • EXPERTISE & AMÉNAGEMENT URBAIN',
             'image' => null,
         ]));
+
         $progress = \App\Models\SiteSetting::get('about.progress', [
             ['label' => 'BTP & GÉNIE CIVIL', 'pct' => 95],
-            ['label' => 'ÉLECTRICITÉ', 'pct' => 88],
-            ['label' => 'PÉTROLE & ÉNERGIE', 'pct' => 85],
-            ['label' => 'AGRO-INDUSTRIE', 'pct' => 90],
+            ['label' => 'VOIRIES & VRD', 'pct' => 92],
+            ['label' => 'GÉODÉSIE & AMÉNAGEMENT FONCIER', 'pct' => 88],
+            ['label' => 'OUVRAGES & RÉSIDENCES', 'pct' => 90],
         ]);
+
         $engagement = \App\Models\SiteSetting::get('about.engagement', [
-            'eyebrow' => 'À propos de nous',
-            'title' => 'SIBEA-CI — Laboratoire urbain ivoirien',
-            'subtitle' => 'Construisons ensemble votre avenir en Côte d\'Ivoire',
-            'desc1' => 'Chez SIBEA-CI, nous transformons vos idées en réalité en combinant expertise, innovation et qualité.',
-            'desc2_title' => 'Des Solutions Adaptées à Tous Vos Projets',
-            'desc2' => 'Que vous soyez un particulier, une entreprise ou une collectivité...',
-            'items' => ['Construction de bâtiments résidentiels et commerciaux.', 'Travaux publics et infrastructures urbaines (VRD).', 'Rénovation et réhabilitation de structures existantes.', 'Génie civil et ouvrages industriels — ACD sécurisé.'],
-            'floating' => ['number' => '+10 projets', 'label' => 'Conformité technique à 100%', 'desc' => 'Livrés avec traçabilité totale.'],
+            'eyebrow' => 'NOTRE ENGAGEMENT DE CHANTIER',
+            'title' => 'SIBEA-CI — Ingénierie & Laboratoire Foncier',
+            'subtitle' => 'Un contrôle rigoureux de l\'audit foncier à la livraison clé en main',
+            'desc1' => 'Nous sécurisons chaque étape de vos projets immobiliers et de BTP en appliquant des normes de construction strictes et un suivi géodésique de précision.',
+            'desc2_title' => 'Maîtrise d\'Ouvrage Déléguée & Supervision',
+            'desc2' => 'Particuliers, entreprises et collectivités : nous garantissons l\'exécution dans le respect des coûts, du cahier des charges et des délais.',
+            'items' => [
+                'Construction de bâtiments résidentiels, tertiaires et industriels.',
+                'Aménagement foncier, viabilisation complète (VRD) et voiries.',
+                'Rénovation lourde et réhabilitation d\'ouvrages d\'art.',
+                'Audit foncier préalable et sécurisation des arrêtés de concession définitive (ACD).'
+            ],
+            'floating' => ['number' => '+100', 'label' => 'HECTARES AMÉNAGÉS', 'desc' => 'Avec traçabilité cadastre & ACD.'],
         ]);
+
         $valeurs = \App\Models\SiteSetting::get('about.valeurs', [
-            'title' => 'Nos valeurs fondamentales',
-            'subtitle' => 'Des principes techniques et déontologiques stricts...',
+            'title' => 'NOS VALEURS FONDAMENTALES',
+            'subtitle' => 'Des standards techniques et déontologiques stricts pour sécuriser vos investissements.',
             'items' => [
-                ['title'=>'Intégrité & Rigueur','desc'=>'Traçabilité totale...','icon'=>'⬡'],
-                ['title'=>'Innovation Durable','desc'=>'Matériaux résistants...','icon'=>'◈'],
-                ['title'=>'Accompagnement Humain','desc'=>'Écoute...','icon'=>'◆'],
+                ['title' => 'Traçabilité & Rigueur', 'desc' => 'Audit systématique des sols, vérification administrative et suivi en temps réel des chantiers.', 'icon' => '📐'],
+                ['title' => 'Normes BTP & Durabilité', 'desc' => 'Matériaux certifiés, respect des normes parasismiques et études géotechniques approfondies.', 'icon' => '🏗️'],
+                ['title' => 'Garantie & Conformité', 'desc' => 'Livraison dans les délais impartis avec délivrance des certificats de conformité technique.', 'icon' => '🛡️'],
             ],
         ]);
+
         $pourquoi = \App\Models\SiteSetting::get('about.pourquoi', [
-            'eyebrow' => 'Pourquoi SIBEA-CI ?',
-            'title' => 'Pourquoi nous choisir ?',
-            'subtitle' => 'Une chaîne d\'expertises intégrée...',
+            'eyebrow' => 'POURQUOI CHOISIR SIBEA-CI',
+            'title' => 'Une chaîne d\'expertises techniques intégrées',
+            'subtitle' => 'De la topographie à la remise des clés, nous centralisons tous les corps d\'état.',
             'items' => [
-                ['title'=>'Un accompagnement personnalisé','desc'=>'Chaque projet est unique...'],
-                ['title'=>'Des matériaux de qualité','desc'=>'Matériaux résistants...'],
-                ['title'=>'Une équipe d’experts qualifiés','desc'=>'Ingénieurs...'],
-                ['title'=>'Respect des délais et du budget','desc'=>'Nous livrons...'],
+                ['title' => 'Études géotechniques & VRD', 'desc' => 'Analyse des sols et viabilisation complète avant toute construction.'],
+                ['title' => 'Accompagnement juridique & ACD', 'desc' => 'Purge des droits coutumiers et sécurisation des titres fonciers.'],
+                ['title' => 'Supervision rigoureuse', 'desc' => 'Conducteurs de travaux dédiés et reporting d\'avancement systématique.'],
+                ['title' => 'Maîtrise budgétaire', 'desc' => 'Devis fermes sans réévaluation imprévue en cours de chantier.'],
             ],
-            'cta_title' => 'Construisons Ensemble un Avenir Durable',
-            'cta_desc' => 'Nous mettons tout en œuvre...',
+            'cta_title' => 'Bâtissons des Infrastructures Durables',
+            'cta_desc' => 'Nos équipes d\'ingénieurs et de techniciens qualifiés déploient les meilleures solutions pour vos projets en Côte d\'Ivoire.',
         ]);
+
         $team = \App\Models\SiteSetting::get('home.team', [
             ['name' => 'Ouattara Bassoma Ziegnougo', 'role' => 'Gérant — SARL', 'avatar' => null],
-            ['name' => 'Richard Wagner', 'role' => 'Ingénieur Civil', 'avatar' => null],
-            ['name' => 'Sarah Spence', 'role' => 'Assistante Conducteur', 'avatar' => null],
-            ['name' => 'John Halpern', 'role' => 'Conducteur de Travaux', 'avatar' => null],
+            ['name' => 'Kouamé Yao', 'role' => 'Ingénieur Civil VRD', 'avatar' => null],
+            ['name' => 'Awa Koné', 'role' => 'Conductrice Travaux', 'avatar' => null],
+            ['name' => 'Diabaté Moussa', 'role' => 'Électricien Chef', 'avatar' => null],
         ]);
+
         return view('pages.front.about', [
             'hero' => $hero,
             'progress' => $progress,
@@ -69,57 +80,72 @@ new #[Layout('layouts.front')] #[Title('À propos — SIBEA-CI Laboratoire')] cl
         ]);
     }
 }; ?>
-<section class="bg-white">
+
+<section class="bg-zinc-100/70 min-h-screen pb-12">
+    {{-- Hero Page À Propos --}}
     <x-page-hero-simple
-        :title="$hero['title'] ?: 'Bâtir l\'avenir de l\'Afrique<br>avec rigueur, confiance et intégrité.'"
-        :subtitle="$hero['body'] ?? $hero['subtitle'] ?? 'SIBEA-CI accompagne particuliers, entreprises et collectivités en Côte d\'Ivoire — du lotissement viabilisé à la construction livrée, avec ACD et garanties.'"
-        :badge="$hero['badge'] ?? 'LABORATOIRE URBAIN • ABIDJAN 2020'"
+        :title="($hero['title'] ?? '') ?: 'LABORATOIRE URBAIN & INGENIERIE BTP'"
+        :subtitle="($hero['body'] ?? $hero['subtitle'] ?? '') ?: 'Génie civil, aménagement foncier, VRD et construction clé en main en Côte d\'Ivoire.'"
+        :badge="($hero['badge'] ?? '') ?: 'SIBEA-CI • EXPERTISE & AMÉNAGEMENT URBAIN'"
         :image="$hero['image'] ?? null"
-        :image-alt="$hero['title'] ?? 'À propos SIBEA-CI'"
-        :breadcrumb="[['label'=>'À propos de nous','url'=>route('front.about')]]"
+        :image-alt="($hero['title'] ?? 'À propos SIBEA-CI')"
+        :breadcrumb="[['label'=>'À propos','url'=>route('front.about')]]"
     />
 
-    <!-- Engagement — AfricaSpace 12col + ARRA double image & icon-list -->
-    <div class="py-16 lg:py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-                <!-- Left images — ARRA style: double image with bob -->
-                <div class="lg:col-span-6 relative order-2 lg:order-1">
-                    <div class="relative rounded-none overflow-hidden shadow-xl border border-zinc-100">
-                        @if(!empty($hero['image']) && Storage::disk('public')->exists($hero['image']))
-                            <img src="{{ Storage::disk('public')->url($hero['image']) }}" alt="SIBEA-CI chantier" class="w-full h-[380px] object-cover" loading="lazy" />
-                        @else
-                            <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80" alt="SIBEA-CI chantier" class="w-full h-[380px] object-cover" loading="lazy" />
-                        @endif
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#003366]/30 to-transparent"></div>
-                    </div>
-                    <!-- second image overlapping — ARRA -->
-                    <div class="hidden md:block absolute -bottom-6 -right-6 w-48 h-48 rounded-none overflow-hidden shadow-xl border-4 border-white">
-                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400&q=80" alt="Travaux publics" class="w-full h-full object-cover" loading="lazy" />
-                    </div>
-                    <!-- floating card — CMS -->
-                    <div class="absolute -bottom-6 sm:-bottom-8 -left-2 sm:left-6 bg-white p-6 shadow-2xl border-2 border-[#003366] max-w-[260px]">
-                        <p class="text-3xl font-black text-[#003366] font-mono">{{ $engagement['floating']['number'] ?? '+10 projets' }}</p>
-                        <p class="text-xs font-bold text-[#87CEEB] mt-1 uppercase tracking-wider">{{ $engagement['floating']['label'] ?? 'Conformité technique à 100%' }}</p>
-                        <p class="text-[10px] text-zinc-500 mt-1.5 leading-tight">{{ $engagement['floating']['desc'] ?? 'Livrés avec traçabilité totale — zéro litige foncier, zéro défaut de structure.' }}</p>
-                    </div>
+    <!-- Section Engagement & Chiffres Clés -->
+    <div class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            
+            <!-- Visuels Immersifs Terrain -->
+            <div class="lg:col-span-6 relative">
+                <div class="relative overflow-hidden rounded-2xl border border-zinc-300/80 bg-zinc-900 shadow-md">
+                    @if(!empty($hero['image']) && Storage::disk('public')->exists($hero['image']))
+                        <img src="{{ Storage::disk('public')->url($hero['image']) }}" alt="SIBEA-CI chantier" class="w-full h-[420px] object-cover opacity-85" loading="lazy" />
+                    @else
+                        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80" alt="SIBEA-CI chantier" class="w-full h-[420px] object-cover opacity-85" loading="lazy" />
+                    @endif
+                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent"></div>
                 </div>
-                <!-- Right text — ARRA heading + AfricaSpace typography -->
-                <div class="lg:col-span-6 space-y-6 order-1 lg:order-2">
-                    <div class="space-y-3">
-                        <h6 class="text-xs font-extrabold text-[#003366] uppercase tracking-widest flex items-center gap-2"><span class="text-[#87CEEB]">◈</span> {{ $engagement['eyebrow'] ?? 'À propos de nous' }}</h6>
-                        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#003366] tracking-tight leading-tight">{{ $engagement['title'] ?? 'SIBEA-CI — Laboratoire urbain ivoirien' }} <span class="block text-[#003366]/80 font-light">{{ $engagement['subtitle'] ?? 'Construisons ensemble votre avenir en Côte d\'Ivoire' }}</span></h2>
-                    </div>
-                    <div class="space-y-4 text-sm leading-relaxed text-zinc-600">
-                        <p>{{ $engagement['desc1'] ?? '' }}</p>
-                        <h4 class="font-bold text-zinc-900">{{ $engagement['desc2_title'] ?? 'Des Solutions Adaptées à Tous Vos Projets' }}</h4>
-                        <p>{{ $engagement['desc2'] ?? '' }}</p>
-                    </div>
-                    <!-- Icon list — CMS -->
-                    <ul class="space-y-2">
+
+                <!-- Deuxième image superposée (Style Plan/VRD) -->
+                <div class="hidden md:block absolute -bottom-6 -right-6 w-52 h-52 overflow-hidden rounded-2xl border-4 border-white shadow-xl bg-zinc-900">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=400&q=80" alt="Supervision BTP" class="w-full h-full object-cover" loading="lazy" />
+                </div>
+
+                <!-- Floating Card Technique -->
+                <div class="absolute -bottom-6 sm:-bottom-8 left-4 sm:left-6 bg-zinc-900 text-white p-5 rounded-2xl border border-amber-500/50 shadow-2xl max-w-[280px]">
+                    <div class="font-mono text-3xl font-black text-amber-500">{{ $engagement['floating']['number'] ?? '+100' }}</div>
+                    <div class="font-mono text-[10px] font-bold text-amber-400 mt-1 uppercase tracking-wider">{{ $engagement['floating']['label'] ?? 'HECTARES AMÉNAGÉS' }}</div>
+                    <p class="text-[11px] text-zinc-300 mt-1.5 leading-tight">{{ $engagement['floating']['desc'] ?? 'Traçabilité totale, conformité cadastre & zéro litige foncier.' }}</p>
+                </div>
+            </div>
+
+            <!-- Contenu Engagement -->
+            <div class="lg:col-span-6 space-y-6">
+                <div>
+                    <span class="rounded bg-amber-500/20 px-2.5 py-1 font-mono text-[10px] font-bold text-amber-600 uppercase tracking-widest border border-amber-500/30">
+                        {{ $engagement['eyebrow'] ?? 'NOTRE ENGAGEMENT DE CHANTIER' }}
+                    </span>
+                    <h2 class="mt-3 text-2xl sm:text-3xl font-black text-zinc-900 uppercase tracking-tight leading-tight">
+                        {{ $engagement['title'] ?? 'SIBEA-CI — Ingénierie & Laboratoire Foncier' }}
+                    </h2>
+                    <p class="mt-2 text-sm font-bold text-amber-600 uppercase">
+                        {{ $engagement['subtitle'] ?? 'Un contrôle rigoureux de l\'audit foncier à la livraison' }}
+                    </p>
+                </div>
+
+                <div class="space-y-3 text-xs sm:text-sm leading-relaxed text-zinc-700">
+                    <p>{{ $engagement['desc1'] ?? '' }}</p>
+                    <h4 class="font-black uppercase text-zinc-900 text-xs">{{ $engagement['desc2_title'] ?? 'Maîtrise d\'Ouvrage Déléguée & Supervision' }}</h4>
+                    <p>{{ $engagement['desc2'] ?? '' }}</p>
+                </div>
+
+                <!-- Liste des Engagements -->
+                <div class="rounded-2xl border border-zinc-300/80 bg-white p-4 shadow-sm">
+                    <ul class="space-y-2.5">
                         @foreach(($engagement['items'] ?? []) as $li)
-                            <li class="flex gap-3 text-sm text-zinc-700">
-                                <span class="mt-0.5 flex size-5 items-center justify-center rounded-full bg-emerald-500 text-white text-xs">✓</span>
+                            <li class="flex items-start gap-3 text-xs font-semibold text-zinc-800">
+                                <span class="mt-0.5 flex size-4 items-center justify-center rounded bg-amber-500 text-zinc-950 font-black text-[10px] shrink-0">✓</span>
                                 <span>{{ $li }}</span>
                             </li>
                         @endforeach
@@ -129,75 +155,94 @@ new #[Layout('layouts.front')] #[Title('À propos — SIBEA-CI Laboratoire')] cl
         </div>
     </div>
 
-    <!-- Valeurs fondamentales — CMS -->
-    <div class="py-16 lg:py-24 bg-[#E3F2FD]/20 border-y border-zinc-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
-                <h2 class="text-3xl font-extrabold text-[#003366] tracking-tight">{{ $valeurs['title'] ?? 'Nos valeurs fondamentales' }}</h2>
-                <p class="text-sm text-zinc-500 font-light">{{ $valeurs['subtitle'] ?? 'Des principes techniques et déontologiques stricts au service de la sécurisation de vos investissements fonciers et BTP.' }}</p>
+    <!-- Valeurs Fondamentales (Style Cartes Industrielles) -->
+    <div class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+        <div class="rounded-2xl border border-zinc-300/80 bg-white p-8 shadow-sm">
+            <div class="text-center max-w-2xl mx-auto mb-8 space-y-2">
+                <span class="font-mono text-[11px] font-bold text-amber-600 uppercase tracking-widest">EXCELLENCE D'EXÉCUTION</span>
+                <h2 class="text-2xl font-black text-zinc-900 uppercase tracking-tight">{{ $valeurs['title'] ?? 'NOS VALEURS FONDAMENTALES' }}</h2>
+                <p class="text-xs text-zinc-500">{{ $valeurs['subtitle'] ?? 'Des standards techniques et déontologiques stricts pour sécuriser vos investissements.' }}</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 @foreach(($valeurs['items'] ?? []) as $v)
-                    <div class="bg-white p-8 border border-zinc-100 shadow-sm hover:shadow-md transition-all flex flex-col">
-                        <div class="w-12 h-12 bg-[#E3F2FD] flex items-center justify-center text-[#003366] font-bold text-lg mb-5">{{ $v['icon'] }}</div>
-                        <h3 class="text-lg font-bold text-[#003366] tracking-tight">{{ $v['title'] }}</h3>
-                        <p class="mt-3 text-sm leading-relaxed text-zinc-600">{{ $v['desc'] }}</p>
+                    <div class="rounded-xl border border-zinc-200 bg-zinc-50/80 p-6 shadow-sm hover:border-amber-500 transition-all flex flex-col">
+                        <div class="w-10 h-10 rounded-lg bg-zinc-900 flex items-center justify-center text-amber-500 text-xl mb-4 shadow">
+                            {{ $v['icon'] }}
+                        </div>
+                        <h3 class="text-sm font-black text-zinc-900 uppercase tracking-wide">{{ $v['title'] }}</h3>
+                        <p class="mt-2 text-xs leading-relaxed text-zinc-600">{{ $v['desc'] }}</p>
                     </div>
                 @endforeach
             </div>
         </div>
     </div>
 
-    <!-- Pourquoi nous choisir — ARRA icon-list + AfricaSpace progress -->
-    <div class="py-16 lg:py-24 bg-white border-t border-zinc-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="max-w-3xl mx-auto text-center mb-12 space-y-3">
-                <h6 class="text-xs font-extrabold text-[#003366] uppercase tracking-widest flex items-center justify-center gap-2"><span class="text-[#87CEEB]">◈</span> {{ $pourquoi['eyebrow'] ?? 'Pourquoi SIBEA-CI ?' }}</h6>
-                <h2 class="text-3xl font-extrabold text-zinc-900">{{ $pourquoi['title'] ?? 'Pourquoi nous choisir ?' }}</h2>
-                <p class="text-sm text-zinc-500">{{ $pourquoi['subtitle'] ?? 'Une chaîne d\'expertises intégrée — de l\'audit foncier à la livraison — pour sécuriser chaque étape.' }}</p>
-            </div>
-            <div class="grid gap-12 lg:grid-cols-2 items-start">
-                <ul class="space-y-3">
+    <!-- Pourquoi Nous Choisir & Barres de Progression -->
+    <div class="mx-auto max-w-7xl px-4 py-8 lg:px-8">
+        <div class="grid gap-8 lg:grid-cols-2 items-start">
+            
+            <!-- Liste d'Avantages -->
+            <div class="space-y-4">
+                <div class="space-y-1">
+                    <span class="font-mono text-[10px] font-bold text-amber-600 uppercase tracking-widest">{{ $pourquoi['eyebrow'] ?? 'POURQUOI CHOISIR SIBEA-CI' }}</span>
+                    <h2 class="text-2xl font-black text-zinc-900 uppercase tracking-tight">{{ $pourquoi['title'] ?? 'Une chaîne d\'expertises intégrées' }}</h2>
+                    <p class="text-xs text-zinc-500">{{ $pourquoi['subtitle'] ?? 'De la topographie à la remise des clés, nous centralisons tous les corps d\'état.' }}</p>
+                </div>
+
+                <div class="space-y-3">
                     @foreach(($pourquoi['items'] ?? []) as $item)
-                        <li class="flex gap-3 p-4 rounded-xl border border-zinc-100 bg-zinc-50">
-                            <span class="flex size-6 items-center justify-center rounded-full bg-emerald-500 text-white text-xs shrink-0 mt-0.5">✓</span>
+                        <div class="flex gap-3.5 p-4 rounded-xl border border-zinc-200 bg-white shadow-sm">
+                            <span class="flex size-5 items-center justify-center rounded bg-zinc-900 text-amber-500 text-xs font-black shrink-0 mt-0.5">✓</span>
                             <div>
-                                <div class="text-sm font-bold text-zinc-900">{{ $item['title'] }}</div>
-                                <div class="text-xs leading-relaxed text-zinc-600">{{ $item['desc'] }}</div>
+                                <div class="text-xs font-black text-zinc-900 uppercase">{{ $item['title'] }}</div>
+                                <div class="mt-1 text-xs leading-relaxed text-zinc-600">{{ $item['desc'] }}</div>
                             </div>
-                        </li>
+                        </div>
                     @endforeach
-                </ul>
-                <div class="space-y-6">
-                    <div class="rounded-2xl bg-zinc-50 p-6 border border-zinc-100">
-                        <h4 class="font-bold text-zinc-900">{{ $pourquoi['cta_title'] ?? 'Construisons Ensemble un Avenir Durable' }}</h4>
-                        <p class="mt-2 text-sm leading-relaxed text-zinc-600">{{ $pourquoi['cta_desc'] ?? 'Nous mettons tout en œuvre pour bâtir des infrastructures modernes, solides et respectueuses de l’environnement. Nos solutions intègrent les dernières innovations en matière de construction durable.' }}</p>
-                        <a href="{{ route('front.contact') }}" class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline">📞 Contactez-nous →</a>
-                    </div>
-                    <!-- Progress bars — CMS -->
-                    <div class="space-y-4">
-                        @foreach($progress as $p)
-                            <div>
-                                <div class="flex justify-between text-xs font-bold tracking-widest"><span>{{ $p['label'] }}</span><span class="text-primary">{{ $p['pct'] }}%</span></div>
-                                <div class="mt-1.5 h-2.5 rounded-full bg-zinc-200 overflow-hidden">
-                                    <div class="h-2.5 rounded-full bg-[#003366] transition-all" style="width: {{ $p['pct'] }}%"></div>
-                                </div>
+                </div>
+            </div>
+
+            <!-- Bloc CTA & Niveaux de Maitrise Technique -->
+            <div class="space-y-6">
+                <div class="rounded-2xl border border-zinc-300/80 bg-zinc-900 p-6 text-white shadow-md">
+                    <h4 class="font-black text-base uppercase text-amber-400">{{ $pourquoi['cta_title'] ?? 'Bâtissons des Infrastructures Durables' }}</h4>
+                    <p class="mt-2 text-xs leading-relaxed text-zinc-300">{{ $pourquoi['cta_desc'] ?? 'Nos équipes d\'ingénieurs et de techniciens qualifiés déploient les meilleures solutions pour vos projets en Côte d\'Ivoire.' }}</p>
+                    <a href="{{ route('front.contact') }}" class="mt-4 inline-flex items-center gap-2 rounded-xl bg-amber-500 px-4 py-2.5 text-xs font-black text-zinc-950 hover:bg-amber-400 transition uppercase">
+                        📞 PARLER À UN INGENIEUR →
+                    </a>
+                </div>
+
+                <!-- Indicateurs de Compétences Techniques -->
+                <div class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm space-y-4">
+                    <h4 class="font-black text-xs uppercase text-zinc-900 border-b border-zinc-100 pb-2">Taux d'Exécution & Domaines d'Expertise</h4>
+                    @foreach($progress as $p)
+                        <div class="font-mono text-xs">
+                            <div class="flex justify-between font-bold">
+                                <span class="text-zinc-800">{{ $p['label'] }}</span>
+                                <span class="text-amber-600">{{ $p['pct'] }}%</span>
                             </div>
-                        @endforeach
-                    </div>
+                            <div class="mt-1.5 h-2 rounded-full bg-zinc-100 overflow-hidden border border-zinc-200/60">
+                                <div class="h-full rounded-full bg-amber-500 transition-all duration-500" style="width: {{ $p['pct'] }}%"></div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Équipe & Gouvernance — AfricaSpace -->
-    <div class="py-16 lg:py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="max-w-3xl mx-auto text-center mb-12 space-y-4">
-                <span class="text-xs font-bold uppercase tracking-[0.2em] text-[#003366] bg-[#87CEEB]/20 px-3.5 py-1 inline-block">ÉQUIPE & GOUVERNANCE PLURIDISCIPLINAIRE</span>
-                <h2 class="text-3xl lg:text-4xl font-extrabold text-[#003366] tracking-tight">Une chaîne d'expertises intégrée de bout en bout</h2>
-                <p class="text-sm text-zinc-600 leading-relaxed">Une équipe pluridisciplinaire mobilisée autour de chaque opération pour sécuriser l'investissement, maîtriser l'exécution et valoriser durablement le patrimoine.</p>
+    <!-- Équipe & Direction Technique — CMS -->
+    <div class="mx-auto max-w-7xl px-4 py-8 lg:px-8">
+        <div class="rounded-2xl border border-zinc-300/80 bg-white p-8 shadow-sm">
+            <div class="max-w-3xl mx-auto text-center mb-8 space-y-2">
+                <span class="rounded bg-amber-500/20 px-3 py-1 font-mono text-[10px] font-bold text-amber-600 uppercase tracking-wider border border-amber-500/30">
+                    {{ $equipe['badge'] ?? 'GOUVERNANCE & DIRECTION' }}
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-black text-zinc-900 uppercase tracking-tight">{{ $equipe['title'] ?? 'Une chaîne d\'expertises qualifiée' }}</h2>
+                <p class="text-xs text-zinc-500">{{ $equipe['subtitle'] ?? 'Mobilisés autour de chaque opération pour maîtriser l\'exécution et sécuriser les investissements.' }}</p>
             </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach($team as $member)
                     @php
@@ -205,24 +250,28 @@ new #[Layout('layouts.front')] #[Title('À propos — SIBEA-CI Laboratoire')] cl
                         $hasAvatar = !empty($avatar) && Storage::disk('public')->exists($avatar);
                         $isLeadership = $loop->first;
                     @endphp
-                    <div class="bg-white rounded-none border {{ $isLeadership ? 'border-[#003366] ring-1 ring-[#003366]/20' : 'border-zinc-200' }} overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group">
-                        <div class="h-64 w-full relative overflow-hidden bg-slate-100 flex items-center justify-center">
+                    <div class="rounded-2xl border border-zinc-200 bg-zinc-50 overflow-hidden shadow-sm hover:border-amber-500 transition-all flex flex-col group">
+                        <div class="h-60 w-full relative overflow-hidden bg-zinc-900 flex items-center justify-center">
                             @if($hasAvatar)
                                 <img src="{{ Storage::disk('public')->url($avatar) }}" alt="{{ $member['name'] }}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                             @else
-                                <div class="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-[#003366]/5 to-[#003366]/15">
-                                    <div class="w-20 h-20 border-2 border-[#003366] bg-[#003366] flex items-center justify-center text-white font-mono font-extrabold text-xl mb-3">{{ strtoupper(substr($member['name'],0,2)) }}</div>
-                                    <span class="text-xs font-bold uppercase tracking-wider text-[#003366]">{{ $member['name'] }}</span>
+                                <div class="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-zinc-900">
+                                    <div class="w-16 h-16 rounded-xl border border-amber-500/40 bg-zinc-800 flex items-center justify-center text-amber-500 font-mono font-black text-xl mb-2">
+                                        {{ strtoupper(substr($member['name'], 0, 2)) }}
+                                    </div>
+                                    <span class="font-mono text-[10px] font-bold uppercase tracking-wider text-zinc-400">{{ $member['name'] }}</span>
                                 </div>
                             @endif
                             <div class="absolute top-3 left-3">
-                                <span class="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 {{ $isLeadership ? 'bg-[#003366] text-white' : 'bg-white/95 text-[#003366] backdrop-blur-sm border' }}">{{ $isLeadership ? 'Direction' : 'Expertise' }}</span>
+                                <span class="rounded font-mono text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 {{ $isLeadership ? 'bg-amber-500 text-zinc-950' : 'bg-zinc-800/90 text-white backdrop-blur-sm' }}">
+                                    {{ $isLeadership ? 'DIRECTION' : 'EXPERTISE' }}
+                                </span>
                             </div>
                         </div>
-                        <div class="p-6 space-y-2 flex-1">
-                            <h3 class="font-bold text-zinc-900">{{ $member['name'] }}</h3>
-                            <p class="text-xs tracking-widest text-zinc-500 uppercase">{{ $member['role'] }}</p>
-                            <p class="text-xs leading-relaxed text-zinc-600 line-clamp-3">Expertise SIBEA-CI — {{ $member['role'] }} — rigueur, suivi et conformité.</p>
+                        <div class="p-5 space-y-1.5 flex-1 bg-white">
+                            <h3 class="font-black text-zinc-900 text-sm uppercase leading-snug">{{ $member['name'] }}</h3>
+                            <p class="font-mono text-[10px] font-bold text-amber-600 uppercase tracking-wider">{{ $member['role'] }}</p>
+                            <p class="text-[11px] leading-relaxed text-zinc-500 line-clamp-2">Encadrement technique SIBEA-CI, suivi de chantier et conformité BTP.</p>
                         </div>
                     </div>
                 @endforeach
@@ -230,14 +279,18 @@ new #[Layout('layouts.front')] #[Title('À propos — SIBEA-CI Laboratoire')] cl
         </div>
     </div>
 
-    <!-- CTA final -->
-    <div class="mx-auto max-w-7xl px-4 pb-16 lg:px-8">
-        <div class="rounded-2xl bg-zinc-900 p-8 lg:p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+    <!-- CTA Final Unifié — CMS -->
+    <div class="mx-auto max-w-7xl px-4 pt-4 lg:px-8">
+        <div class="rounded-2xl bg-zinc-900 p-8 lg:p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 border border-amber-500/30 shadow-xl">
             <div>
-                <h3 class="text-xl font-black text-white">Parlons de votre projet</h3>
-                <p class="mt-2 text-sm text-zinc-400">Devis sous 24h — BTP, VRD, lotissement, énergie.</p>
+                <span class="font-mono text-[10px] font-bold text-amber-400 uppercase tracking-widest">POSTE DE COMMANDEMENT</span>
+                <h3 class="text-xl sm:text-2xl font-black text-white uppercase mt-1">{{ $cta['title'] ?? 'PARLONS DE VOTRE PROJET OU CHANTIER' }}</h3>
+                <p class="mt-1 text-xs text-zinc-400">{{ $cta['subtitle'] ?? 'Étude de faisabilité, devis BTP / VRD et réservation foncière sous 24h.' }}</p>
             </div>
-            <a href="{{ route('front.contact') }}" class="rounded-full bg-white px-8 py-3 text-sm font-bold text-zinc-900 hover:bg-zinc-100">CONTACTER SIBEA-CI →</a>
+            <a href="{{ $cta['button_url'] ?? route('front.contact') }}" 
+               class="inline-flex items-center justify-center rounded-xl bg-amber-500 px-6 py-3.5 text-xs font-black tracking-wider text-zinc-950 hover:bg-amber-400 transition uppercase shrink-0">
+                {{ $cta['button_label'] ?? 'DEMANDER UNE ÉTUDE TECHNIQUE →' }}
+            </a>
         </div>
     </div>
 </section>
