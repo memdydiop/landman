@@ -25,12 +25,15 @@ use Illuminate\Support\Carbon;
  * @property int|null $program_id
  * @property string|null $message
  * @property InquiryStatus $status
+ * @property int|null $assigned_to
+ * @property string|null $notes
+ * @property Carbon|null $next_action_at
  * @property array<string,mixed>|null $meta
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
  */
-#[Fillable(['inquiry_type', 'service_type', 'name', 'email', 'phone', 'plot_id', 'program_id', 'message', 'status', 'meta'])]
+#[Fillable(['inquiry_type', 'service_type', 'name', 'email', 'phone', 'plot_id', 'program_id', 'message', 'status', 'assigned_to', 'notes', 'next_action_at', 'meta'])]
 class Inquiry extends Model
 {
     /** @use HasFactory<InquiryFactory> */
@@ -42,6 +45,7 @@ class Inquiry extends Model
             'inquiry_type' => InquiryType::class,
             'service_type' => ServiceType::class,
             'status' => InquiryStatus::class,
+            'next_action_at' => 'datetime',
             'meta' => 'array',
         ];
     }
@@ -56,6 +60,12 @@ class Inquiry extends Model
     public function program(): BelongsTo
     {
         return $this->belongsTo(Program::class);
+    }
+
+    /** @return BelongsTo<User, $this> */
+    public function assignee(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 
     /**
