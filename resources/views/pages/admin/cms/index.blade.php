@@ -1611,32 +1611,32 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
     </div>
 
     <div class="mt-4 flex gap-2">
-        <flux:button size="xs" variant="ghost" icon="chevron-down" onclick="document.querySelectorAll('section .rounded-2xl').forEach(c=>{const h=c.querySelector('[data-flux-heading]'); if(h) c.querySelectorAll(':scope > *:not([data-flux-heading])').forEach(n=>n.style.display='');})">Tout déplier</flux:button>
-        <flux:button size="xs" variant="ghost" icon="chevron-up" onclick="document.querySelectorAll('section .rounded-2xl').forEach(c=>{const h=c.querySelector('[data-flux-heading]'); if(h) c.querySelectorAll(':scope > *:not([data-flux-heading])').forEach(n=>n.style.display='none');})">Tout replier</flux:button>
+        <button type="button" class="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs hover:bg-zinc-50" onclick="document.querySelectorAll('section .rounded-2xl.border').forEach(c=>{const h=c.querySelector('[data-flux-heading]'); if(h) Array.from(c.children).filter(el=>el!==h).forEach(n=>n.style.display=''); h.style.opacity='1';})">Tout déplier</button>
+        <button type="button" class="inline-flex items-center gap-1 rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs hover:bg-zinc-50" onclick="document.querySelectorAll('section .rounded-2xl.border').forEach(c=>{const h=c.querySelector('[data-flux-heading]'); if(h) Array.from(c.children).filter(el=>el!==h).forEach(n=>n.style.display='none'); h.style.opacity='0.7';})">Tout replier</button>
         <span class="text-xs text-zinc-400 self-center">Cards repliables — clique sur le titre pour replier</span>
     </div>
 
     <script>
+        // Délégation : 1 seul listener, marche même après Livewire morph
+        document.addEventListener('click', (e) => {
+            const heading = e.target.closest('[data-flux-heading]');
+            if (!heading) return;
+            const card = heading.closest('.rounded-2xl.border');
+            if (!card || !card.closest('section')) return;
+            // Ne réagit que si heading est enfant direct de la card (évite les sous-titres xs)
+            if (heading.parentElement !== card) return;
+            const toToggle = Array.from(card.children).filter(el => el !== heading);
+            const hidden = toToggle[0]?.style.display === 'none';
+            toToggle.forEach(el => el.style.display = hidden ? '' : 'none');
+            heading.style.opacity = hidden ? '1' : '0.7';
+        });
         document.addEventListener('DOMContentLoaded', () => {
-            const init = () => {
-                document.querySelectorAll('section .rounded-2xl.border').forEach(card => {
-                    const heading = card.querySelector('[data-flux-heading]');
-                    if (!heading || heading.dataset.collapsible) return;
-                    heading.dataset.collapsible = '1';
-                    heading.style.cursor = 'pointer';
-                    heading.title = 'Cliquer pour replier/déplier';
-                    heading.addEventListener('click', () => {
-                        const toToggle = Array.from(card.children).filter(el => el !== heading && !el.matches('summary'));
-                        const hidden = toToggle[0]?.style.display === 'none';
-                        toToggle.forEach(el => el.style.display = hidden ? '' : 'none');
-                        heading.style.opacity = hidden ? '1' : '0.7';
-                    });
-                });
-            };
-            init();
-            // Re-init after Livewire updates
-            document.addEventListener('livewire:navigated', init);
-            if (window.Livewire) window.Livewire.hook('morph.updated', init);
+            document.querySelectorAll('section .rounded-2xl.border [data-flux-heading]').forEach(h => {
+                if (h.parentElement.classList.contains('rounded-2xl')) {
+                    h.style.cursor = 'pointer';
+                    h.title = 'Cliquer pour replier/déplier';
+                }
+            });
         });
     </script>
 
