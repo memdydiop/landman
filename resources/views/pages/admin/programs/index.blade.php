@@ -18,6 +18,8 @@ new #[Layout('layouts.app')] #[Title('Programmes')] class extends Component {
     public string $view = 'grid';
 
     public bool $showCreate = false;
+    public bool $showEdit = false;
+    public ?int $editingId = null;
     public string $title = '';
     public string $slug = '';
     public string $city = '';
@@ -26,6 +28,7 @@ new #[Layout('layouts.app')] #[Title('Programmes')] class extends Component {
     public string $description = '';
     public bool $is_published = false;
     public $cover;
+    public ?string $existing_cover = null;
 
     public function updatingSearch(): void
     {
@@ -51,7 +54,9 @@ new #[Layout('layouts.app')] #[Title('Programmes')] class extends Component {
 
     public function updatedTitle(string $value): void
     {
-        $this->slug = Str::slug($value);
+        if (!$this->editingId && !$this->showEdit) {
+            $this->slug = Str::slug($value);
+        }
     }
 
     public function createProgram(): void
@@ -81,8 +86,59 @@ new #[Layout('layouts.app')] #[Title('Programmes')] class extends Component {
             $data['cover_path'] = ImageService::storeOptimized($this->cover, 'programs/covers');
         }
         Program::create($data);
-        $this->reset(['showCreate', 'title', 'slug', 'city', 'address', 'total_area', 'description', 'is_published', 'cover']);
+        $this->reset(['showCreate', 'title', 'slug', 'city', 'address', 'total_area', 'description', 'is_published', 'cover', 'existing_cover']);
         session()->flash('success', 'Programme créé.');
+    }
+
+    public function startEdit(int $id): void
+    {
+        $this->authorize('programs.update');
+        $prog = Program::findOrFail($id);
+        $this->editingId = $prog->id;
+        $this->title = $prog->title;
+        $this->slug = $prog->slug;
+        $this->city = $prog->city;
+        $this->address = $prog->address ?? '';
+        $this->total_area = $prog->total_area ? (string) $prog->total_area : '';
+        $this->description = $prog->description ?? '';
+        $this->is_published = $prog->is_published;
+        $this->existing_cover = $prog->cover_path;
+        $this->cover = null;
+        $this->showEdit = true;
+        $this->showCreate = false;
+    }
+
+    public function updateProgram(): void
+    {
+        $this->authorize('programs.update');
+        if (!$this->editingId) return;
+        $prog = Program::findOrFail($this->editingId);
+        $validated = $this->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'slug' => ['required', 'string', 'max:255', Rule::unique('programs', 'slug')->ignore($prog->id)],
+            'city' => ['required', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:500'],
+            'total_area' => ['nullable', 'numeric', 'min:0'],
+            'description' => ['nullable', 'string', 'max:5000'],
+            'is_published' => ['boolean'],
+            'cover' => ['nullable', 'image', 'max:4096'],
+        ]);
+        $data = [
+            'title' => $validated['title'],
+            'slug' => Str::slug($validated['slug']),
+            'city' => $validated['city'],
+            'address' => $validated['address'] ?? null,
+            'total_area' => $validated['total_area'] ?? null,
+            'description' => $validated['description'] ?? null,
+            'is_published' => $validated['is_published'],
+            'published_at' => $validated['is_published'] ? ($prog->published_at ?? now()) : null,
+        ];
+        if ($this->cover) {
+            $data['cover_path'] = ImageService::storeOptimized($this->cover, 'programs/covers', 'public', $prog->cover_path);
+        }
+        $prog->update($data);
+        $this->reset(['showEdit', 'editingId', 'title', 'slug', 'city', 'address', 'total_area', 'description', 'is_published', 'cover', 'existing_cover']);
+        session()->flash('success', 'Programme mis à jour.');
     }
 
     public function render(): \Illuminate\View\View
@@ -179,6 +235,30 @@ new #[Layout('layouts.app')] #[Title('Programmes')] class extends Component {
         </form>
     </flux:modal>
 
+    <flux:modal wire:model="showEdit" class="md:w-[640px]">
+        <form wire:submit="updateProgram" class="space-y-6">
+            <div>
+                <flux:heading size="lg">Éditer programme</flux:heading>
+                <flux:text>Modifications instantanées — SIBEA-CI</flux:text>
+            </div>
+            <flux:input wire:model="title" label="Titre *" required />
+            <flux:input wire:model="slug" label="Slug *" required />
+            <div class="grid gap-4 md:grid-cols-2">
+                <flux:input wire:model="city" label="Ville *" required />
+                <flux:input wire:model="total_area" label="Surface totale (m²)" type="number" step="0.01" />
+            </div>
+            <flux:input wire:model="address" label="Adresse" />
+            <flux:textarea wire:model="description" label="Description" rows="3" />
+            <flux:checkbox wire:model="is_published" label="Publié" />
+            @if($existing_cover)<div class="text-xs text-zinc-500">Actuel: {{ $existing_cover }} — <a href="{{ Storage::disk('public')->url($existing_cover) }}" target="_blank" class="underline">voir</a></div>@endif
+            <flux:input type="file" wire:model="cover" label="Nouvelle couverture (4Mo)" accept="image/*" />
+            <div class="flex justify-end gap-2">
+                <flux:modal.close><flux:button variant="ghost" wire:click="$set('showEdit', false)">Annuler</flux:button></flux:modal.close>
+                <flux:button type="submit" variant="primary">Mettre à jour</flux:button>
+            </div>
+        </form>
+    </flux:modal>
+
     @if (session('success'))
         <div class="mb-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-700">{{ session('success') }}</div>
     @endif
@@ -207,7 +287,7 @@ new #[Layout('layouts.app')] #[Title('Programmes')] class extends Component {
                         </div>
                         <div class="mt-3 flex flex-wrap gap-1">
                             <flux:button size="xs" variant="primary" :href="route('admin.plots.index', $program)" wire:navigate icon="squares-2x2">Lots</flux:button>
-                            @can('programs.update')<flux:button size="xs" variant="ghost" :href="route('admin.programs.edit', $program)" wire:navigate>Éditer</flux:button><flux:button size="xs" variant="ghost" wire:click="togglePublish({{ $program->id }})">{{ $program->is_published ? 'Dépublier' : 'Publier' }}</flux:button>@endcan
+                            @can('programs.update')<flux:button size="xs" variant="ghost" wire:click="startEdit({{ $program->id }})">Éditer</flux:button><flux:button size="xs" variant="ghost" wire:click="togglePublish({{ $program->id }})">{{ $program->is_published ? 'Dépublier' : 'Publier' }}</flux:button>@endcan
                             @can('programs.delete')<flux:button size="xs" variant="ghost" icon="trash" wire:click="delete({{ $program->id }})" wire:confirm="Supprimer ?" class="text-red-600">Suppr</flux:button>@endcan
                         </div>
                     </div>
@@ -247,7 +327,7 @@ new #[Layout('layouts.app')] #[Title('Programmes')] class extends Component {
                             <td class="px-4 py-3"><span class="font-medium">{{ $program->plots_count }}</span> <span class="text-xs text-emerald-600">· {{ $program->plots_available_count }} dispo</span></td>
                             <td class="px-4 py-3 text-xs">{{ $program->total_area ? number_format((float)$program->total_area,0,',',' ').' m²' : '—' }}</td>
                             <td class="px-4 py-3">@if($program->is_published)<flux:badge color="emerald" size="sm">Publié</flux:badge>@else<flux:badge color="zinc" size="sm">Brouillon</flux:badge>@endif</td>
-                            <td class="px-4 py-3"><div class="flex gap-1"><flux:button size="xs" variant="ghost" :href="route('admin.plots.index', $program)" wire:navigate>Lots</flux:button>@can('programs.update')<flux:button size="xs" variant="ghost" :href="route('admin.programs.edit', $program)" wire:navigate>Éditer</flux:button>@endcan</div></td>
+                            <td class="px-4 py-3"><div class="flex gap-1"><flux:button size="xs" variant="ghost" :href="route('admin.plots.index', $program)" wire:navigate>Lots</flux:button>@can('programs.update')<flux:button size="xs" variant="ghost" wire:click="startEdit({{ $program->id }})">Éditer</flux:button>@endcan</div></td>
                         </tr>
                     @empty
                         <tr><td colspan="6" class="px-4 py-10 text-center text-zinc-500">Aucun programme.</td></tr>
