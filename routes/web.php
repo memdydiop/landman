@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\PlotPlanController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
 Route::get('plots/{plot}/plan', PlotPlanController::class)->name('plots.plan');
 
 Route::livewire('/', 'pages::front.home')->name('home');
