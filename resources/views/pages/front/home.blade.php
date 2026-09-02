@@ -46,7 +46,7 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
         $testimonials = $testimonialsCached;
         $partners = $partnersCached;
         if ($testimonials->isEmpty()) {
-            $testimonials = collect([(object) ['name' => 'Kouassi Jean — Cocody', 'role' => 'Propriétaire Villa 4 pièces', 'content' => 'SIBEA-CI a livré notre villa dans les délais, avec un suivi VRD impeccable et un ACD sécurisé. Une équipe réactive et professionnelle.', 'rating' => 5], (object) ['name' => 'Awa Koné — Bingerville', 'role' => 'Gérante PME', 'content' => 'Lotissement Abatta : viabilisation et ACD obtenus sans accroc. SIBEA-CI maîtrise le foncier.', 'rating' => 5], (object) ['name' => 'Yao Kouamé — Bouaké', 'role' => 'Conducteur de Travaux', 'content' => 'Collaboration BTP fluide, respect du budget et délais. Je recommande SIBEA-CI.', 'rating' => 5]]);
+            $testimonials = collect([(object) ['name' => 'Kouassi Jean — Cocody', 'role' => 'Propriétaire Villa 4 pièces', 'content' => 'SIBEA-CI a livré notre villa dans les délais, avec un suivi VRD impeccable et un ACD sécurisé. Une équipe réactive et professionnelle.', 'rating' => 5, 'avatar_path' => null], (object) ['name' => 'Awa Koné — Bingerville', 'role' => 'Gérante PME', 'content' => 'Lotissement Abatta : viabilisation et ACD obtenus sans accroc. SIBEA-CI maîtrise le foncier.', 'rating' => 5, 'avatar_path' => null], (object) ['name' => 'Yao Kouamé — Bouaké', 'role' => 'Conducteur de Travaux', 'content' => 'Collaboration BTP fluide, respect du budget et délais. Je recommande SIBEA-CI.', 'rating' => 5, 'avatar_path' => null]]);
         }
         if ($partners->isEmpty()) {
             $partners = collect(['NSIA Banque', 'SIB', 'BOA CI', 'SGCI', 'BACI'])->map(fn($n) => (object) ['name' => $n, 'logo_path' => null]);
@@ -115,7 +115,7 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
                     class="mt-3 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white! leading-[1.1] mb-6">
                     {{ $hero['title_line1'] ?? 'SIBEA-CI' }}<br>
                     <span class="font-black">{{ $hero['title_line2'] ?? 'Laboratoire urbain' }}</span>@if(!empty($hero['title_line3']))<br><span class="font-light">{{ $hero['title_line3'] }}</span>@endif
-                </flux:heading level="1">
+                </flux:heading>
                 <p class="mt-4 max-w-xl text-sm leading-relaxed text-zinc-200">
                     {{ $hero['subtitle'] ?? 'Recherche, conseil et études en développement urbain. BTP, Électricité, Pétrole et Agro-industrie — réponses concrètes et contextualisées aux enjeux africains. Siège : Abidjan Bingerville, Abatta Lot 935 Îlot 86 — Dir. Ouattara Bassoma Ziegnougo.' }}
                 </p>
@@ -445,7 +445,12 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
                     <a href="{{ route('front.contact') }}"
                         class="rounded-full bg-white px-8 py-3 text-sm font-semibold text-[#002244] hover:bg-zinc-100">Demander
                         un devis</a>
-                    @php $wa = preg_replace('/[^0-9]/', '', $global['company_whatsapp'] ?? $global['company_phone'] ?? '2250700000000'); @endphp
+                    @php
+                        $waRaw = $global['company_whatsapp'] ?? $global['company_phone'] ?? '2250700000000';
+                        $wa = preg_replace('/[^0-9]/', '', $waRaw);
+                        if (strlen($wa) === 10 && str_starts_with($wa, '07')) $wa = '225'.ltrim($wa, '0');
+                        if (strlen($wa) === 10 && !str_starts_with($wa, '225')) $wa = '225'.$wa;
+                    @endphp
                     <a href="https://wa.me/{{ $wa }}" target="_blank" class="rounded-full bg-emerald-600 p-3 text-white hover:bg-emerald-700 inline-flex items-center justify-center" aria-label="WhatsApp"><svg class="size-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a10 10 0 0 0-8.8 14.82L2 22l5.34-1.4A10 10 0 1 0 12.04 2Zm0 17.82a7.82 7.82 0 0 1-3.99-1.09l-.29-.17-3.18.83.84-3.1-.19-.32a7.82 7.82 0 0 1-1.18-4.15A7.83 7.83 0 0 1 12.04 4a7.83 7.83 0 0 1 7.83 7.82 7.83 7.83 0 0 1-7.83 7.99Zm4.49-5.68c-.25-.12-1.46-.72-1.69-.8-.22-.08-.39-.12-.55.12-.16.25-.63.8-.78.96-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.99-1.22-.73-.65-1.23-1.46-1.37-1.71-.14-.25-.02-.38.11-.51.11-.11.25-.28.37-.42.12-.14.16-.25.25-.41.08-.16.04-.3-.02-.42-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.41-.55-.42h-.47c-.16 0-.43.06-.65.3-.22.25-.85.83-.85 2.02 0 1.19.87 2.34 1 2.5.12.16 1.73 2.64 4.2 3.71.59.25 1.04.4 1.4.51.59.19 1.12.16 1.54.1.47-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.11-.23-.18-.47-.3Z"/></svg></a>
                 </div>
             </div>
