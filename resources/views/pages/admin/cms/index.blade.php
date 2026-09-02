@@ -1741,7 +1741,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                 <flux:text class="mb-3 text-xs text-zinc-500">Ces 4 premiers services sont affichés sur l'Accueil. Gérez-les ici ou dans l'onglet Services (même source <code>services.list</code>).</flux:text>
                 <form wire:submit="saveServices" class="space-y-4 max-w-4xl">
                     @foreach(array_slice($services,0,4) as $i => $svc)
-                        <div class="rounded-xl border p-4">
+                        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
                             <div class="flex justify-between items-center"><span class="text-sm font-bold">Pôle {{ $i+1 }} — <span class="font-mono text-xs">{{ $svc['key'] }}</span></span>
                                 <div class="flex gap-1 items-center">
                                     <flux:button size="xs" variant="ghost" :disabled="$i===0" wire:click="moveServiceUp({{ $i }})">↑</flux:button>
@@ -1787,7 +1787,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
             <div class="mt-10 border-t border-zinc-200 pt-6">
                 <flux:heading size="sm" class="mb-3">NOS SERVICES — Offres & Détails</flux:heading>
                 <form wire:submit="saveHomeOffers" class="space-y-4 max-w-4xl">
-                    <div class="rounded-xl border p-4">
+                    <div class="rounded-2xl border border-zinc-200 bg-white p-4">
                         <flux:heading size="xs" class="mb-2">Offres (5) — colonne gauche</flux:heading>
                         @foreach($home_offers as $i => $offer)
                             <div class="flex gap-2 mb-2">
@@ -1797,7 +1797,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @endforeach
                         <flux:button size="xs" variant="ghost" wire:click="addHomeOffer">Ajouter offre</flux:button>
                     </div>
-                    <div class="rounded-xl border p-4">
+                    <div class="rounded-2xl border border-zinc-200 bg-white p-4">
                         <flux:heading size="xs" class="mb-2">Détails (4) — colonne centre</flux:heading>
                         @foreach($home_details as $i => $det)
                             <div class="mb-3 rounded-lg bg-zinc-50 p-3">
@@ -1847,7 +1847,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                 <flux:heading size="sm" class="mb-3">Notre Équipe — Accueil</flux:heading>
                 <form wire:submit="saveTeam" class="space-y-4 max-w-4xl">
                     @foreach($team_members as $i => $m)
-                        <div class="rounded-xl border p-4">
+                        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
                             <div class="flex justify-between items-center">
                                 <span class="text-sm font-bold">Membre {{ $i+1 }}</span>
                                 <div class="flex gap-1">
@@ -1961,7 +1961,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
             </form>
             <form wire:submit="saveServices" class="space-y-4 max-w-4xl">
                 @foreach($services as $i => $svc)
-                    <div class="rounded-xl border p-4">
+                    <div class="rounded-2xl border border-zinc-200 bg-white p-4">
                         <div class="flex justify-between items-center"><span class="text-sm font-bold">Service {{ $i+1 }} — <span class="font-mono text-xs">{{ $svc['key'] }}</span></span>
                             <div class="flex gap-1 items-center">
                                 <flux:button size="xs" variant="ghost" :disabled="$i===0" wire:click="moveServiceUp({{ $i }})">↑</flux:button>
