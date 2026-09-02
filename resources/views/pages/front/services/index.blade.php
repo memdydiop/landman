@@ -50,9 +50,9 @@ new #[Layout('layouts.front')] #[Title('Nos Services — SIBEA-CI Laboratoire')]
 
     {{-- Page Hero - Services — aligné sur À propos (h-[450px] centré) --}}
     <x-page-hero-simple
-        :title="$hero['title'] ?: 'Nos Services — <span class=&quot;font-black&quot;>6 expertises</span>'"
-        :subtitle="$hero['body'] ?: 'BTP, VRD, lotissement, rénovation, architecture, électricité — réponses concrètes et contextualisées à Abidjan et Bingerville.'"
-        :badge="$hero['badge'] ?: 'SERVICES — 6 EXPERTISES'"
+        :title="($hero['title'] ?? '') ?: 'Nos Services — <span class=&quot;font-black&quot;>6 expertises</span>'"
+        :subtitle="($hero['body'] ?? '') ?: 'BTP, VRD, lotissement, rénovation, architecture, électricité — réponses concrètes et contextualisées à Abidjan et Bingerville.'"
+        :badge="($hero['badge'] ?? '') ?: 'SERVICES — 6 EXPERTISES'"
         :image="$hero['image'] ?? null"
         :image-alt="$hero['title'] ?? 'Services SIBEA-CI'"
         :breadcrumb="[['label'=>'Services','url'=>route('front.services.index')]]"

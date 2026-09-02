@@ -70,6 +70,7 @@ class SiteSettingSeeder extends Seeder
         SiteSetting::set('services.hero', [
             'title' => 'Construisons ensemble',
             'body' => 'De la conception 2D/3D à la livraison à Bingerville. Découvrez nos 6 expertises.',
+            'badge' => 'SERVICES — 6 EXPERTISES',
             'image' => null,
         ], 'services');
 
