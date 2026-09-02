@@ -10,7 +10,7 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
-new #[Layout('layouts.front')] #[Title('Nos Services — SIBEA-CI Laboratoire')] class extends Component {
+new #[Layout('layouts.front')] #[Title('Nos Pôles BTP & VRD — SIBEA-CI')] class extends Component {
     #[Url]
     public int $page = 1;
     public int $perPage = 6;
@@ -45,9 +45,9 @@ new #[Layout('layouts.front')] #[Title('Nos Services — SIBEA-CI Laboratoire')]
         );
 
         $hero = Cache::remember('services.hero', 300, fn () => SiteSetting::get('services.hero', [
-            'title' => 'Nos Services — 6 expertises',
-            'body' => 'BTP, VRD, lotissement, rénovation, architecture, électricité — réponses concrètes et contextualisées à Abidjan et Bingerville.',
-            'badge' => 'SERVICES — 6 EXPERTISES',
+            'title' => 'Pôles d\'intervention BTP & Aménagement',
+            'body' => 'De la viabilisation foncière à la livraison gros œuvre — nos moyens techniques et humains sur le terrain en Côte d\'Ivoire.',
+            'badge' => 'EXÉCUTION & CHANTIERS',
             'image' => null,
         ]));
 
@@ -68,23 +68,23 @@ new #[Layout('layouts.front')] #[Title('Nos Services — SIBEA-CI Laboratoire')]
     }
 }; ?>
 
-<section class="bg-white">
+<section class="bg-zinc-100/60 min-h-screen">
 
-    {{-- Page Hero - Services --}}
+    {{-- Hero Page --}}
     <x-page-hero-simple
-        :title="$hero['title'] ?? 'Nos Services — 6 expertises'"
-        :subtitle="$hero['body'] ?? 'BTP, VRD, lotissement, rénovation, architecture, électricité — réponses concrètes et contextualisées à Abidjan et Bingerville.'"
-        :badge="$hero['badge'] ?? 'SERVICES — 6 EXPERTISES'"
+        :title="$hero['title'] ?? 'Pôles d\'intervention BTP & Aménagement'"
+        :subtitle="$hero['body'] ?? 'De la viabilisation foncière à la livraison gros œuvre — nos moyens techniques et humains sur le terrain.'"
+        :badge="$hero['badge'] ?? 'EXÉCUTION & CHANTIERS'"
         :image="$hero['image'] ?? null"
-        :image-alt="'Services SIBEA-CI'"
+        :image-alt="'Pôles d\'intervention SIBEA-CI'"
         :breadcrumb="[['label'=>'Services','url'=>route('front.services.index')]]"
     />
 
-    {{-- Contenu des Services --}}
-    <div class="bg-white mx-auto max-w-7xl px-4 py-12 lg:px-8">
-        <div class="flex items-center justify-between">
-            <div class="text-xs tracking-widest text-zinc-500">
-                {{ count($allServices) }} service(s) • page {{ $paginator->currentPage() }}/{{ $paginator->lastPage() }}
+    {{-- Grille des Pôles --}}
+    <div class="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+        <div class="flex items-center justify-between border-b border-zinc-200 pb-4">
+            <div class="text-xs font-mono font-bold tracking-widest text-zinc-600 uppercase">
+                {{ count($allServices) }} PÔLE(S) TECHNIQUE(S) DISPONIBLE(S)
             </div>
             @if ($paginator->hasPages())
                 <div class="flex gap-1">
@@ -105,7 +105,7 @@ new #[Layout('layouts.front')] #[Title('Nos Services — SIBEA-CI Laboratoire')]
             ];
         @endphp
 
-        <div class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             @foreach ($services as $service)
                 @php
                     $globalIndex = $offset + $loop->index;
@@ -116,28 +116,39 @@ new #[Layout('layouts.front')] #[Title('Nos Services — SIBEA-CI Laboratoire')]
                     $fallback = $fallbacks[$globalIndex % count($fallbacks)];
                     $validKey = ServiceType::tryFrom($key) ? $key : 'btp';
                 @endphp
-                <a href="{{ route('front.services.show', $validKey) }}"
-                    class="group relative overflow-hidden rounded-2xl min-h-[360px] flex flex-col justify-between p-7 shadow-sm hover:shadow-2xl transition-all duration-500 border border-zinc-200">
-                    
-                    @if($hasImage)
-                        <img src="{{ Storage::disk('public')->url($service['image']) }}" alt="{{ $title }}" class="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-110" loading="lazy" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/60 to-zinc-900/10"></div>
-                        <div class="absolute inset-0 bg-primary/20 mix-blend-multiply opacity-60 group-hover:opacity-30 transition duration-500"></div>
-                    @else
-                        <img src="{{ $fallback }}" alt="{{ $title }}" class="absolute inset-0 size-full object-cover transition duration-700 group-hover:scale-110" loading="lazy" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/70 to-zinc-900/20"></div>
-                        <div class="absolute inset-0 bg-primary/10 group-hover:bg-primary/0 transition duration-500"></div>
-                    @endif
 
-                    <div class="relative">
-                        <div class="text-xs tracking-widest text-white/60">0{{ $globalIndex + 1 }} — {{ strtoupper($key) }}</div>
-                        <h3 class="mt-3 text-xl font-black leading-tight text-white drop-shadow">{{ $title }}</h3>
+                <a href="{{ route('front.services.show', $validKey) }}"
+                    class="group relative overflow-hidden rounded-2xl min-h-[380px] flex flex-col justify-between p-6 shadow-md hover:shadow-2xl transition-all duration-500 border border-zinc-300/80 bg-zinc-900">
+                    
+                    <!-- Fond Image avec Overlays Chantiers -->
+                    @if($hasImage)
+                        <img src="{{ Storage::disk('public')->url($service['image']) }}" alt="{{ $title }}" class="absolute inset-0 size-full object-cover opacity-60 transition duration-700 group-hover:scale-105" loading="lazy" />
+                    @else
+                        <img src="{{ $fallback }}" alt="{{ $title }}" class="absolute inset-0 size-full object-cover opacity-60 transition duration-700 group-hover:scale-105" loading="lazy" />
+                    @endif
+                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent"></div>
+
+                    <!-- Header de la Carte : Numéro de Pôle & Badge -->
+                    <div class="relative flex items-center justify-between">
+                        <span class="rounded bg-amber-500/90 px-2 py-0.5 text-[11px] font-mono font-black text-zinc-950">
+                            PÔLE 0{{ $globalIndex + 1 }}
+                        </span>
+                        <span class="text-[10px] font-mono tracking-widest text-zinc-300 uppercase">
+                            {{ strtoupper($key) }}
+                        </span>
                     </div>
 
+                    <!-- Footer de la Carte : Titre & Action -->
                     <div class="relative">
-                        <p class="text-sm leading-relaxed text-zinc-200 line-clamp-3">{{ $desc ?: 'Expertise SIBEA-CI — '.$title.' — réponses concrètes et contextualisées.' }}</p>
-                        <div class="mt-4 inline-flex items-center gap-2 text-xs font-bold tracking-widest text-white group-hover:gap-3 transition-all">
-                            DÉCOUVRIR <span class="transition-transform group-hover:translate-x-1">→</span>
+                        <h3 class="text-2xl font-black leading-tight text-white uppercase group-hover:text-amber-400 transition-colors">
+                            {{ $title }}
+                        </h3>
+                        <p class="mt-2 text-xs leading-relaxed text-zinc-300 line-clamp-3">
+                            {{ $desc ?: 'Moyens matériels et équipes d\'exécution SIBEA-CI dédiés aux travaux de '.$title.'.' }}
+                        </p>
+                        
+                        <div class="mt-5 inline-flex items-center gap-2 rounded-lg bg-white/10 backdrop-blur-sm px-4 py-2 text-xs font-black tracking-wider text-white group-hover:bg-amber-500 group-hover:text-zinc-950 transition-all">
+                            DÉTAILS TECHNIQUE & CHANTIERS <span>→</span>
                         </div>
                     </div>
                 </a>
@@ -145,7 +156,7 @@ new #[Layout('layouts.front')] #[Title('Nos Services — SIBEA-CI Laboratoire')]
         </div>
 
         @if ($paginator->hasPages())
-            <div class="mt-8 flex justify-center">
+            <div class="mt-10 flex justify-center">
                 {{ $paginator->links() }}
             </div>
         @endif
