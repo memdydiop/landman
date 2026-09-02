@@ -14,6 +14,7 @@ new #[Layout('layouts.app')] #[Title('Témoignages')] class extends Component {
     public string $content = '';
     public int $rating = 5;
     public bool $showCreate = false;
+    public string $view = 'grid';
 
     public function save(): void
     {
@@ -54,12 +55,18 @@ new #[Layout('layouts.app')] #[Title('Témoignages')] class extends Component {
 }; ?>
 
 <section class="w-full p-6">
-    <div class="flex items-center justify-between mb-4">
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
         <div>
-            <flux:heading size="xl">Témoignages</flux:heading>
-            <flux:text>Avis vitrine — Home</flux:text>
+            <flux:heading size="xl">Témoignages — Avis</flux:heading>
+            <flux:text>{{ $testimonials->total() }} témoignage(s) · Home</flux:text>
         </div>
-        <flux:button variant="primary" icon="plus" wire:click="$set('showCreate', true)">Nouveau témoignage</flux:button>
+        <div class="flex items-center gap-2">
+            <flux:button.group>
+                <flux:button :variant="$view==='grid'?'primary':'ghost'" wire:click="$set('view','grid')" icon="squares-2x2" size="sm">Grille</flux:button>
+                <flux:button :variant="$view==='list'?'primary':'ghost'" wire:click="$set('view','list')" icon="list-bullet" size="sm">Liste</flux:button>
+            </flux:button.group>
+            <flux:button variant="primary" icon="plus" wire:click="$set('showCreate', true)">Nouveau</flux:button>
+        </div>
     </div>
 
     <flux:modal wire:model="showCreate" class="md:w-[560px]">
@@ -83,24 +90,49 @@ new #[Layout('layouts.app')] #[Title('Témoignages')] class extends Component {
 
     @if(session('success')) <div class="mb-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-700">{{ session('success') }}</div> @endif
 
-    <div class="overflow-x-auto rounded-2xl border border-zinc-200">
-        <table class="w-full text-sm">
-            <thead class="bg-zinc-50"><tr><th class="px-3 py-2">Nom</th><th class="px-3 py-2">Avis</th><th class="px-3 py-2">Note</th><th class="px-3 py-2">Publié</th><th class="px-3 py-2">Actions</th></tr></thead>
-            <tbody>
-                @foreach($testimonials as $t)
-                    <tr class="border-t">
-                        <td class="px-3 py-2"><div class="font-medium">{{ $t->name }}</div><div class="text-xs text-zinc-500">{{ $t->role }}</div></td>
-                        <td class="px-3 py-2 max-w-xs truncate">{{ $t->content }}</td>
-                        <td class="px-3 py-2">{{ $t->rating }}/5</td>
-                        <td class="px-3 py-2"><flux:badge :color="$t->is_published ? 'emerald' : 'zinc'" size="sm">{{ $t->is_published ? 'Oui' : 'Non' }}</flux:badge></td>
-                        <td class="px-3 py-2 flex gap-1">
-                            <flux:button size="xs" variant="ghost" wire:click="toggle({{ $t->id }})">Toggle</flux:button>
-                            <flux:button size="xs" variant="ghost" wire:click="delete({{ $t->id }})" wire:confirm="Supprimer ?">Supprimer</flux:button>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+    @if($view === 'grid')
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            @forelse($testimonials as $t)
+                <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4 hover:shadow transition">
+                    <div class="flex items-center gap-3">
+                        <flux:avatar :name="$t->name" size="lg" />
+                        <div class="min-w-0 flex-1">
+                            <div class="truncate text-sm font-bold">{{ $t->name }}</div>
+                            <div class="truncate text-xs text-zinc-500">{{ $t->role ?? '—' }}</div>
+                            <div class="text-xs text-amber-600">{{ str_repeat('★', $t->rating) }}{{ str_repeat('☆', 5-$t->rating) }} {{ $t->rating }}/5</div>
+                        </div>
+                        <flux:badge :color="$t->is_published ? 'emerald' : 'zinc'" size="sm">{{ $t->is_published ? 'Publié' : 'Brouillon' }}</flux:badge>
+                    </div>
+                    <div class="mt-3 rounded-xl bg-zinc-50 dark:bg-zinc-800 p-3 text-sm text-zinc-700 line-clamp-3">{{ $t->content }}</div>
+                    <div class="mt-3 flex gap-1">
+                        <flux:button size="xs" variant="ghost" wire:click="toggle({{ $t->id }})">Toggle</flux:button>
+                        <flux:button size="xs" variant="ghost" wire:click="delete({{ $t->id }})" wire:confirm="Supprimer ?" class="text-red-600">Suppr</flux:button>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full rounded-2xl border border-dashed p-10 text-center text-sm text-zinc-500">Aucun témoignage.</div>
+            @endforelse
+        </div>
+    @else
+        <div class="overflow-x-auto rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800">
+            <table class="w-full text-sm">
+                <thead class="bg-zinc-50 dark:bg-zinc-800"><tr><th class="px-3 py-2">Nom</th><th class="px-3 py-2">Avis</th><th class="px-3 py-2">Note</th><th class="px-3 py-2">Publié</th><th class="px-3 py-2">Actions</th></tr></thead>
+                <tbody>
+                    @foreach($testimonials as $t)
+                        <tr class="border-t border-zinc-100 dark:border-zinc-800">
+                            <td class="px-3 py-2"><div class="font-medium">{{ $t->name }}</div><div class="text-xs text-zinc-500">{{ $t->role }}</div></td>
+                            <td class="px-3 py-2 max-w-xs truncate">{{ $t->content }}</td>
+                            <td class="px-3 py-2">{{ $t->rating }}/5</td>
+                            <td class="px-3 py-2"><flux:badge :color="$t->is_published ? 'emerald' : 'zinc'" size="sm">{{ $t->is_published ? 'Oui' : 'Non' }}</flux:badge></td>
+                            <td class="px-3 py-2 flex gap-1">
+                                <flux:button size="xs" variant="ghost" wire:click="toggle({{ $t->id }})">Toggle</flux:button>
+                                <flux:button size="xs" variant="ghost" wire:click="delete({{ $t->id }})" wire:confirm="Supprimer ?">Supprimer</flux:button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
     <div class="mt-4">{{ $testimonials->links() }}</div>
 </section>
