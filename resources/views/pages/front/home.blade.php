@@ -46,7 +46,7 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
         $testimonials = $testimonialsCached;
         $partners = $partnersCached;
         if ($testimonials->isEmpty()) {
-            $testimonials = collect([(object) ['name' => 'GEORGE SLOWS', 'role' => 'Chef de Chantier', 'content' => 'SIBEA-CI a livré notre villa dans les délais, avec un suivi VRD impeccable et un ACD sécurisé. Une équipe réactive et professionnelle.', 'rating' => 5], (object) ['name' => 'BARBARA DOUGLAS', 'role' => 'Chef de Chantier', 'content' => 'SIBEA-CI a livré notre villa dans les délais, avec un suivi VRD impeccable et un ACD sécurisé. Une équipe réactive et professionnelle.', 'rating' => 5], (object) ['name' => 'JOHN HALPERN', 'role' => 'Conducteur de Travaux', 'content' => 'SIBEA-CI a livré notre villa dans les délais, avec un suivi VRD impeccable et un ACD sécurisé. Une équipe réactive et professionnelle.', 'rating' => 5]]);
+            $testimonials = collect([(object) ['name' => 'Kouassi Jean — Cocody', 'role' => 'Propriétaire Villa 4 pièces', 'content' => 'SIBEA-CI a livré notre villa dans les délais, avec un suivi VRD impeccable et un ACD sécurisé. Une équipe réactive et professionnelle.', 'rating' => 5], (object) ['name' => 'Awa Koné — Bingerville', 'role' => 'Gérante PME', 'content' => 'Lotissement Abatta : viabilisation et ACD obtenus sans accroc. SIBEA-CI maîtrise le foncier.', 'rating' => 5], (object) ['name' => 'Yao Kouamé — Bouaké', 'role' => 'Conducteur de Travaux', 'content' => 'Collaboration BTP fluide, respect du budget et délais. Je recommande SIBEA-CI.', 'rating' => 5]]);
         }
         if ($partners->isEmpty()) {
             $partners = collect(['NSIA Banque', 'SIB', 'BOA CI', 'SGCI', 'BACI'])->map(fn($n) => (object) ['name' => $n, 'logo_path' => null]);
@@ -67,10 +67,10 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
             'image' => null,
         ]);
         $team = SiteSetting::get('home.team', [
-            ['name' => 'Richard Wagner', 'role' => 'Ingénieur Civil', 'avatar' => null],
-            ['name' => 'Sarah Spence', 'role' => 'Assistant Conducteur', 'avatar' => null],
-            ['name' => 'John Halpern', 'role' => 'Conducteur de Travaux', 'avatar' => null],
-            ['name' => 'Tommy Atkins', 'role' => 'Électriciens', 'avatar' => null],
+            ['name' => 'Ouattara Bassoma Ziegnougo', 'role' => 'Gérant — SARL', 'avatar' => null],
+            ['name' => 'Kouamé Yao', 'role' => 'Ingénieur Civil VRD', 'avatar' => null],
+            ['name' => 'Awa Koné', 'role' => 'Conductrice Travaux', 'avatar' => null],
+            ['name' => 'Diabaté Moussa', 'role' => 'Électricien Chef', 'avatar' => null],
         ]);
 
         return view('pages.front.home', [
@@ -192,6 +192,35 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
         </div>
     </div>
 
+    <!-- Terrains ACD — remonté après Hero/4 pôles pour conversion -->
+    <div class="mx-auto max-w-7xl px-4 py-12 lg:px-8 bg-amber-50/30 rounded-2xl border border-amber-100">
+        <div class="flex items-end justify-between">
+            <div>
+                <h2 class="text-2xl font-black">Terrains viabilisés — ACD sécurisé</h2>
+                <p class="text-xs tracking-widest text-zinc-500">Bingerville Abatta · Lotissements SIBEA-CI — viabilisation & titres fonciers</p>
+            </div>
+            <a href="{{ route('front.programs.index') }}" class="text-sm font-bold tracking-widest text-primary hover:underline">CATALOGUE COMPLET →</a>
+        </div>
+        <div class="mt-6 grid gap-6 md:grid-cols-3">
+            @forelse($availablePlots->take(3) as $plot)
+                <div class="rounded-2xl border border-zinc-200 bg-white p-4 hover:shadow transition">
+                    <div class="flex items-center justify-between">
+                        <span class="font-mono text-sm font-bold">{{ $plot->reference }}</span>
+                        <span class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">{{ $plot->status->label() }}</span>
+                    </div>
+                    <div class="mt-2 text-sm font-medium text-zinc-900">{{ $plot->program->title }} — {{ $plot->program->city }}</div>
+                    <div class="mt-1 flex gap-4 text-xs text-zinc-600">
+                        <span>{{ $plot->surface_m2 }} m²</span>
+                        @if ($plot->price)<span class="font-bold text-primary">{{ number_format((float) $plot->price, 0, ',', ' ') }} FCFA</span>@endif
+                    </div>
+                    <a href="{{ route('front.programs.show', $plot->program) }}" class="mt-3 inline-flex text-xs font-bold tracking-widest text-primary hover:underline">VOIR LOT →</a>
+                </div>
+            @empty
+                <div class="col-span-3 rounded-xl border border-dashed p-6 text-center text-sm text-zinc-500">Aucun lot disponible — catalogue complet bientôt.</div>
+            @endforelse
+        </div>
+    </div>
+
     <!-- Stats — éditable CMS (5 compteurs) -->
     <div class="bg-zinc-900 py-10 text-white">
         <div class="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 text-center lg:grid-cols-5 lg:px-8">
@@ -215,7 +244,7 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
                 <div class="mt-1 text-xs tracking-widest text-zinc-400">PRIX REMPORTÉS</div>
             </div>
             <div>
-                <div class="text-4xl font-black text-[#4d7aa3]">{{ number_format($stats['surface_total'] ?? $stats['workers']*1000, 0, ',', ' ') }}</div>
+                <div class="text-4xl font-black text-[#4d7aa3]">{{ number_format($stats['surface_total'], 0, ',', ' ') }}</div>
                 <div class="mt-1 text-xs tracking-widest text-zinc-400">M² AMÉNAGÉS</div>
             </div>
         </div>
@@ -250,7 +279,7 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
                             <img src="{{ Storage::disk('public')->url($work->cover_path) }}" alt="{{ $work->title }}"
                                 class="size-full object-cover transition group-hover:scale-110" loading="lazy" />
                         @else
-                            <img src="https://images.unsplash.com/{{ $fallbacks[$work->id % count($fallbacks)] }}?w=600&q=80&auto=format&fit=crop"
+                            <img src="https://images.unsplash.com/{{ $fallbacks[$loop->index % count($fallbacks)] }}?w=600&q=80&auto=format&fit=crop"
                                 alt="{{ $work->title }} — {{ $work->service_type->label() }} Abidjan"
                                 class="size-full object-cover" loading="lazy" />
                         @endif
@@ -271,39 +300,27 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
         </div>
     </div>
 
-    <!-- NOS SERVICES + NOS SERVICES DETAILS -->
+    <!-- EXPERTISES TECHNIQUES — tableau unique (fusion des 2 sections Services redondantes) -->
     <div class="bg-zinc-50 py-16">
         <div class="mx-auto max-w-7xl px-4 lg:px-8">
             <div class="max-w-2xl">
-                <h2 class="text-3xl font-black">NOS SERVICES</h2>
+                <h2 class="text-3xl font-black">EXPERTISES TECHNIQUES</h2>
                 <div class="mt-2 h-1 w-12 bg-secondary"></div>
-                <p class="mt-4 text-sm text-zinc-600">De la construction à la viabilisation, une offre intégrée
-                    ivoirienne.</p>
+                <p class="mt-4 text-sm text-zinc-600">VRD, BTP, hydraulique — 6 pôles SIBEA-CI en une vue.</p>
             </div>
-            <div class="mt-8 grid gap-8 lg:grid-cols-3">
-                <div class="space-y-4">
-                    @foreach ($homeOffers as $offer)
-                        <div
-                            class="flex items-center gap-3 rounded-xl border border-zinc-200 bg-white p-3">
-                            <div
-                                class="flex size-8 items-center justify-center rounded-full bg-[#e6ecf2] text-secondary">
-                                ✓</div>
-                            <span class="text-sm font-bold text-secondary">{{ $offer }}</span>
-                        </div>
-                    @endforeach
-                </div>
-                <div class="space-y-6">
-                    @foreach ($homeDetails as $det)
-                        <div>
-                            <h4 class="font-bold text-primary">{{ $det['title'] }}</h4>
-                            <p class="text-sm text-zinc-600">{{ $det['desc'] }}</p>
-                        </div>
-                    @endforeach
-                </div>
-                <div class="flex items-end justify-center">
-                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&q=80&auto=format&fit=crop"
-                        alt="Worker" class="rounded-xl object-cover" loading="lazy" />
-                </div>
+            <div class="mt-8 overflow-x-auto rounded-2xl border border-zinc-200 bg-white">
+                <table class="w-full text-sm">
+                    <thead class="bg-zinc-900 text-white"><tr><th class="px-4 py-3 text-left">Pôle</th><th class="px-4 py-3 text-left">Domaine</th><th class="px-4 py-3 text-left">Livrables</th></tr></thead>
+                    <tbody>
+                        @foreach($cmsServices as $svc)
+                            <tr class="border-t border-zinc-100">
+                                <td class="px-4 py-3 font-bold text-primary">{{ $svc['title'] }}</td>
+                                <td class="px-4 py-3 text-zinc-600">{{ $svc['desc'] ? Str::limit($svc['desc'], 80) : '—' }}</td>
+                                <td class="px-4 py-3"><a href="{{ route('front.services.show', $svc['key']) }}" class="text-xs font-bold tracking-widest text-primary hover:underline">DÉTAIL →</a></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -413,40 +430,6 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
                         alt="{{ $partner->name }}" class="h-8" loading="lazy" />
                 @endif
             @endforeach
-        </div>
-    </div>
-
-    <!-- Terrains disponibles (conservé) -->
-    <div class="mx-auto max-w-7xl px-4 py-16 lg:px-8">
-        <div class="flex items-end justify-between">
-            <h2 class="text-2xl font-bold">Terrains disponibles</h2>
-            <a href="{{ route('front.programs.index') }}"
-                class="text-sm font-medium text-primary hover:underline">Catalogue complet →</a>
-        </div>
-        <div class="mt-8 grid gap-6 md:grid-cols-3">
-            @forelse($availablePlots as $plot)
-                <div class="rounded-2xl border border-zinc-200 p-4">
-                    <div class="flex items-center justify-between">
-                        <span class="font-mono text-sm font-bold">{{ $plot->reference }}</span>
-                        <span
-                            class="rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">{{ $plot->status->label() }}</span>
-                    </div>
-                    <div class="mt-2 text-sm text-zinc-600">{{ $plot->program->title }} — {{ $plot->program->city }}
-                    </div>
-                    <div class="mt-2 flex gap-4 text-sm">
-                        <span>{{ $plot->surface_m2 }} m²</span>
-                        @if ($plot->price)
-                            <span class="font-semibold">{{ number_format((float) $plot->price, 0, ',', ' ') }}
-                                FCFA</span>
-                        @endif
-                    </div>
-                    <a href="{{ route('front.programs.show', $plot->program) }}"
-                        class="mt-3 inline-block text-sm font-medium text-primary hover:underline">Voir le programme
-                        →</a>
-                </div>
-            @empty
-                <div class="col-span-3 text-center text-zinc-500">Aucun lot disponible pour le moment.</div>
-            @endforelse
         </div>
     </div>
 
