@@ -14,6 +14,7 @@ new #[Layout('layouts.app')] #[Title('Partenaires')] class extends Component {
     public string $name = '';
     public string $url = '';
     public $logo;
+    public bool $showCreate = false;
 
     public function save(): void
     {
@@ -30,7 +31,7 @@ new #[Layout('layouts.app')] #[Title('Partenaires')] class extends Component {
         }
 
         Partner::create($data);
-        $this->reset(['name', 'url', 'logo']);
+        $this->reset(['name', 'url', 'logo', 'showCreate']);
         session()->flash('success', 'Partenaire ajouté.');
     }
 
@@ -57,15 +58,29 @@ new #[Layout('layouts.app')] #[Title('Partenaires')] class extends Component {
 }; ?>
 
 <section class="w-full p-6">
-    <flux:heading size="xl">Partenaires</flux:heading>
-    <flux:text class="mb-4">Logos affichés en vitrine — Home / Partenaires (NSIA, SIB...)</flux:text>
+    <div class="flex items-center justify-between mb-4">
+        <div>
+            <flux:heading size="xl">Partenaires</flux:heading>
+            <flux:text>Logos vitrine — Home / Partenaires</flux:text>
+        </div>
+        <flux:button variant="primary" icon="plus" wire:click="$set('showCreate', true)">Nouveau partenaire</flux:button>
+    </div>
 
-    <form wire:submit="save" class="mb-6 grid gap-3 md:grid-cols-4 rounded-xl border border-zinc-200 p-4">
-        <flux:input wire:model="name" label="Nom *" placeholder="NSIA Banque" />
-        <flux:input wire:model="url" label="URL" placeholder="https://..." />
-        <flux:input type="file" wire:model="logo" label="Logo (2Mo)" accept="image/*" />
-        <div class="flex items-end"><flux:button type="submit" variant="primary">Ajouter</flux:button></div>
-    </form>
+    <flux:modal wire:model="showCreate" class="md:w-[560px]">
+        <form wire:submit="save" class="space-y-6">
+            <div>
+                <flux:heading size="lg">Nouveau partenaire</flux:heading>
+                <flux:text>Logo 2Mo max — s'affiche en page d'accueil</flux:text>
+            </div>
+            <flux:input wire:model="name" label="Nom *" placeholder="NSIA Banque" required />
+            <flux:input wire:model="url" label="URL" placeholder="https://..." />
+            <flux:input type="file" wire:model="logo" label="Logo (2Mo)" accept="image/*" />
+            <div class="flex justify-end gap-2">
+                <flux:modal.close><flux:button variant="ghost">Annuler</flux:button></flux:modal.close>
+                <flux:button type="submit" variant="primary">Ajouter</flux:button>
+            </div>
+        </form>
+    </flux:modal>
 
     @if(session('success')) <div class="mb-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-700">{{ session('success') }}</div> @endif
 

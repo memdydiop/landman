@@ -1,17 +1,31 @@
 <?php
 
 use App\Models\Program;
+use App\Services\ImageService;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 new #[Layout('layouts.app')] #[Title('Programmes')] class extends Component {
-    use WithPagination;
+    use WithPagination, WithFileUploads;
 
     public string $search = '';
     public string $cityFilter = '';
     public string $view = 'grid';
+
+    public bool $showCreate = false;
+    public string $title = '';
+    public string $slug = '';
+    public string $city = '';
+    public string $address = '';
+    public string $total_area = '';
+    public string $description = '';
+    public bool $is_published = false;
+    public $cover;
 
     public function updatingSearch(): void
     {
@@ -33,6 +47,42 @@ new #[Layout('layouts.app')] #[Title('Programmes')] class extends Component {
             'is_published' => ! $program->is_published,
             'published_at' => ! $program->is_published ? now() : null,
         ]);
+    }
+
+    public function updatedTitle(string $value): void
+    {
+        $this->slug = Str::slug($value);
+    }
+
+    public function createProgram(): void
+    {
+        $this->authorize('programs.create');
+        $validated = $this->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'slug' => ['required', 'string', 'max:255', Rule::unique('programs', 'slug')],
+            'city' => ['required', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:500'],
+            'total_area' => ['nullable', 'numeric', 'min:0'],
+            'description' => ['nullable', 'string', 'max:5000'],
+            'is_published' => ['boolean'],
+            'cover' => ['nullable', 'image', 'max:4096'],
+        ]);
+        $data = [
+            'title' => $validated['title'],
+            'slug' => Str::slug($validated['slug']),
+            'city' => $validated['city'],
+            'address' => $validated['address'] ?? null,
+            'total_area' => $validated['total_area'] ?? null,
+            'description' => $validated['description'] ?? null,
+            'is_published' => $validated['is_published'],
+            'published_at' => $validated['is_published'] ? now() : null,
+        ];
+        if ($this->cover) {
+            $data['cover_path'] = ImageService::storeOptimized($this->cover, 'programs/covers');
+        }
+        Program::create($data);
+        $this->reset(['showCreate', 'title', 'slug', 'city', 'address', 'total_area', 'description', 'is_published', 'cover']);
+        session()->flash('success', 'Programme créé.');
     }
 
     public function render(): \Illuminate\View\View
@@ -69,7 +119,7 @@ new #[Layout('layouts.app')] #[Title('Programmes')] class extends Component {
                 <flux:button :variant="$view==='list'?'primary':'ghost'" wire:click="$set('view','list')" icon="list-bullet" size="sm">Liste</flux:button>
             </flux:button.group>
             @can('programs.create')
-                <flux:button :href="route('admin.programs.create')" wire:navigate variant="primary" icon="plus">Nouveau</flux:button>
+                <flux:button wire:click="$set('showCreate', true)" variant="primary" icon="plus">Nouveau</flux:button>
             @endcan
         </div>
     </div>
@@ -104,6 +154,30 @@ new #[Layout('layouts.app')] #[Title('Programmes')] class extends Component {
             <flux:button variant="ghost" size="sm" wire:click="$set('search',''); $set('cityFilter','')" icon="x-mark">Effacer</flux:button>
         @endif
     </div>
+
+    <flux:modal wire:model="showCreate" class="md:w-[640px]">
+        <form wire:submit="createProgram" class="space-y-6">
+            <div>
+                <flux:heading size="lg">Nouveau programme</flux:heading>
+                <flux:text>Lotissement — Bingerville & régions</flux:text>
+            </div>
+            <flux:input wire:model="title" label="Titre *" placeholder="Les Jardins de Cocody" required />
+            <flux:input wire:model="slug" label="Slug *" description="URL: /lotissements/{{ $slug ?: 'mon-programme' }}" required />
+            <div class="grid gap-4 md:grid-cols-2">
+                <flux:input wire:model="city" label="Ville *" placeholder="Bingerville" required />
+                <flux:input wire:model="total_area" label="Surface totale (m²)" type="number" step="0.01" />
+            </div>
+            <flux:input wire:model="address" label="Adresse" placeholder="Abatta, Lot 935..." />
+            <flux:textarea wire:model="description" label="Description" rows="3" />
+            <flux:checkbox wire:model="is_published" label="Publié (visible front)" />
+            <flux:input type="file" wire:model="cover" label="Couverture (4Mo)" accept="image/*" />
+            @error('cover') <div class="text-sm text-red-600">{{ $message }}</div> @enderror
+            <div class="flex justify-end gap-2">
+                <flux:modal.close><flux:button variant="ghost">Annuler</flux:button></flux:modal.close>
+                <flux:button type="submit" variant="primary">Créer</flux:button>
+            </div>
+        </form>
+    </flux:modal>
 
     @if (session('success'))
         <div class="mb-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-700">{{ session('success') }}</div>

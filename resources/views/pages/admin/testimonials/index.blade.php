@@ -13,6 +13,7 @@ new #[Layout('layouts.app')] #[Title('Témoignages')] class extends Component {
     public string $role = '';
     public string $content = '';
     public int $rating = 5;
+    public bool $showCreate = false;
 
     public function save(): void
     {
@@ -25,7 +26,7 @@ new #[Layout('layouts.app')] #[Title('Témoignages')] class extends Component {
         ]);
 
         Testimonial::create($validated);
-        $this->reset(['name', 'role', 'content', 'rating']);
+        $this->reset(['name', 'role', 'content', 'rating', 'showCreate']);
         $this->rating = 5;
         session()->flash('success', 'Témoignage ajouté.');
     }
@@ -53,16 +54,32 @@ new #[Layout('layouts.app')] #[Title('Témoignages')] class extends Component {
 }; ?>
 
 <section class="w-full p-6">
-    <flux:heading size="xl">Témoignages</flux:heading>
-    <flux:text class="mb-4">Gérez les avis affichés en vitrine — Home / TÉMOIGNAGES CLIENTS</flux:text>
+    <div class="flex items-center justify-between mb-4">
+        <div>
+            <flux:heading size="xl">Témoignages</flux:heading>
+            <flux:text>Avis vitrine — Home</flux:text>
+        </div>
+        <flux:button variant="primary" icon="plus" wire:click="$set('showCreate', true)">Nouveau témoignage</flux:button>
+    </div>
 
-    <form wire:submit="save" class="mb-6 grid gap-3 md:grid-cols-4 rounded-xl border border-zinc-200 p-4">
-        <flux:input wire:model="name" label="Nom *" placeholder="Kouadio Jean" />
-        <flux:input wire:model="role" label="Rôle" placeholder="Client, Cocody" />
-        <flux:input wire:model="rating" label="Note 1-5" type="number" />
-        <flux:input wire:model="content" label="Contenu *" placeholder="Excellent..." />
-        <div class="flex items-end"><flux:button type="submit" variant="primary">Ajouter</flux:button></div>
-    </form>
+    <flux:modal wire:model="showCreate" class="md:w-[560px]">
+        <form wire:submit="save" class="space-y-6">
+            <div>
+                <flux:heading size="lg">Nouveau témoignage</flux:heading>
+                <flux:text>5 étoiles max — affiché en page d'accueil</flux:text>
+            </div>
+            <flux:input wire:model="name" label="Nom *" placeholder="Kouadio Jean" required />
+            <flux:input wire:model="role" label="Rôle" placeholder="Client, Cocody" />
+            <flux:select wire:model="rating" label="Note *">
+                @for($i=1;$i<=5;$i++)<flux:select.option value="{{ $i }}">{{ $i }}/5</flux:select.option>@endfor
+            </flux:select>
+            <flux:textarea wire:model="content" label="Contenu *" rows="4" placeholder="Excellent service SIBEA-CI..." required />
+            <div class="flex justify-end gap-2">
+                <flux:modal.close><flux:button variant="ghost">Annuler</flux:button></flux:modal.close>
+                <flux:button type="submit" variant="primary">Ajouter</flux:button>
+            </div>
+        </form>
+    </flux:modal>
 
     @if(session('success')) <div class="mb-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-700">{{ session('success') }}</div> @endif
 
