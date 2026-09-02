@@ -8,10 +8,13 @@ use App\Enums\InquiryStatus;
 use App\Enums\InquiryType;
 use App\Enums\PlotStatus;
 use App\Enums\ServiceType;
+use App\Mail\InquiryAdminNotification;
+use App\Mail\InquiryClientConfirmation;
 use App\Models\Inquiry;
 use App\Models\Plot;
 use App\Models\Program;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
@@ -324,6 +327,19 @@ class InquiryWizard extends Component
 
         $this->createdInquiryId = $inquiry->id;
         $this->sent = true;
+
+        // Emails métier — queue via Managed Queues (scale-to-zero, 0€ vide)
+        try {
+            $adminEmail = config('mail.admin') ?? env('MAIL_ADMIN', env('MAIL_FROM_ADDRESS'));
+            if ($adminEmail) {
+                Mail::to($adminEmail)->queue(new InquiryAdminNotification($inquiry));
+            }
+            if (filled($inquiry->email)) {
+                Mail::to($inquiry->email)->queue(new InquiryClientConfirmation($inquiry));
+            }
+        } catch (\Throwable $e) {
+            report($e);
+        }
     }
 
     public function resetWizard(): void
