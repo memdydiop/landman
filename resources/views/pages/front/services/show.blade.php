@@ -43,7 +43,7 @@ new #[Layout('layouts.front')] class extends Component {
     <div class="border-b border-zinc-200 bg-white py-3">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 text-xs font-mono lg:px-8">
             <div class="flex items-center gap-2">
-                <a href="{{ route('front.home') }}" class="text-zinc-500 hover:text-primary">ACCUEIL</a> 
+                <a href="{{ route('home') }}" class="text-zinc-500 hover:text-primary">ACCUEIL</a> 
                 <span class="text-zinc-300">/</span>
                 <a href="{{ route('front.services.index') }}" class="text-zinc-500 hover:text-primary">SERVICES</a> 
                 <span class="text-zinc-300">/</span>
