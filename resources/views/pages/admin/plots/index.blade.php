@@ -62,7 +62,7 @@ new #[Layout('layouts.app')] class extends Component {
         ];
 
         if ($this->plan_pdf) {
-            $data['plan_pdf_path'] = $this->plan_pdf->store('plots/plans', 'local');
+            $data['plan_pdf_path'] = $this->plan_pdf->store('plots/plans', 'public');
         }
 
         Plot::create($data);
@@ -138,29 +138,38 @@ new #[Layout('layouts.app')] class extends Component {
         @endcan
     </div>
 
-    @if($showCreate)
-        <form wire:submit="createPlot" class="mb-6 rounded-xl border border-zinc-200 p-4">
-            <flux:heading class="mb-3">Créer un lot</flux:heading>
-            <div class="grid gap-3 md:grid-cols-4">
+    <flux:modal wire:model="showCreate" class="md:w-[720px]">
+        <form wire:submit="createPlot" class="space-y-6">
+            <div>
+                <flux:heading size="lg">Nouveau lot — {{ $program->title }}</flux:heading>
+                <flux:text class="mt-1">{{ $program->city }} · {{ $program->plots()->count() }} lots existants</flux:text>
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2">
                 <flux:input wire:model="reference" label="Référence *" placeholder="LOT-A12" required />
                 <flux:input wire:model="surface_m2" label="Surface m² *" type="number" step="0.01" required />
-                <flux:input wire:model="price" label="Prix (FCFA)" type="number" step="0.01" />
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+                <flux:input wire:model="price" label="Prix (FCFA)" type="number" step="0.01" placeholder="25000000" />
                 <flux:select wire:model="status" label="Statut *">
                     @foreach(PlotStatus::cases() as $s) <flux:select.option value="{{ $s->value }}">{{ $s->label() }}</flux:select.option> @endforeach
                 </flux:select>
             </div>
-            <div class="grid gap-3 md:grid-cols-3 mt-3">
-                <flux:input wire:model="juridical_status" label="Statut juridique" placeholder="ACD, Titre foncier..." />
-                <flux:checkbox wire:model="is_viabilise" label="Viabilisé" />
-                <flux:input type="file" wire:model="plan_pdf" label="Plan PDF (max 8Mo)" accept="application/pdf" />
+            <div class="grid gap-4 md:grid-cols-2">
+                <flux:input wire:model="juridical_status" label="Statut juridique" placeholder="ACD, Titre foncier, Attestation..." />
+                <div class="flex items-end pb-2"><flux:checkbox wire:model="is_viabilise" label="Viabilisé" /></div>
             </div>
-            <div class="mt-4 flex gap-2">
-                <flux:button type="submit" variant="primary">Créer</flux:button>
-                <flux:button wire:click="$set('showCreate', false)" variant="ghost">Annuler</flux:button>
+            <flux:input type="file" wire:model="plan_pdf" label="Plan PDF (max 8Mo)" accept="application/pdf" description="Stocké sur Object Storage (S3) en production" />
+
+            @error('reference') <div class="rounded-lg bg-red-50 p-2 text-sm text-red-600">{{ $message }}</div> @enderror
+            @error('plan_pdf') <div class="rounded-lg bg-red-50 p-2 text-sm text-red-600">{{ $message }}</div> @enderror
+
+            <div class="flex justify-end gap-2">
+                <flux:modal.close><flux:button variant="ghost">Annuler</flux:button></flux:modal.close>
+                <flux:button type="submit" variant="primary" icon="plus">Créer le lot</flux:button>
             </div>
-            @error('reference') <div class="text-sm text-red-600 mt-1">{{ $message }}</div> @enderror
         </form>
-    @endif
+    </flux:modal>
 
     <div class="flex gap-3 mb-4">
         <flux:input wire:model.live.debounce.300ms="search" placeholder="Référence..." class="max-w-xs" />
