@@ -81,7 +81,7 @@ new #[Layout('layouts.app')] #[Title('Utilisateurs')] class extends Component {
     @if($view === 'grid')
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             @forelse($users as $user)
-                <div class="rounded-2xl border border-zinc-200 bg-white p-4 hover:shadow transition">
+                <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4 hover:shadow transition">
                     <div class="flex items-center gap-3">
                         <flux:avatar :name="$user->name" size="lg" />
                         <div class="min-w-0 flex-1">
@@ -114,7 +114,7 @@ new #[Layout('layouts.app')] #[Title('Utilisateurs')] class extends Component {
             @endforelse
         </div>
     @else
-        <div class="overflow-x-auto rounded-xl border border-zinc-200 bg-white">
+        <div class="overflow-x-auto rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800">
             <table class="w-full text-sm">
                 <thead class="bg-zinc-50">
                     <tr class="text-left">

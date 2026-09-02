@@ -126,15 +126,15 @@ new #[Layout('layouts.app')] #[Title('Programmes')] class extends Component {
 
     {{-- Stats rapides --}}
     <div class="mb-4 grid gap-3 md:grid-cols-4">
-        <div class="rounded-xl border border-zinc-200 bg-white p-3 flex items-center gap-3">
+        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-3 flex items-center gap-3">
             <div class="flex size-9 items-center justify-center rounded-lg bg-sky-50 text-sky-600"><flux:icon.map-pin class="size-5" /></div>
             <div><div class="text-xs text-zinc-500">Programmes</div><div class="text-lg font-black">{{ $programs->total() }}</div></div>
         </div>
-        <div class="rounded-xl border border-zinc-200 bg-white p-3 flex items-center gap-3">
+        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-3 flex items-center gap-3">
             <div class="flex size-9 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600"><flux:icon.check-circle class="size-5" /></div>
             <div><div class="text-xs text-zinc-500">Villes</div><div class="text-lg font-black">{{ $cities->count() }}</div></div>
         </div>
-        <div class="rounded-xl border border-zinc-200 bg-white p-3">
+        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-3">
             <div class="text-xs text-zinc-500">Total lots</div><div class="text-lg font-black">{{ $programs->sum('plots_count') }} <span class="text-xs font-normal text-emerald-600">{{ $programs->sum('plots_available_count') }} dispo</span></div>
         </div>
         <div class="rounded-xl border border-[#99b3cc] bg-[#f0f4f8] p-3">
@@ -186,7 +186,7 @@ new #[Layout('layouts.app')] #[Title('Programmes')] class extends Component {
     @if($view === 'grid')
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             @forelse($programs as $program)
-                <div class="group overflow-hidden rounded-2xl border border-zinc-200 bg-white hover:shadow-lg transition">
+                <div class="group overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 hover:shadow-lg transition">
                     <div class="aspect-[16/9] bg-zinc-100 relative">
                         @if($program->cover_path)
                             <img src="{{ Storage::disk('public')->url($program->cover_path) }}" alt="" class="size-full object-cover group-hover:scale-105 transition duration-700" loading="lazy" />
@@ -220,7 +220,7 @@ new #[Layout('layouts.app')] #[Title('Programmes')] class extends Component {
             @endforelse
         </div>
     @else
-        <div class="overflow-x-auto rounded-xl border border-zinc-200 bg-white">
+        <div class="overflow-x-auto rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800">
             <table class="w-full text-sm">
                 <thead class="bg-zinc-50">
                     <tr class="text-left">

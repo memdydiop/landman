@@ -80,7 +80,7 @@ new #[Layout('layouts.app')] #[Title('Newsletter')] class extends Component {
 
     @if(session('success')) <div class="mb-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-700">{{ session('success') }}</div> @endif
     @if(session('error')) <div class="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{{ session('error') }}</div> @endif
-    <div class="overflow-x-auto rounded-xl border border-zinc-200">
+    <div class="overflow-x-auto rounded-2xl border border-zinc-200">
         <table class="w-full text-sm">
             <thead class="bg-zinc-50"><tr><th class="px-3 py-2">Email</th><th class="px-3 py-2">Nom</th><th class="px-3 py-2">Date</th><th class="px-3 py-2">Actions</th></tr></thead>
             <tbody>

@@ -32,20 +32,20 @@ new #[Layout('layouts.app')] #[Title('Analytics')] class extends Component {
     </div>
 
     <div class="grid gap-4 md:grid-cols-3 mb-6">
-        <div class="rounded-2xl border border-zinc-200 bg-white p-4 flex items-center gap-3">
+        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4 flex items-center gap-3">
             <div class="flex size-10 items-center justify-center rounded-xl bg-sky-50 text-sky-600"><flux:icon.chart-bar class="size-5" /></div>
             <div><div class="text-xs text-zinc-500">Total visites</div><div class="text-xl font-black">{{ number_format($total,0,',',' ') }}</div></div>
         </div>
-        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
+        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
             <div class="text-xs text-zinc-500">Top route</div><div class="truncate text-sm font-bold">{{ $byRoute->first()?->route ?? $byRoute->first()?->path ?? '—' }}</div><div class="text-xs text-emerald-600">{{ $byRoute->first()?->c ?? 0 }} visites</div>
         </div>
-        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
+        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
             <div class="text-xs text-zinc-500">Aujourd'hui</div><div class="text-xl font-black">{{ $byDay->last()?->c ?? 0 }}</div><div class="text-xs text-zinc-500">{{ $byDay->last()?->d ?? today()->format('Y-m-d') }}</div>
         </div>
     </div>
 
     <div class="grid gap-6 lg:grid-cols-2">
-        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
+        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
             <flux:heading size="sm" class="mb-3">Top routes</flux:heading>
             <div class="space-y-2">
                 @forelse($byRoute as $r)
@@ -58,7 +58,7 @@ new #[Layout('layouts.app')] #[Title('Analytics')] class extends Component {
                 @endforelse
             </div>
         </div>
-        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
+        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
             <flux:heading size="sm" class="mb-3">Par jour (7j)</flux:heading>
             <div class="h-48"><canvas id="analyticsChart"></canvas></div>
             <div class="mt-3 space-y-1">

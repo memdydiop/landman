@@ -143,7 +143,7 @@ new #[Layout('layouts.app')] #[Title('Prospects')] class extends Component {
     @if($viewMode === 'kanban' && $grouped)
         <div class="grid gap-4 md:grid-cols-4">
             @foreach(InquiryStatus::cases() as $colStatus)
-                <div class="rounded-xl border border-zinc-200 bg-zinc-50/50 flex flex-col min-h-[400px]">
+                <div class="rounded-2xl border border-zinc-200 bg-zinc-50/50 flex flex-col min-h-[400px]">
                     <div class="sticky top-0 z-10 rounded-t-xl border-b bg-white px-3 py-3 flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <flux:badge :color="$colStatus->badgeColor()" size="sm">{{ $colStatus->label() }}</flux:badge>
@@ -240,7 +240,7 @@ new #[Layout('layouts.app')] #[Title('Prospects')] class extends Component {
         @endif
     @else
         {{-- Vue liste conservée --}}
-        <div class="overflow-x-auto rounded-xl border border-zinc-200">
+        <div class="overflow-x-auto rounded-2xl border border-zinc-200">
             <table class="w-full text-sm">
                 <thead class="bg-zinc-50">
                     <tr class="text-left">

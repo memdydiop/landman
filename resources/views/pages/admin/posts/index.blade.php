@@ -60,7 +60,7 @@ new #[Layout('layouts.app')] #[Title('Actualités')] class extends Component {
     @if($view === 'grid')
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             @forelse($posts as $post)
-                <div class="overflow-hidden rounded-2xl border border-zinc-200 bg-white hover:shadow-lg transition">
+                <div class="overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 hover:shadow-lg transition">
                     <div class="aspect-[16/9] bg-zinc-100 relative">
                         @if($post->cover_path)<img src="{{ Storage::disk('public')->url($post->cover_path) }}" class="size-full object-cover" />@else<img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?w=600&q=80&auto=format&fit=crop" class="size-full object-cover" />@endif
                         <div class="absolute left-3 top-3"><flux:badge :color="$post->is_published ? 'emerald' : 'zinc'" size="sm">{{ $post->is_published ? 'Publié' : 'Brouillon' }}</flux:badge></div>
@@ -80,7 +80,7 @@ new #[Layout('layouts.app')] #[Title('Actualités')] class extends Component {
             @endforelse
         </div>
     @else
-        <div class="overflow-x-auto rounded-xl border border-zinc-200 bg-white">
+        <div class="overflow-x-auto rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800">
             <table class="w-full text-sm">
                 <thead class="bg-zinc-50"><tr><th class="px-4 py-3">Article</th><th class="px-4 py-3">Publié</th><th class="px-4 py-3">Actions</th></tr></thead>
                 <tbody>

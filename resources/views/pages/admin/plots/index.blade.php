@@ -181,7 +181,7 @@ new #[Layout('layouts.app')] class extends Component {
 
     @if(session('success')) <div class="mb-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-700">{{ session('success') }}</div> @endif
 
-    <div class="overflow-x-auto rounded-xl border border-zinc-200">
+    <div class="overflow-x-auto rounded-2xl border border-zinc-200">
         <table class="w-full text-sm">
             <thead class="bg-zinc-50">
                 <tr class="text-left">

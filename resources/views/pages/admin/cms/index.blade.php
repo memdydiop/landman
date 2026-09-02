@@ -1643,7 +1643,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
     @if($activeTab === 'home')
         <div class="pt-6">
             <form wire:submit="saveHome" class="space-y-6 max-w-3xl">
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Hero Slider</flux:heading>
                     <flux:input wire:model="hero_badge" label="Badge (bandeau)" placeholder="SARL depuis 2022 — IDU CI-2022-0016466 Q" />
                     <div class="grid md:grid-cols-3 gap-3 mt-3">
@@ -1669,7 +1669,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                             @error('hero_slide1') <div class="text-xs text-red-600">{{ $message }}</div> @enderror
                             @if(count($media_library))
                                 <div class="mt-2 flex gap-2 items-center">
-                                    <select wire:model="media_picker.hero_slide1" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                                    <select wire:model="media_picker.hero_slide1" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                         <option value="">— ou depuis médiathèque —</option>
                                         @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                     </select>
@@ -1692,7 +1692,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                             @error('hero_slide2') <div class="text-xs text-red-600">{{ $message }}</div> @enderror
                             @if(count($media_library))
                                 <div class="mt-2 flex gap-2 items-center">
-                                    <select wire:model="media_picker.hero_slide2" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                                    <select wire:model="media_picker.hero_slide2" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                         <option value="">— ou depuis médiathèque —</option>
                                         @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                     </select>
@@ -1705,7 +1705,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                     <div wire:loading wire:target="hero_slide1,hero_slide2" class="text-xs text-zinc-500">Upload en cours…</div>
                 </div>
 
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Stats — 5 compteurs</flux:heading>
                     <div class="grid md:grid-cols-3 gap-3">
                         <flux:input wire:model="stat_projects" type="number" label="Projets livrés" />
@@ -1718,7 +1718,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                     </div>
                 </div>
 
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Pourquoi nous choisir — Titre + 4 items (optionnel)</flux:heading>
                     <flux:input wire:model="why_title" label="Titre section" placeholder="POURQUOI NOUS CHOISIR ?" class="mb-3" />
                     @foreach($why_items as $i => $item)
@@ -1764,7 +1764,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                                 @endif
                                 @if(count($media_library))
                                     <div class="mt-2 flex gap-2 items-center">
-                                        <select wire:model="media_picker.service_{{ $i }}" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                                        <select wire:model="media_picker.service_{{ $i }}" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                             <option value="">— ou depuis médiathèque —</option>
                                             @foreach($media_library as $mm)<option value="{{ $mm['id'] }}">{{ Str::limit($mm['name'],25) }}</option>@endforeach
                                         </select>
@@ -1830,7 +1830,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                     @endif
                     @if(count($media_library))
                         <div class="flex gap-2 items-center">
-                            <select wire:model="media_picker.banner" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                            <select wire:model="media_picker.banner" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                 <option value="">— ou depuis médiathèque —</option>
                                 @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                             </select>
@@ -1869,7 +1869,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                             @endif
                             @if(count($media_library))
                                 <div class="mt-2 flex gap-2 items-center">
-                                    <select wire:model="media_picker.team_{{ $i }}" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                                    <select wire:model="media_picker.team_{{ $i }}" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                         <option value="">— ou depuis médiathèque —</option>
                                         @foreach($media_library as $mm)<option value="{{ $mm['id'] }}">{{ Str::limit($mm['name'],25) }}</option>@endforeach
                                     </select>
@@ -1903,7 +1903,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                     @endif
                     @if(count($media_library))
                         <div class="mt-2 flex gap-2 items-center">
-                            <select wire:model="media_picker.about" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                            <select wire:model="media_picker.about" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                 <option value="">— ou depuis médiathèque —</option>
                                 @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                             </select>
@@ -1911,7 +1911,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         </div>
                     @endif
                 </div>
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Why Choose Us — 4 progress bars (0-100%)</flux:heading>
                     @foreach($about_progress as $i => $p)
                         <div class="grid md:grid-cols-[1fr_100px] gap-2 mb-3 items-end">
@@ -1926,7 +1926,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
     @elseif($activeTab === 'services')
         <div class="pt-6">
             <form wire:submit="saveServicesHero" class="space-y-4 max-w-4xl mb-8">
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Hero — Services</flux:heading>
                     @if($shared_hero_image_existing)
                         <div class="rounded-lg bg-cyan-50 p-3 text-xs text-cyan-800 mb-3">Image partagée active : <code class="bg-white px-1 rounded">{{ $shared_hero_image_existing }}</code> — tous les heroes utilisent cette image. <button wire:click="$set('activeTab','hero')" class="underline">Gérer dans Hero Global →</button></div>
@@ -1946,7 +1946,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @endif
                         @if(count($media_library))
                             <div class="mt-2 flex gap-2 items-center">
-                                <select wire:model="media_picker.services_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                                <select wire:model="media_picker.services_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                     <option value="">— ou depuis médiathèque —</option>
                                     @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                 </select>
@@ -1987,7 +1987,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                             @endif
                             @if(count($media_library))
                                 <div class="mt-2 flex gap-2 items-center">
-                                    <select wire:model="media_picker.service_{{ $i }}" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                                    <select wire:model="media_picker.service_{{ $i }}" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                         <option value="">— ou depuis médiathèque —</option>
                                         @foreach($media_library as $mm)<option value="{{ $mm['id'] }}">{{ Str::limit($mm['name'],25) }}</option>@endforeach
                                     </select>
@@ -2007,24 +2007,24 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
     @elseif($activeTab === 'seo')
         <div class="pt-6">
             <form wire:submit="saveSeo" class="space-y-4 max-w-2xl">
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm">Accueil</flux:heading>
                     <flux:input wire:model="seo.home_title" label="Home title * (≤70c)" maxlength="70" />
                     <div class="text-xs text-zinc-500 text-right">{{ mb_strlen($seo['home_title'] ?? '') }}/70</div>
                     <flux:textarea wire:model="seo.home_desc" label="Home description (≤160c)" rows="2" maxlength="160" />
                     <div class="text-xs text-zinc-500 text-right">{{ mb_strlen($seo['home_desc'] ?? '') }}/160</div>
                 </div>
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm">À propos</flux:heading>
                     <flux:input wire:model="seo.about_title" label="À propos title (≤70c)" />
                     <flux:textarea wire:model="seo.about_desc" label="À propos description (≤160c)" rows="2" />
                 </div>
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm">Services</flux:heading>
                     <flux:input wire:model="seo.services_title" label="Services title (≤70c)" />
                     <flux:textarea wire:model="seo.services_desc" label="Services description (≤160c)" rows="2" />
                 </div>
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Open Graph / Réseaux sociaux</flux:heading>
                     <flux:input wire:model="seo.og_title" label="OG Title (≤95c)" placeholder="Partage Facebook/LinkedIn" />
                     <flux:textarea wire:model="seo.og_description" label="OG Description (≤200c)" rows="2" />
@@ -2044,7 +2044,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @endif
                         @if(count($media_library))
                             <div class="mt-2 flex gap-2 items-center">
-                                <select wire:model="media_picker.seo_og" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                                <select wire:model="media_picker.seo_og" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                     <option value="">— ou depuis médiathèque —</option>
                                     @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                 </select>
@@ -2061,7 +2061,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
     @elseif($activeTab === 'theme')
         <div class="pt-6">
             <form wire:submit="saveTheme" class="space-y-4 max-w-xl">
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Couleurs du thème</flux:heading>
                     <div class="flex gap-4">
                         <flux:input wire:model.live="theme_primary" type="color" label="Primaire *" />
@@ -2081,7 +2081,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
     @elseif($activeTab === 'programs')
         <div class="pt-6">
             <form wire:submit="savePrograms" class="space-y-4 max-w-3xl">
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Hero — Lotissements / Viabilisation</flux:heading>
                     @if($shared_hero_image_existing)
                         <div class="rounded-lg bg-cyan-50 p-3 text-xs text-cyan-800 mb-3">Image partagée active : <code class="bg-white px-1 rounded">{{ $shared_hero_image_existing }}</code> — tous les heroes utilisent cette image. <button wire:click="$set('activeTab','hero')" class="underline">Gérer dans Hero Global →</button></div>
@@ -2100,7 +2100,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @endif
                         @if(count($media_library))
                             <div class="mt-2 flex gap-2 items-center">
-                                <select wire:model="media_picker.programs_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                                <select wire:model="media_picker.programs_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                     <option value="">— ou depuis médiathèque —</option>
                                     @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                 </select>
@@ -2117,7 +2117,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
     @elseif($activeTab === 'projects')
         <div class="pt-6">
             <form wire:submit="saveProjects" class="space-y-4 max-w-3xl">
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Hero — Réalisations / Portfolio</flux:heading>
                     @if($shared_hero_image_existing)
                         <div class="rounded-lg bg-cyan-50 p-3 text-xs text-cyan-800 mb-3">Image partagée active : <code class="bg-white px-1 rounded">{{ $shared_hero_image_existing }}</code> — tous les heroes utilisent cette image. <button wire:click="$set('activeTab','hero')" class="underline">Gérer dans Hero Global →</button></div>
@@ -2136,7 +2136,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @endif
                         @if(count($media_library))
                             <div class="mt-2 flex gap-2 items-center">
-                                <select wire:model="media_picker.projects_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                                <select wire:model="media_picker.projects_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                     <option value="">— ou depuis médiathèque —</option>
                                     @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                 </select>
@@ -2153,7 +2153,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
     @elseif($activeTab === 'posts')
         <div class="pt-6">
             <form wire:submit="savePosts" class="space-y-4 max-w-3xl">
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Hero — Actualités / Recherche</flux:heading>
                     @if($shared_hero_image_existing)
                         <div class="rounded-lg bg-cyan-50 p-3 text-xs text-cyan-800 mb-3">Image partagée active : <code class="bg-white px-1 rounded">{{ $shared_hero_image_existing }}</code> — tous les heroes utilisent cette image. <button wire:click="$set('activeTab','hero')" class="underline">Gérer dans Hero Global →</button></div>
@@ -2172,7 +2172,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @endif
                         @if(count($media_library))
                             <div class="mt-2 flex gap-2 items-center">
-                                <select wire:model="media_picker.posts_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                                <select wire:model="media_picker.posts_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                     <option value="">— ou depuis médiathèque —</option>
                                     @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                 </select>
@@ -2189,7 +2189,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
     @elseif($activeTab === 'contact')
         <div class="pt-6">
             <form wire:submit="saveContact" class="space-y-4 max-w-3xl">
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Hero — Contact & Devis</flux:heading>
                     @if($shared_hero_image_existing)
                         <div class="rounded-lg bg-cyan-50 p-3 text-xs text-cyan-800 mb-3">Image partagée active : <code class="bg-white px-1 rounded">{{ $shared_hero_image_existing }}</code> — tous les heroes utilisent cette image. <button wire:click="$set('activeTab','hero')" class="underline">Gérer dans Hero Global →</button></div>
@@ -2208,7 +2208,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @endif
                         @if(count($media_library))
                             <div class="mt-2 flex gap-2 items-center">
-                                <select wire:model="media_picker.contact_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                                <select wire:model="media_picker.contact_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                     <option value="">— ou depuis médiathèque —</option>
                                     @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                 </select>
@@ -2225,7 +2225,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
     @elseif($activeTab === 'hero')
         <div class="pt-6">
             <form wire:submit="saveSharedHero" class="space-y-4 max-w-3xl">
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Hero Global — Image partagée pour tous les heroes</flux:heading>
                     <flux:text class="text-sm text-zinc-500 mb-3">Cette image sera utilisée comme fond pour <strong>tous</strong> les heroes (À propos, Services, Lotissements, Réalisations, Actualités, Contact). Modifiez-la ici une seule fois — cohérence garantie.</flux:text>
                     <flux:input type="file" wire:model="shared_hero_image" label="Image Hero partagée (5 Mo, WebP/AVIF auto, 1600×900 recommandé)" accept="image/*" />
@@ -2240,7 +2240,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                     @endif
                     @if(count($media_library))
                         <div class="mt-3 flex gap-2 items-center">
-                            <select wire:model="media_picker.shared_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                            <select wire:model="media_picker.shared_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                 <option value="">— ou depuis médiathèque —</option>
                                 @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ \Illuminate\Support\Str::limit($m['name'],30) }}</option>@endforeach
                             </select>
@@ -2257,7 +2257,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
     @elseif($activeTab === 'global')
         <div class="pt-6">
             <form wire:submit="saveGlobal" class="space-y-6 max-w-3xl">
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Infos Société</flux:heading>
                     <div class="grid md:grid-cols-2 gap-4">
                         <flux:input wire:model="company_name" label="Nom société *" placeholder="SIBEA-CI" />
@@ -2276,7 +2276,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                     <flux:input wire:model="company_hours" label="Horaires" placeholder="Lun-Ven 8h-17h, Sam 8h-12h" class="mt-4" />
                 </div>
 
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Footer</flux:heading>
                     <flux:textarea wire:model="footer_copyright" label="Copyright" rows="1" placeholder="© 2024 SIBEA-CI. Tous droits réservés." />
                     <div class="grid md:grid-cols-3 gap-4 mt-4">
@@ -2286,7 +2286,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                     </div>
                 </div>
 
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Réseaux Sociaux</flux:heading>
                     @foreach($social_networks as $i => $sn)
                         <div class="mb-3 rounded-lg bg-zinc-50 p-3">
@@ -2303,7 +2303,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                     <flux:button wire:click="addSocialNetwork" variant="ghost" icon="plus">Ajouter un réseau</flux:button>
                 </div>
 
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Légal & liens — Footer (éditable)</flux:heading>
                     <flux:text class="text-xs text-zinc-500 mb-3">Liens affichés dans la colonne 3 du footer. Ordre = ordre d'affichage.</flux:text>
                     @foreach($footer_links as $i => $link)
@@ -2326,7 +2326,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
     @elseif($activeTab === 'header')
         <div class="pt-6">
             <form wire:submit="saveHeader" class="space-y-6 max-w-3xl">
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Logo Header</flux:heading>
                     <div class="mt-2">
                         <flux:input type="file" wire:model="header_logo" label="Logo (5 Mo, WebP auto)" accept="image/*" />
@@ -2340,7 +2340,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @error('header_logo') <div class="text-xs text-red-600">{{ $message }}</div> @enderror
                         @if(count($media_library))
                             <div class="mt-2 flex gap-2 items-center">
-                                <select wire:model="media_picker.header_logo" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                                <select wire:model="media_picker.header_logo" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                     <option value="">— ou depuis médiathèque —</option>
                                     @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                 </select>
@@ -2351,7 +2351,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                     <div wire:loading wire:target="header_logo" class="text-xs text-zinc-500">Upload en cours…</div>
                 </div>
 
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Navigation — Menu Principal</flux:heading>
                     @foreach($menu_items as $i => $item)
                         <div class="mb-3 rounded-lg bg-zinc-50 p-3">
@@ -2370,7 +2370,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                     <flux:button wire:click="addMenuItem" variant="ghost" icon="plus">Ajouter un lien</flux:button>
                 </div>
 
-                <div class="rounded-xl border border-zinc-200 p-4">
+                <div class="rounded-2xl border border-zinc-200 p-4">
                     <flux:heading size="sm" class="mb-3">Contact Header</flux:heading>
                     <div class="grid md:grid-cols-3 gap-4">
                         <flux:input wire:model="header_phone" label="Téléphone" placeholder="+225 07 00 00 00 00" />
@@ -2388,7 +2388,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
         </div>
     @elseif($activeTab === 'media')
         <div class="pt-6 space-y-6">
-            <div class="rounded-xl border border-zinc-200 p-4">
+            <div class="rounded-2xl border border-zinc-200 p-4">
                 <div class="flex flex-wrap items-start justify-between gap-3">
                     <div>
                         <flux:heading size="sm">Bibliothèque Médias</flux:heading>
@@ -2415,7 +2415,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                 <div class="grid gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                     @forelse($this->filteredMediaLibrary as $m)
                         @php $url = Storage::disk('public')->url($m['path']); @endphp
-                        <div class="group relative flex flex-col rounded-xl border border-zinc-200 overflow-hidden bg-white">
+                        <div class="group relative flex flex-col rounded-2xl border border-zinc-200 overflow-hidden bg-white">
                             <a href="{{ $url }}" target="_blank" class="block relative">
                                 <img src="{{ $url }}" alt="{{ $m['name'] }}" class="w-full aspect-square object-cover group-hover:scale-[1.02] transition" loading="lazy" />
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80"></div>
@@ -2431,7 +2431,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                                     <button type="button" onclick="navigator.clipboard.writeText('{{ $url }}'); this.textContent='Copié!'; setTimeout(()=>this.textContent='Copier URL',1500)" class="flex-1 inline-flex items-center justify-center rounded-lg bg-zinc-900 px-2 py-1.5 text-xs font-medium text-white hover:bg-zinc-800">Copier URL</button>
                                 </div>
                                 <div class="flex gap-1 items-center">
-                                    <select id="target-{{ $m['id'] }}" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
+                                    <select id="target-{{ $m['id'] }}" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
                                         <option value="hero_slide1">Hero Slide 1</option>
                                         <option value="hero_slide2">Hero Slide 2</option>
                                         <option value="banner">Bannière Accueil</option>

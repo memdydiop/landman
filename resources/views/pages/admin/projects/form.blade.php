@@ -212,7 +212,7 @@ new #[Layout('layouts.app')] class extends Component {
     </form>
 
     @if($this->project && $this->project->media()->exists())
-        <div class="mt-10 rounded-xl border border-zinc-200 p-4">
+        <div class="mt-10 rounded-2xl border border-zinc-200 p-4">
             <flux:heading class="mb-3">Galerie — réordonnancement</flux:heading>
             <div class="grid gap-3 md:grid-cols-4">
                 @foreach($this->project->media()->ordered()->get() as $media)
