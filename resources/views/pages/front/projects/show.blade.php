@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\ProjectStatus;
+use App\Enums\ServiceType;
 use App\Models\Project;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
@@ -20,13 +22,13 @@ new #[Layout('layouts.front')] class extends Component {
     <div class="border-b border-zinc-200 bg-white py-3">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 text-xs font-mono lg:px-8">
             <div class="flex items-center gap-2">
-                <a href="{{ route('home') }}" class="text-zinc-500 hover:text-amber-600">ACCUEIL</a> 
+                <a href="{{ route('home') }}" class="text-zinc-500 hover:text-amber-600 transition">ACCUEIL</a> 
                 <span class="text-zinc-300">/</span>
-                <a href="{{ route('front.projects.index') }}" class="text-zinc-500 hover:text-amber-600">CHANTIERS</a> 
+                <a href="{{ route('front.projects.index') }}" class="text-zinc-500 hover:text-amber-600 transition">CHANTIERS</a> 
                 <span class="text-zinc-300">/</span>
                 <span class="font-bold text-zinc-900 uppercase truncate max-w-[200px] sm:max-w-none">{{ $project->title }}</span>
             </div>
-            <a href="{{ route('front.projects.index') }}" class="hidden sm:inline-flex text-xs font-bold text-zinc-600 hover:text-amber-600">
+            <a href="{{ route('front.projects.index') }}" class="hidden sm:inline-flex text-xs font-bold text-zinc-600 hover:text-amber-600 transition">
                 ← RETOUR AU CATALOGUE
             </a>
         </div>
@@ -40,13 +42,13 @@ new #[Layout('layouts.front')] class extends Component {
                 <div>
                     <div class="flex flex-wrap items-center gap-2">
                         <span class="rounded bg-amber-500 px-2 py-0.5 font-mono text-[10px] font-black text-zinc-950 uppercase">
-                            {{ is_object($project->service_type) ? $project->service_type->label() : $project->service_type }}
+                            {{ $project->service_type instanceof ServiceType ? $project->service_type->label() : $project->service_type }}
                         </span>
                         <span class="rounded font-mono text-[10px] font-bold px-2.5 py-0.5 uppercase
                             @if(($project->status->value ?? $project->status) === 'livre') bg-emerald-600 text-white 
                             @elseif(($project->status->value ?? $project->status) === 'en_cours') bg-amber-600 text-white 
                             @else bg-zinc-700 text-zinc-200 @endif">
-                            ● {{ is_object($project->status) ? $project->status->label() : $project->status }}
+                            ● {{ $project->status instanceof ProjectStatus ? $project->status->label() : $project->status }}
                         </span>
                         @if($project->is_featured) 
                             <span class="rounded bg-white/10 px-2 py-0.5 font-mono text-[10px] text-amber-300">À LA UNE</span> 
@@ -76,13 +78,13 @@ new #[Layout('layouts.front')] class extends Component {
                 </div>
 
                 <!-- Galerie des Vues Terrain -->
-                @if($project->media->isNotEmpty())
+                @if($project->media && $project->media->isNotEmpty())
                     <div class="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
                         <div class="font-mono text-xs font-bold text-zinc-700 uppercase tracking-wider mb-3">Vues du chantier & Suivi d'exécution</div>
                         <div class="grid grid-cols-3 gap-3">
                             @foreach($project->media as $media)
                                 <div class="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-900 group">
-                                    <img src="{{ Storage::disk($media->disk)->url($media->path) }}" alt="Vue chantier" class="aspect-[4/3] w-full object-cover group-hover:scale-105 transition duration-300" loading="lazy" />
+                                    <img src="{{ Storage::disk($media->disk ?? 'public')->url($media->path) }}" alt="Vue chantier SIBEA" class="aspect-[4/3] w-full object-cover group-hover:scale-105 transition duration-300" loading="lazy" />
                                 </div>
                             @endforeach
                         </div>
@@ -104,7 +106,7 @@ new #[Layout('layouts.front')] class extends Component {
                         </div>
                         <div class="rounded-xl bg-zinc-50 p-3 border border-zinc-200/60">
                             <div class="text-[10px] text-zinc-500 uppercase">Surface Traitée</div>
-                            <div class="mt-1 font-bold text-zinc-900">{{ $project->surface_m2 ? $project->surface_m2.' m²' : '—' }}</div>
+                            <div class="mt-1 font-bold text-zinc-900">{{ $project->surface_m2 ? number_format($project->surface_m2, 0, ',', ' ').' m²' : '—' }}</div>
                         </div>
                         <div class="rounded-xl bg-zinc-50 p-3 border border-zinc-200/60">
                             <div class="text-[10px] text-zinc-500 uppercase">Durée Travaux</div>
@@ -125,7 +127,7 @@ new #[Layout('layouts.front')] class extends Component {
                 </div>
 
                 <!-- Spécifications Techniques -->
-                @if($project->technical_sheet)
+                @if(is_array($project->technical_sheet) && count($project->technical_sheet) > 0)
                     <div class="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
                         <h3 class="font-black text-zinc-900 text-sm uppercase tracking-wider">Spécifications techniques</h3>
                         <div class="mt-1 h-0.5 w-8 bg-amber-500"></div>
@@ -133,8 +135,8 @@ new #[Layout('layouts.front')] class extends Component {
                         <dl class="mt-4 space-y-2 font-mono text-xs">
                             @foreach($project->technical_sheet as $key => $value)
                                 <div class="flex justify-between gap-4 border-b border-zinc-100 py-2 last:border-0">
-                                    <dt class="text-zinc-500 uppercase">{{ Str::headline($key) }}</dt>
-                                    <dd class="font-bold text-zinc-900 text-right">{{ is_array($value) ? json_encode($value) : $value }}</dd>
+                                    <dt class="text-zinc-500 uppercase">{{ Str::headline((string)$key) }}</dt>
+                                    <dd class="font-bold text-zinc-900 text-right">{{ is_array($value) ? implode(', ', $value) : $value }}</dd>
                                 </div>
                             @endforeach
                         </dl>

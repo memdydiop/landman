@@ -33,7 +33,8 @@ new #[Layout('layouts.front')] #[Title('Chantiers & Réalisations — SIBEA-CI')
         $projects = Project::published()
             ->when($this->search, function ($q) {
                 $s = str_replace(['%', '_'], '', $this->search);
-                $q->where('title', 'like', '%'.$s.'%');
+                $q->where('title', 'like', '%'.$s.'%')
+                  ->orWhere('location', 'like', '%'.$s.'%');
             })
             ->when($this->service, fn ($q) => $q->where('service_type', $this->service))
             ->when($this->status, fn ($q) => $q->where('status', $this->status))
@@ -70,11 +71,12 @@ new #[Layout('layouts.front')] #[Title('Chantiers & Réalisations — SIBEA-CI')
     />
 
     <div class="mx-auto max-w-7xl px-4 py-8 lg:px-8">
-        <!-- Barre de Filtres Style Poste de Commandement Chantier -->
+        <!-- Barre de Filtres Poste de Commandement -->
         <div class="rounded-2xl border border-zinc-300/80 bg-white p-4 shadow-sm">
             <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div class="relative flex-1">
                     <input wire:model.live.debounce.300ms="search" 
+                           type="text"
                            placeholder="Rechercher une référence, ville, zone de chantier..." 
                            class="w-full rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-xs font-medium focus:border-amber-500 focus:bg-white focus:ring-0" />
                 </div>
@@ -117,21 +119,16 @@ new #[Layout('layouts.front')] #[Title('Chantiers & Réalisations — SIBEA-CI')
         <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             @forelse($projects as $project)
                 @php
-                    $hasImage = !empty($project->cover_path) && Storage::disk('public')->exists($project->cover_path);
-                    $fallback = $fallbacks[$loop->index % count($fallbacks)];
-                    $serviceLabel = is_object($project->service_type) ? $project->service_type->label() : ($project->service_type ?? 'BTP');
-                    $statusLabel = is_object($project->status) ? $project->status->label() : ($project->status ?? 'Livré');
-                    $statusValue = is_object($project->status) ? $project->status->value : $project->status;
+                    $coverUrl = $project->cover_path ? Storage::disk('public')->url($project->cover_path) : $fallbacks[$loop->index % count($fallbacks)];
+                    $serviceLabel = $project->service_type instanceof ServiceType ? $project->service_type->label() : ($project->service_type ?? 'BTP');
+                    $statusLabel = $project->status instanceof ProjectStatus ? $project->status->label() : ($project->status ?? 'Livré');
+                    $statusValue = $project->status instanceof ProjectStatus ? $project->status->value : $project->status;
                     $itemIndex = ($projects->currentPage() - 1) * $projects->perPage() + $loop->iteration;
                 @endphp
                 <a href="{{ route('front.projects.show', $project) }}" 
                    class="group relative flex min-h-[380px] flex-col justify-between overflow-hidden rounded-2xl border border-zinc-300/80 bg-zinc-900 p-6 shadow-md transition-all duration-500 hover:border-amber-500 hover:shadow-2xl">
                     
-                    @if($hasImage)
-                        <img src="{{ Storage::disk('public')->url($project->cover_path) }}" alt="{{ $project->title }}" class="absolute inset-0 size-full object-cover opacity-65 transition duration-700 group-hover:scale-105" loading="lazy" />
-                    @else
-                        <img src="{{ $fallback }}" alt="{{ $project->title }}" class="absolute inset-0 size-full object-cover opacity-60 transition duration-700 group-hover:scale-105" loading="lazy" />
-                    @endif
+                    <img src="{{ $coverUrl }}" alt="{{ $project->title }}" class="absolute inset-0 size-full object-cover opacity-60 transition duration-700 group-hover:scale-105" loading="lazy" />
                     <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent"></div>
 
                     <!-- Header Fiche Chantier -->
@@ -139,7 +136,7 @@ new #[Layout('layouts.front')] #[Title('Chantiers & Réalisations — SIBEA-CI')
                         <span class="rounded bg-amber-500/90 px-2 py-0.5 font-mono text-[11px] font-black text-zinc-950">
                             REF-{{ sprintf('%02d', $itemIndex) }}
                         </span>
-                        <span class="rounded px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md
+                        <span class="rounded px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md
                             @if($statusValue === 'livre') bg-emerald-600/80 
                             @elseif($statusValue === 'en_cours') bg-amber-600/90 
                             @else bg-zinc-700/80 @endif">
@@ -159,7 +156,7 @@ new #[Layout('layouts.front')] #[Title('Chantiers & Réalisations — SIBEA-CI')
                         <!-- Données Techniques Clés -->
                         <div class="mt-3 flex items-center gap-4 text-[11px] font-mono text-zinc-300 border-t border-white/10 pt-3">
                             @if($project->surface_m2)
-                                <div><span class="text-zinc-500">SURFACE:</span> {{ $project->surface_m2 }} m²</div>
+                                <div><span class="text-zinc-500">SURFACE:</span> {{ number_format($project->surface_m2, 0, ',', ' ') }} m²</div>
                             @endif
                             @if($project->year)
                                 <div><span class="text-zinc-500">ANNÉE:</span> {{ $project->year }}</div>
