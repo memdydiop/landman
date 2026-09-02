@@ -1611,8 +1611,8 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
     </div>
 
     <div class="mt-4 flex gap-2">
-        <flux:button size="xs" variant="ghost" icon="chevron-down" onclick="document.querySelectorAll('section .rounded-2xl').forEach(c=>{const h=c.querySelector('flux\\:heading'); if(h) c.querySelectorAll(':scope > *:not(flux\\:heading)').forEach(n=>n.style.display='');})">Tout déplier</flux:button>
-        <flux:button size="xs" variant="ghost" icon="chevron-up" onclick="document.querySelectorAll('section .rounded-2xl').forEach(c=>{const h=c.querySelector('flux\\:heading'); if(h) c.querySelectorAll(':scope > *:not(flux\\:heading)').forEach(n=>n.style.display='none');})">Tout replier</flux:button>
+        <flux:button size="xs" variant="ghost" icon="chevron-down" onclick="document.querySelectorAll('section .rounded-2xl').forEach(c=>{const h=c.querySelector('[data-flux-heading]'); if(h) c.querySelectorAll(':scope > *:not([data-flux-heading])').forEach(n=>n.style.display='');})">Tout déplier</flux:button>
+        <flux:button size="xs" variant="ghost" icon="chevron-up" onclick="document.querySelectorAll('section .rounded-2xl').forEach(c=>{const h=c.querySelector('[data-flux-heading]'); if(h) c.querySelectorAll(':scope > *:not([data-flux-heading])').forEach(n=>n.style.display='none');})">Tout replier</flux:button>
         <span class="text-xs text-zinc-400 self-center">Cards repliables — clique sur le titre pour replier</span>
     </div>
 
@@ -1620,7 +1620,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
         document.addEventListener('DOMContentLoaded', () => {
             const init = () => {
                 document.querySelectorAll('section .rounded-2xl.border').forEach(card => {
-                    const heading = card.querySelector('flux\\:heading');
+                    const heading = card.querySelector('[data-flux-heading]');
                     if (!heading || heading.dataset.collapsible) return;
                     heading.dataset.collapsible = '1';
                     heading.style.cursor = 'pointer';

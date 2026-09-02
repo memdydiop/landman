@@ -15,6 +15,9 @@ new #[Layout('layouts.app')] #[Title('Partenaires')] class extends Component {
     public string $url = '';
     public $logo;
     public bool $showCreate = false;
+    public bool $showEdit = false;
+    public ?int $editingId = null;
+    public ?string $existingLogo = null;
     public string $view = 'grid';
 
     public function save(): void
@@ -34,6 +37,38 @@ new #[Layout('layouts.app')] #[Title('Partenaires')] class extends Component {
         Partner::create($data);
         $this->reset(['name', 'url', 'logo', 'showCreate']);
         session()->flash('success', 'Partenaire ajouté.');
+    }
+
+    public function startEdit(int $id): void
+    {
+        $this->authorize('partners.manage');
+        $p = Partner::findOrFail($id);
+        $this->editingId = $p->id;
+        $this->name = $p->name;
+        $this->url = $p->url ?? '';
+        $this->existingLogo = $p->logo_path;
+        $this->logo = null;
+        $this->showEdit = true;
+        $this->showCreate = false;
+    }
+
+    public function update(): void
+    {
+        $this->authorize('partners.manage');
+        if (!$this->editingId) return;
+        $p = Partner::findOrFail($this->editingId);
+        $validated = $this->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'url' => ['nullable', 'url', 'max:255'],
+            'logo' => ['nullable', 'image', 'max:2048'],
+        ]);
+        $data = ['name' => $validated['name'], 'url' => $validated['url'] ?? null];
+        if ($this->logo) {
+            $data['logo_path'] = ImageService::storeOptimized($this->logo, 'partners', 'public', $p->logo_path);
+        }
+        $p->update($data);
+        $this->reset(['name', 'url', 'logo', 'showEdit', 'editingId', 'existingLogo']);
+        session()->flash('success', 'Partenaire mis à jour.');
     }
 
     public function delete(int $id): void
@@ -89,6 +124,23 @@ new #[Layout('layouts.app')] #[Title('Partenaires')] class extends Component {
         </form>
     </flux:modal>
 
+    <flux:modal wire:model="showEdit" class="md:w-[560px]">
+        <form wire:submit="update" class="space-y-6">
+            <div>
+                <flux:heading size="lg">Éditer partenaire</flux:heading>
+                <flux:text>Modifie nom, URL ou logo</flux:text>
+            </div>
+            <flux:input wire:model="name" label="Nom *" required />
+            <flux:input wire:model="url" label="URL" />
+            @if($existingLogo)<div class="text-xs text-zinc-500">Actuel: <a href="{{ Storage::disk('public')->url($existingLogo) }}" target="_blank" class="underline">voir logo</a></div><img src="{{ Storage::disk('public')->url($existingLogo) }}" class="h-12 mt-1 rounded" />@endif
+            <flux:input type="file" wire:model="logo" label="Nouveau logo" accept="image/*" />
+            <div class="flex justify-end gap-2">
+                <flux:modal.close><flux:button variant="ghost">Annuler</flux:button></flux:modal.close>
+                <flux:button type="submit" variant="primary">Mettre à jour</flux:button>
+            </div>
+        </form>
+    </flux:modal>
+
     @if(session('success')) <div class="mb-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-700">{{ session('success') }}</div> @endif
 
     @if($view === 'grid')
@@ -104,6 +156,7 @@ new #[Layout('layouts.app')] #[Title('Partenaires')] class extends Component {
                         <div class="mt-2 flex items-center gap-1"><flux:badge :color="$p->is_published ? 'emerald' : 'zinc'" size="sm">{{ $p->is_published ? 'Publié' : 'Brouillon' }}</flux:badge></div>
                     </div>
                     <div class="mt-3 flex gap-1">
+                        <flux:button size="xs" variant="ghost" wire:click="startEdit({{ $p->id }})">Éditer</flux:button>
                         <flux:button size="xs" variant="ghost" wire:click="toggle({{ $p->id }})">Toggle</flux:button>
                         <flux:button size="xs" variant="ghost" wire:click="delete({{ $p->id }})" wire:confirm="Supprimer ?" class="text-red-600">Suppr</flux:button>
                     </div>
