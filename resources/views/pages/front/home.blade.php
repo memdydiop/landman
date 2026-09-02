@@ -309,19 +309,21 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
                 <p class="mt-4 text-sm text-zinc-600">VRD, BTP, hydraulique — 6 pôles SIBEA-CI en une vue.</p>
             </div>
             <div class="mt-8 overflow-x-auto rounded-2xl border border-zinc-200 bg-white">
-                <table class="w-full text-sm">
+                <table class="w-full min-w-[640px] text-sm">
                     <thead class="bg-zinc-900 text-white"><tr><th class="px-4 py-3 text-left">Pôle</th><th class="px-4 py-3 text-left">Domaine</th><th class="px-4 py-3 text-left">Livrables</th></tr></thead>
                     <tbody>
                         @foreach($cmsServices as $svc)
+                            @php $validKey = \App\Enums\ServiceType::tryFrom($svc['key']) ? $svc['key'] : 'btp'; @endphp
                             <tr class="border-t border-zinc-100">
                                 <td class="px-4 py-3 font-bold text-primary">{{ $svc['title'] }}</td>
                                 <td class="px-4 py-3 text-zinc-600">{{ $svc['desc'] ? Str::limit($svc['desc'], 80) : '—' }}</td>
-                                <td class="px-4 py-3"><a href="{{ route('front.services.show', $svc['key']) }}" class="text-xs font-bold tracking-widest text-primary hover:underline">DÉTAIL →</a></td>
+                                <td class="px-4 py-3"><a href="{{ route('front.services.show', $validKey) }}" class="text-xs font-bold tracking-widest text-primary hover:underline">DÉTAIL →</a></td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
+            <div class="mt-2 text-center text-xs text-zinc-400 md:hidden">← Glissez horizontalement →</div>
         </div>
     </div>
 
