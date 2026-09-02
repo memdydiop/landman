@@ -145,5 +145,68 @@ class SiteSettingSeeder extends Seeder
             ['key' => 'architecture', 'title' => 'Gestion de Projets', 'desc' => 'Gestion complète de projets de construction, d\'aménagement et de lotissement. Du planning initial à la livraison finale.', 'image' => null],
             ['key' => 'electricite', 'title' => 'Construction Durable', 'desc' => 'Approche écologique innovante et utilisation de matériaux durables pour des constructions respectueuses de l\'environnement. VRD, normes ivoiriennes.', 'image' => null],
         ], 'services');
+
+        SiteSetting::set('home.banner', [
+            'title' => 'Entrepreneurs & Conducteurs de travaux depuis 1981',
+            'cta_label' => 'DEMANDER UN DEVIS',
+            'cta_url' => '/contact',
+            'image' => null,
+        ], 'home');
+
+        SiteSetting::set('home.offers', ['RÉNOVATION','CONSEIL','CONSTRUCTION','ARCHITECTURE','ÉLECTRICITÉ'], 'home');
+        SiteSetting::set('home.details', [
+            ['title' => 'Plomberie & VRD', 'desc' => 'VRD, assainissement, réseaux EU/EP — conforme normes ivoiriennes.'],
+            ['title' => 'Peinture Murale', 'desc' => 'Finitions haut de gamme, peinture, revêtements, étanchéité.'],
+            ['title' => 'Toiture Métallique', 'desc' => 'Charpente métallique, toiture bac acier, anti-corrosion côtière.'],
+            ['title' => 'Préparation des Sols', 'desc' => 'Terrassement, plateforme, préparation sols avant construction.'],
+        ], 'home');
+
+        SiteSetting::set('programs.hero', [
+            'title' => 'FONCIER & AMÉNAGEMENT URBAIN',
+            'body' => 'Catalogue foncier viabilisé en temps réel — Disponibilités, Plans de masse, ACD, Travaux de VRD et Ouverture de voies.',
+            'badge' => 'AMÉNAGEMENT FONCIER & LOTISSEMENTS',
+            'image' => null,
+        ], 'programs');
+
+        SiteSetting::set('projects.hero', [
+            'title' => 'Chantiers & Réalisations Terrain',
+            'body' => 'Gros œuvre, VRD, aménagement foncier et installations techniques à Abidjan et Bingerville. Consultez nos opérations livrées et en cours.',
+            'badge' => 'SUIVI DE CHANTIERS & RÉFÉRENCES',
+            'image' => null,
+        ], 'projects');
+
+        SiteSetting::set('posts.hero', [
+            'title' => 'ACTUALITÉS & JOURNAL DE CHANTIER',
+            'body' => 'Rapports d\'avancement, normes BTP, suivi de voiries et publications techniques du laboratoire SIBEA-CI.',
+            'badge' => 'BULLETIN TECHNIQUE & SUIVI DE CHANTIER',
+            'image' => null,
+        ], 'posts');
+
+        SiteSetting::set('contact.hero', [
+            'title' => 'DEMANDE D\'ÉTUDE ET DEVIS TECHNIQUE',
+            'body' => 'Génie civil, VRD, aménagement foncier et construction. Transmettez vos besoins : nos ingénieurs traitent votre dossier sous 24h ouvrées.',
+            'badge' => 'POSTE DE COMMANDEMENT • BINGERVILLE ABATTA',
+            'image' => null,
+        ], 'contact');
+
+        SiteSetting::set('header', [
+            'logo' => null,
+            'menu_items' => [],
+            'header_cta_text' => 'Demander un devis',
+            'header_cta_url' => '/contact',
+        ], 'header');
+
+        SiteSetting::set('global', [
+            'company_name' => 'SIBEA-CI',
+            'company_siret' => 'SARL depuis 2022',
+            'company_address' => 'Abidjan, Bingerville, Abatta (Lot 935, Îlot 86)',
+            'company_phone' => '+225 07 00 00 00 00',
+            'company_whatsapp' => '+225 07 00 00 00 00',
+            'company_email' => 'contact@sibea-ci.ci',
+            'company_hours' => 'Lun-Ven 08:00-18:00, Sam 08:00-13:00',
+            'footer_copyright' => '© '.date('Y').' SIBEA-CI. Tous droits réservés.',
+        ], 'global');
+
+        SiteSetting::set('hero.shared', ['image' => null], 'hero');
     }
 }
