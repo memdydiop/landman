@@ -5,6 +5,11 @@ use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('robots.txt', function () {
+    $sitemap = rtrim(config('app.url'), '/').'/sitemap.xml';
+    $content = "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /storage/\nSitemap: {$sitemap}\n";
+    return response($content, 200, ['Content-Type' => 'text/plain']);
+})->name('robots');
 Route::get('plots/{plot}/plan', PlotPlanController::class)->name('plots.plan');
 
 Route::livewire('/', 'pages::front.home')->name('home');
