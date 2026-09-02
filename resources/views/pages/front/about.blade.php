@@ -65,9 +65,9 @@ new #[Layout('layouts.front')] #[Title('À Propos — SIBEA-CI Laboratoire & VRD
 
         $team = \App\Models\SiteSetting::get('home.team', [
             ['name' => 'Ouattara Bassoma Ziegnougo', 'role' => 'Gérant — SARL', 'avatar' => null],
-            ['name' => 'Kouamé Yao', 'role' => 'Ingénieur Civil VRD', 'avatar' => null],
-            ['name' => 'Awa Koné', 'role' => 'Conductrice Travaux', 'avatar' => null],
-            ['name' => 'Diabaté Moussa', 'role' => 'Électricien Chef', 'avatar' => null],
+            ['name' => 'Richard Wagner', 'role' => 'Ingénieur Civil Principal', 'avatar' => null],
+            ['name' => 'Sarah Spence', 'role' => 'Chef de Projet VRD', 'avatar' => null],
+            ['name' => 'John Halpern', 'role' => 'Conducteur de Travaux', 'avatar' => null],
         ]);
 
         return view('pages.front.about', [
@@ -84,11 +84,11 @@ new #[Layout('layouts.front')] #[Title('À Propos — SIBEA-CI Laboratoire & VRD
 <section class="bg-zinc-100/70 min-h-screen pb-12">
     {{-- Hero Page À Propos --}}
     <x-page-hero-simple
-        :title="($hero['title'] ?? '') ?: 'LABORATOIRE URBAIN & INGENIERIE BTP'"
-        :subtitle="($hero['body'] ?? $hero['subtitle'] ?? '') ?: 'Génie civil, aménagement foncier, VRD et construction clé en main en Côte d\'Ivoire.'"
-        :badge="($hero['badge'] ?? '') ?: 'SIBEA-CI • EXPERTISE & AMÉNAGEMENT URBAIN'"
+        :title="$hero['title'] ?: 'LABORATOIRE URBAIN & INGENIERIE BTP'"
+        :subtitle="$hero['body'] ?: 'Génie civil, aménagement foncier, VRD et construction clé en main en Côte d\'Ivoire.'"
+        :badge="$hero['badge'] ?: 'SIBEA-CI • EXPERTISE & AMÉNAGEMENT URBAIN'"
         :image="$hero['image'] ?? null"
-        :image-alt="($hero['title'] ?? 'À propos SIBEA-CI')"
+        :image-alt="$hero['title'] ?? 'À propos SIBEA-CI'"
         :breadcrumb="[['label'=>'À propos','url'=>route('front.about')]]"
     />
 
@@ -232,15 +232,15 @@ new #[Layout('layouts.front')] #[Title('À Propos — SIBEA-CI Laboratoire & VRD
         </div>
     </div>
 
-    <!-- Équipe & Direction Technique — CMS -->
+    <!-- Équipe & Direction Technique -->
     <div class="mx-auto max-w-7xl px-4 py-8 lg:px-8">
         <div class="rounded-2xl border border-zinc-300/80 bg-white p-8 shadow-sm">
             <div class="max-w-3xl mx-auto text-center mb-8 space-y-2">
                 <span class="rounded bg-amber-500/20 px-3 py-1 font-mono text-[10px] font-bold text-amber-600 uppercase tracking-wider border border-amber-500/30">
-                    {{ $equipe['badge'] ?? 'GOUVERNANCE & DIRECTION' }}
+                    GOUVERNANCE & DIRECTION
                 </span>
-                <h2 class="text-2xl sm:text-3xl font-black text-zinc-900 uppercase tracking-tight">{{ $equipe['title'] ?? 'Une chaîne d\'expertises qualifiée' }}</h2>
-                <p class="text-xs text-zinc-500">{{ $equipe['subtitle'] ?? 'Mobilisés autour de chaque opération pour maîtriser l\'exécution et sécuriser les investissements.' }}</p>
+                <h2 class="text-2xl sm:text-3xl font-black text-zinc-900 uppercase tracking-tight">Une chaîne d'expertises qualifiée</h2>
+                <p class="text-xs text-zinc-500">Mobilisés autour de chaque opération pour maîtriser l'exécution et sécuriser les investissements.</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -279,17 +279,17 @@ new #[Layout('layouts.front')] #[Title('À Propos — SIBEA-CI Laboratoire & VRD
         </div>
     </div>
 
-    <!-- CTA Final Unifié — CMS -->
+    <!-- CTA Final Unifié -->
     <div class="mx-auto max-w-7xl px-4 pt-4 lg:px-8">
         <div class="rounded-2xl bg-zinc-900 p-8 lg:p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 border border-amber-500/30 shadow-xl">
             <div>
                 <span class="font-mono text-[10px] font-bold text-amber-400 uppercase tracking-widest">POSTE DE COMMANDEMENT</span>
-                <h3 class="text-xl sm:text-2xl font-black text-white uppercase mt-1">{{ $cta['title'] ?? 'PARLONS DE VOTRE PROJET OU CHANTIER' }}</h3>
-                <p class="mt-1 text-xs text-zinc-400">{{ $cta['subtitle'] ?? 'Étude de faisabilité, devis BTP / VRD et réservation foncière sous 24h.' }}</p>
+                <h3 class="text-xl sm:text-2xl font-black text-white uppercase mt-1">PARLONS DE VOTRE PROJET OU CHANTIER</h3>
+                <p class="mt-1 text-xs text-zinc-400">Étude de faisabilité, devis BTP / VRD et réservation foncière sous 24h.</p>
             </div>
-            <a href="{{ $cta['button_url'] ?? route('front.contact') }}" 
+            <a href="{{ route('front.contact') }}" 
                class="inline-flex items-center justify-center rounded-xl bg-amber-500 px-6 py-3.5 text-xs font-black tracking-wider text-zinc-950 hover:bg-amber-400 transition uppercase shrink-0">
-                {{ $cta['button_label'] ?? 'DEMANDER UNE ÉTUDE TECHNIQUE →' }}
+                DEMANDER UNE ÉTUDE TECHNIQUE →
             </a>
         </div>
     </div>
