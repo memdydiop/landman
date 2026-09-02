@@ -93,7 +93,7 @@ new #[Layout('layouts.app')] #[Title('Témoignages')] class extends Component {
     @if($view === 'grid')
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             @forelse($testimonials as $t)
-                <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4 hover:shadow transition">
+                <div class="rounded-2xl border border-zinc-200 bg-white p-4 hover:shadow transition">
                     <div class="flex items-center gap-3">
                         <flux:avatar :name="$t->name" size="lg" />
                         <div class="min-w-0 flex-1">
@@ -103,7 +103,7 @@ new #[Layout('layouts.app')] #[Title('Témoignages')] class extends Component {
                         </div>
                         <flux:badge :color="$t->is_published ? 'emerald' : 'zinc'" size="sm">{{ $t->is_published ? 'Publié' : 'Brouillon' }}</flux:badge>
                     </div>
-                    <div class="mt-3 rounded-xl bg-zinc-50 dark:bg-zinc-800 p-3 text-sm text-zinc-700 line-clamp-3">{{ $t->content }}</div>
+                    <div class="mt-3 rounded-xl bg-zinc-50 p-3 text-sm text-zinc-700 line-clamp-3">{{ $t->content }}</div>
                     <div class="mt-3 flex gap-1">
                         <flux:button size="xs" variant="ghost" wire:click="toggle({{ $t->id }})">Toggle</flux:button>
                         <flux:button size="xs" variant="ghost" wire:click="delete({{ $t->id }})" wire:confirm="Supprimer ?" class="text-red-600">Suppr</flux:button>
@@ -114,12 +114,12 @@ new #[Layout('layouts.app')] #[Title('Témoignages')] class extends Component {
             @endforelse
         </div>
     @else
-        <div class="overflow-x-auto rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800">
+        <div class="overflow-x-auto rounded-2xl border border-zinc-200 bg-white">
             <table class="w-full text-sm">
-                <thead class="bg-zinc-50 dark:bg-zinc-800"><tr><th class="px-3 py-2">Nom</th><th class="px-3 py-2">Avis</th><th class="px-3 py-2">Note</th><th class="px-3 py-2">Publié</th><th class="px-3 py-2">Actions</th></tr></thead>
+                <thead class="bg-zinc-50"><tr><th class="px-3 py-2">Nom</th><th class="px-3 py-2">Avis</th><th class="px-3 py-2">Note</th><th class="px-3 py-2">Publié</th><th class="px-3 py-2">Actions</th></tr></thead>
                 <tbody>
                     @foreach($testimonials as $t)
-                        <tr class="border-t border-zinc-100 dark:border-zinc-800">
+                        <tr class="border-t border-zinc-100">
                             <td class="px-3 py-2"><div class="font-medium">{{ $t->name }}</div><div class="text-xs text-zinc-500">{{ $t->role }}</div></td>
                             <td class="px-3 py-2 max-w-xs truncate">{{ $t->content }}</td>
                             <td class="px-3 py-2">{{ $t->rating }}/5</td>

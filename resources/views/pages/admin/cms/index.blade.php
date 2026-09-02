@@ -1669,7 +1669,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                             @error('hero_slide1') <div class="text-xs text-red-600">{{ $message }}</div> @enderror
                             @if(count($media_library))
                                 <div class="mt-2 flex gap-2 items-center">
-                                    <select wire:model="media_picker.hero_slide1" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                                    <select wire:model="media_picker.hero_slide1" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                         <option value="">— ou depuis médiathèque —</option>
                                         @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                     </select>
@@ -1692,7 +1692,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                             @error('hero_slide2') <div class="text-xs text-red-600">{{ $message }}</div> @enderror
                             @if(count($media_library))
                                 <div class="mt-2 flex gap-2 items-center">
-                                    <select wire:model="media_picker.hero_slide2" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                                    <select wire:model="media_picker.hero_slide2" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                         <option value="">— ou depuis médiathèque —</option>
                                         @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                     </select>
@@ -1764,7 +1764,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                                 @endif
                                 @if(count($media_library))
                                     <div class="mt-2 flex gap-2 items-center">
-                                        <select wire:model="media_picker.service_{{ $i }}" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                                        <select wire:model="media_picker.service_{{ $i }}" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                             <option value="">— ou depuis médiathèque —</option>
                                             @foreach($media_library as $mm)<option value="{{ $mm['id'] }}">{{ Str::limit($mm['name'],25) }}</option>@endforeach
                                         </select>
@@ -1830,7 +1830,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                     @endif
                     @if(count($media_library))
                         <div class="flex gap-2 items-center">
-                            <select wire:model="media_picker.banner" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                            <select wire:model="media_picker.banner" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                 <option value="">— ou depuis médiathèque —</option>
                                 @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                             </select>
@@ -1869,7 +1869,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                             @endif
                             @if(count($media_library))
                                 <div class="mt-2 flex gap-2 items-center">
-                                    <select wire:model="media_picker.team_{{ $i }}" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                                    <select wire:model="media_picker.team_{{ $i }}" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                         <option value="">— ou depuis médiathèque —</option>
                                         @foreach($media_library as $mm)<option value="{{ $mm['id'] }}">{{ Str::limit($mm['name'],25) }}</option>@endforeach
                                     </select>
@@ -1903,7 +1903,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                     @endif
                     @if(count($media_library))
                         <div class="mt-2 flex gap-2 items-center">
-                            <select wire:model="media_picker.about" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                            <select wire:model="media_picker.about" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                 <option value="">— ou depuis médiathèque —</option>
                                 @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                             </select>
@@ -1946,7 +1946,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @endif
                         @if(count($media_library))
                             <div class="mt-2 flex gap-2 items-center">
-                                <select wire:model="media_picker.services_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                                <select wire:model="media_picker.services_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                     <option value="">— ou depuis médiathèque —</option>
                                     @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                 </select>
@@ -1987,7 +1987,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                             @endif
                             @if(count($media_library))
                                 <div class="mt-2 flex gap-2 items-center">
-                                    <select wire:model="media_picker.service_{{ $i }}" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                                    <select wire:model="media_picker.service_{{ $i }}" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                         <option value="">— ou depuis médiathèque —</option>
                                         @foreach($media_library as $mm)<option value="{{ $mm['id'] }}">{{ Str::limit($mm['name'],25) }}</option>@endforeach
                                     </select>
@@ -2044,7 +2044,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @endif
                         @if(count($media_library))
                             <div class="mt-2 flex gap-2 items-center">
-                                <select wire:model="media_picker.seo_og" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                                <select wire:model="media_picker.seo_og" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                     <option value="">— ou depuis médiathèque —</option>
                                     @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                 </select>
@@ -2100,7 +2100,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @endif
                         @if(count($media_library))
                             <div class="mt-2 flex gap-2 items-center">
-                                <select wire:model="media_picker.programs_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                                <select wire:model="media_picker.programs_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                     <option value="">— ou depuis médiathèque —</option>
                                     @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                 </select>
@@ -2136,7 +2136,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @endif
                         @if(count($media_library))
                             <div class="mt-2 flex gap-2 items-center">
-                                <select wire:model="media_picker.projects_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                                <select wire:model="media_picker.projects_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                     <option value="">— ou depuis médiathèque —</option>
                                     @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                 </select>
@@ -2172,7 +2172,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @endif
                         @if(count($media_library))
                             <div class="mt-2 flex gap-2 items-center">
-                                <select wire:model="media_picker.posts_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                                <select wire:model="media_picker.posts_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                     <option value="">— ou depuis médiathèque —</option>
                                     @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                 </select>
@@ -2208,7 +2208,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @endif
                         @if(count($media_library))
                             <div class="mt-2 flex gap-2 items-center">
-                                <select wire:model="media_picker.contact_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                                <select wire:model="media_picker.contact_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                     <option value="">— ou depuis médiathèque —</option>
                                     @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                 </select>
@@ -2240,7 +2240,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                     @endif
                     @if(count($media_library))
                         <div class="mt-3 flex gap-2 items-center">
-                            <select wire:model="media_picker.shared_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                            <select wire:model="media_picker.shared_hero" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                 <option value="">— ou depuis médiathèque —</option>
                                 @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ \Illuminate\Support\Str::limit($m['name'],30) }}</option>@endforeach
                             </select>
@@ -2340,7 +2340,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         @error('header_logo') <div class="text-xs text-red-600">{{ $message }}</div> @enderror
                         @if(count($media_library))
                             <div class="mt-2 flex gap-2 items-center">
-                                <select wire:model="media_picker.header_logo" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                                <select wire:model="media_picker.header_logo" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                     <option value="">— ou depuis médiathèque —</option>
                                     @foreach($media_library as $m)<option value="{{ $m['id'] }}">{{ Str::limit($m['name'],30) }}</option>@endforeach
                                 </select>
@@ -2431,7 +2431,7 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                                     <button type="button" onclick="navigator.clipboard.writeText('{{ $url }}'); this.textContent='Copié!'; setTimeout(()=>this.textContent='Copier URL',1500)" class="flex-1 inline-flex items-center justify-center rounded-lg bg-zinc-900 px-2 py-1.5 text-xs font-medium text-white hover:bg-zinc-800">Copier URL</button>
                                 </div>
                                 <div class="flex gap-1 items-center">
-                                    <select id="target-{{ $m['id'] }}" class="flex-1 rounded-lg border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 px-2 py-1.5 text-xs">
+                                    <select id="target-{{ $m['id'] }}" class="flex-1 rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-xs">
                                         <option value="hero_slide1">Hero Slide 1</option>
                                         <option value="hero_slide2">Hero Slide 2</option>
                                         <option value="banner">Bannière Accueil</option>

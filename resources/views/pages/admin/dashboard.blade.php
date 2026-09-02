@@ -102,27 +102,27 @@ new #[Layout('layouts.app')] #[Title('Backoffice')] class extends Component {
 
     <!-- 6 Cards UrbanHub -->
     <div class="mt-6 grid gap-4 md:grid-cols-3 lg:grid-cols-6">
-        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
+        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
             <div class="text-xs text-zinc-500">Total Programmes</div>
             <div class="mt-1 text-2xl font-black">{{ $stats['programs'] }}</div>
             <div class="text-xs text-emerald-600">+8% vs mois dernier</div>
         </div>
-        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
+        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
             <div class="text-xs text-zinc-500">Lots Disponibles</div>
             <div class="mt-1 text-2xl font-black text-emerald-600">{{ $stats['plots_available'] }}</div>
             <div class="text-xs text-zinc-500">{{ $stats['plots_total'] }} au total</div>
         </div>
-        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
+        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
             <div class="text-xs text-zinc-500">Lots Vendus</div>
             <div class="mt-1 text-2xl font-black">{{ $stats['plots_sold'] }}</div>
             <div class="text-xs text-emerald-600">+2.3%</div>
         </div>
-        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
+        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
             <div class="text-xs text-zinc-500">Total Prospects</div>
             <div class="mt-1 text-2xl font-black">{{ $stats['inquiries_total'] }}</div>
             <div class="text-xs text-zinc-500">{{ $stats['inquiries_new'] }} nouveaux</div>
         </div>
-        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
+        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
             <div class="text-xs text-zinc-500">Projets BTP</div>
             <div class="mt-1 text-2xl font-black">{{ $stats['projects'] }}</div>
             <div class="text-xs text-[#003366]">VRD inclus</div>
@@ -136,7 +136,7 @@ new #[Layout('layouts.app')] #[Title('Backoffice')] class extends Component {
 
     <!-- Charts -->
     <div class="mt-6 grid gap-4 lg:grid-cols-2">
-        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
+        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
             <div class="flex items-center justify-between">
                 <flux:heading>Prospects / Mois</flux:heading>
                 <span class="text-xs text-zinc-500">6 derniers mois</span>
@@ -146,7 +146,7 @@ new #[Layout('layouts.app')] #[Title('Backoffice')] class extends Component {
             </div>
             <div class="mt-2 text-xs text-zinc-500">Total {{ array_sum($inquiriesPerMonth) }} prospects sur 6 mois</div>
         </div>
-        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
+        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
             <div class="flex items-center justify-between">
                 <flux:heading>Ventes Lots / Mois</flux:heading>
                 <span class="text-xs text-zinc-500">Vendus</span>
@@ -160,7 +160,7 @@ new #[Layout('layouts.app')] #[Title('Backoffice')] class extends Component {
 
     <!-- Most Sales Location + Customer Review -->
     <div class="mt-6 grid gap-4 lg:grid-cols-3">
-        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
+        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
             <flux:heading class="mb-4">Ventes par Ville</flux:heading>
             <div class="space-y-3">
                 @forelse($salesByCity as $row)
@@ -177,7 +177,7 @@ new #[Layout('layouts.app')] #[Title('Backoffice')] class extends Component {
             </div>
         </div>
 
-        <div class="lg:col-span-2 rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
+        <div class="lg:col-span-2 rounded-2xl border border-zinc-200 bg-white p-4">
             <div class="flex items-center justify-between">
                 <flux:heading>Avis Prospects</flux:heading>
                 <flux:button :href="route('admin.inquiries.index')" wire:navigate variant="ghost" size="sm">Voir tous</flux:button>
@@ -208,7 +208,7 @@ new #[Layout('layouts.app')] #[Title('Backoffice')] class extends Component {
 
     <!-- New Property Listings + Quick Add -->
     <div class="mt-6 grid gap-4 lg:grid-cols-3">
-        <div class="lg:col-span-2 rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
+        <div class="lg:col-span-2 rounded-2xl border border-zinc-200 bg-white p-4">
             <div class="flex items-center justify-between">
                 <flux:heading>Nouveaux Programmes</flux:heading>
                 <flux:button :href="route('admin.programs.index')" wire:navigate variant="ghost" size="sm">Voir tout</flux:button>
@@ -235,7 +235,7 @@ new #[Layout('layouts.app')] #[Title('Backoffice')] class extends Component {
             </div>
         </div>
 
-        <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4">
+        <div class="rounded-2xl border border-zinc-200 bg-white p-4">
             <flux:heading>Ajout Rapide Lot</flux:heading>
             <p class="text-xs text-zinc-500">Raccourci Commercial — création express</p>
             <div class="mt-4 space-y-3">

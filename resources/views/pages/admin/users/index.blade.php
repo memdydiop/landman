@@ -81,7 +81,7 @@ new #[Layout('layouts.app')] #[Title('Utilisateurs')] class extends Component {
     @if($view === 'grid')
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             @forelse($users as $user)
-                <div class="rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 p-4 hover:shadow transition">
+                <div class="rounded-2xl border border-zinc-200 bg-white p-4 hover:shadow transition">
                     <div class="flex items-center gap-3">
                         <flux:avatar :name="$user->name" size="lg" />
                         <div class="min-w-0 flex-1">
@@ -97,9 +97,11 @@ new #[Layout('layouts.app')] #[Title('Utilisateurs')] class extends Component {
                         <div class="text-xs font-medium text-zinc-700">Rôles</div>
                         <div class="mt-1 flex flex-wrap gap-1.5">
                             @foreach($roles as $role)
-                                <label class="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs {{ $user->hasRole($role) ? 'bg-[#003366] text-white border-[#003366]' : 'bg-zinc-50 text-zinc-600' }}">
-                                    <input type="checkbox" wire:click="toggleRole({{ $user->id }}, '{{ $role }}')" {{ $user->hasRole($role) ? 'checked' : '' }} class="rounded text-[#003366] size-3" />
-                                    {{ $role }}
+                                <label class="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs">
+                                    <flux:checkbox 
+                                        label="{{ $role }}" 
+                                        :checked="$user->hasRole($role)" 
+                                        wire:click="toggleRole({{ $user->id }}, '{{ $role }}')" />
                                 </label>
                             @endforeach
                         </div>
@@ -114,7 +116,7 @@ new #[Layout('layouts.app')] #[Title('Utilisateurs')] class extends Component {
             @endforelse
         </div>
     @else
-        <div class="overflow-x-auto rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800">
+        <div class="overflow-x-auto rounded-2xl border border-zinc-200 bg-white">
             <table class="w-full text-sm">
                 <thead class="bg-zinc-50">
                     <tr class="text-left">
@@ -136,10 +138,11 @@ new #[Layout('layouts.app')] #[Title('Utilisateurs')] class extends Component {
                             <td class="px-4 py-3">
                                 <div class="flex flex-wrap gap-1">
                                     @foreach($roles as $role)
-                                        <label class="inline-flex items-center gap-1 text-xs">
-                                            <input type="checkbox" wire:click="toggleRole({{ $user->id }}, '{{ $role }}')" {{ $user->hasRole($role) ? 'checked' : '' }} class="rounded" />
-                                            {{ $role }}
-                                        </label>
+                                        <flux:checkbox 
+                                            label="{{ $role }}" 
+                                            :checked="$user->hasRole($role)" 
+                                            wire:click="toggleRole({{ $user->id }}, '{{ $role }}')" />
+
                                     @endforeach
                                 </div>
                             </td>

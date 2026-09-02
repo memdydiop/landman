@@ -344,7 +344,7 @@ new #[Layout('layouts.app')] #[Title('Projets')] class extends Component {
     @if($view === 'grid')
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             @forelse($projects as $project)
-                <div class="group overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800 hover:shadow-lg transition">
+                <div class="group overflow-hidden rounded-2xl border border-zinc-200 bg-white hover:shadow-lg transition">
                     <div class="aspect-[16/10] bg-zinc-100 relative">
                         @if($project->cover_path)
                             <img src="{{ Storage::disk('public')->url($project->cover_path) }}" alt="" class="size-full object-cover group-hover:scale-105 transition duration-700" loading="lazy" />
@@ -373,7 +373,7 @@ new #[Layout('layouts.app')] #[Title('Projets')] class extends Component {
             @endforelse
         </div>
     @else
-        <div class="overflow-x-auto rounded-2xl border border-zinc-200 bg-white dark:bg-zinc-900 dark:border-zinc-800">
+        <div class="overflow-x-auto rounded-2xl border border-zinc-200 bg-white">
             <table class="w-full text-sm">
                 <thead class="bg-zinc-50">
                     <tr class="text-left">
