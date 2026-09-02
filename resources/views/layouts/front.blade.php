@@ -72,7 +72,7 @@
                         <a href="{{ route('front.services.index') }}" @class([ 'hover:text-primary', 'text-primary font-medium' => request()->routeIs('front.services.*') ])>Services</a>
                         <a href="{{ route('front.programs.index') }}" @class([ 'hover:text-primary', 'text-primary font-medium' => request()->routeIs('front.programs.*') ])>Lotissements</a>
                         <a href="{{ route('front.projects.index') }}" @class([ 'hover:text-primary', 'text-primary font-medium' => request()->routeIs('front.projects.*') ])>Réalisations</a>
-                        <a href="{{ route('front.posts.index') }}" @class([ 'hover:text-primary', 'text-primary font-medium' => request()->routeIs('front.post.*') ])>Actualités</a>
+                        <a href="{{ route('front.posts.index') }}" @class([ 'hover:text-primary', 'text-primary font-medium' => request()->routeIs('front.posts.*') ])>Actualités</a>
                         <a href="{{ route('front.about') }}" @class([ 'hover:text-primary', 'text-primary font-medium' => request()->routeIs('front.about') ])>À propos</a>
                         <a href="{{ route('front.contact') }}" @class([ 'hover:text-primary', 'text-primary font-medium' => request()->routeIs('front.contact') ])>Contact</a>
                     </nav>
@@ -80,7 +80,7 @@
                 <div class="flex items-center gap-2">
                     <a href="{{ $headerCtaUrl }}" class="hidden rounded-full bg-primary px-5 py-2 text-sm font-medium text-white hover:bg-[#002244] lg:inline-flex">{{ $headerCtaText }}</a>
                     <button class="lg:hidden" onclick="document.getElementById('mobile-nav').classList.toggle('hidden')">
-                        <flux:icon.bars-2 class="size-6" />
+                        <flux:icon.bars-3 class="size-6" />
                     </button>
                 </div>
             </div>
