@@ -13,6 +13,7 @@ new #[Layout('layouts.app')] #[Title('Utilisateurs')] class extends Component {
 
     public string $search = '';
     public array $editingRoles = [];
+    public string $view = 'list';
 
     public function updatingSearch(): void { $this->resetPage(); }
 
@@ -56,63 +57,101 @@ new #[Layout('layouts.app')] #[Title('Utilisateurs')] class extends Component {
 }; ?>
 
 <section class="w-full p-6">
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
-            <flux:heading size="xl">Utilisateurs & Droits</flux:heading>
-            <flux:text>Matrice Spatie — Super Admin / Éditeur BTP / Commercial Lotissement</flux:text>
+            <flux:heading size="xl">Utilisateurs — Droits SIBEA-CI</flux:heading>
+            <flux:text>{{ $users->total() }} utilisateur(s) · Spatie Super Admin / Éditeur / Commercial</flux:text>
         </div>
-        @can('users.create')
-            <flux:button :href="route('admin.users.create')" wire:navigate variant="primary" icon="plus">Créer utilisateur</flux:button>
-        @endcan
+        <div class="flex items-center gap-2">
+            <flux:button.group>
+                <flux:button :variant="$view==='grid'?'primary':'ghost'" wire:click="$set('view','grid')" icon="squares-2x2" size="sm">Grille</flux:button>
+                <flux:button :variant="$view==='list'?'primary':'ghost'" wire:click="$set('view','list')" icon="list-bullet" size="sm">Liste</flux:button>
+            </flux:button.group>
+            @can('users.create')
+                <flux:button :href="route('admin.users.create')" wire:navigate variant="primary" icon="plus">Créer</flux:button>
+            @endcan
+        </div>
     </div>
 
-    <flux:input wire:model.live.debounce.300ms="search" placeholder="Rechercher nom/email..." class="max-w-xs mb-4" />
+    <flux:input wire:model.live.debounce.300ms="search" placeholder="Rechercher nom/email..." icon="magnifying-glass" class="max-w-xs mb-4" />
 
     @if(session('success')) <div class="mb-4 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-700">{{ session('success') }}</div> @endif
     @if(session('error')) <div class="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{{ session('error') }}</div> @endif
 
-    <div class="overflow-x-auto rounded-xl border border-zinc-200">
-        <table class="w-full text-sm">
-            <thead class="bg-zinc-50">
-                <tr class="text-left">
-                    <th class="px-4 py-3">Utilisateur</th>
-                    <th class="px-4 py-3">Rôles</th>
-                    <th class="px-4 py-3">Permissions (via rôles)</th>
-                    <th class="px-4 py-3">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($users as $user)
-                    <tr class="border-t border-zinc-100">
-                        <td class="px-4 py-3">
-                            <div class="font-medium">{{ $user->name }}</div>
-                            <div class="text-xs text-zinc-500">{{ $user->email }} · Vérifié: {{ $user->email_verified_at ? 'oui' : 'non' }}</div>
-                        </td>
-                        <td class="px-4 py-3">
-                            <div class="flex flex-wrap gap-1">
-                                @foreach($roles as $role)
-                                    <label class="inline-flex items-center gap-1 text-xs">
-                                        <input type="checkbox" wire:click="toggleRole({{ $user->id }}, '{{ $role }}')" {{ $user->hasRole($role) ? 'checked' : '' }} class="rounded" />
-                                        {{ $role }}
-                                    </label>
-                                @endforeach
-                            </div>
-                        </td>
-                        <td class="px-4 py-3 text-xs text-zinc-500">
-                            {{ $user->getPermissionNames()->take(6)->join(', ') }}
-                            @if($user->getPermissionNames()->count() > 6) <span class="text-zinc-400">+{{ $user->getPermissionNames()->count()-6 }} autres</span> @endif
-                        </td>
-                        <td class="px-4 py-3">
-                            @can('users.delete')
-                                <flux:button size="xs" variant="ghost" wire:click="delete({{ $user->id }})" wire:confirm="Supprimer cet utilisateur ?">Supprimer</flux:button>
-                            @endcan
-                        </td>
+    @if($view === 'grid')
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            @forelse($users as $user)
+                <div class="rounded-2xl border border-zinc-200 bg-white p-4 hover:shadow transition">
+                    <div class="flex items-center gap-3">
+                        <flux:avatar :name="$user->name" size="lg" />
+                        <div class="min-w-0 flex-1">
+                            <div class="truncate text-sm font-bold">{{ $user->name }}</div>
+                            <div class="truncate text-xs text-zinc-500">{{ $user->email }}</div>
+                            <div class="text-[11px] {{ $user->email_verified_at ? 'text-emerald-600' : 'text-amber-600' }}">{{ $user->email_verified_at ? 'Vérifié' : 'Non vérifié' }} · {{ $user->created_at->format('d/m/Y') }}</div>
+                        </div>
+                        @can('users.delete')
+                            <flux:button size="xs" variant="ghost" icon="trash" wire:click="delete({{ $user->id }})" wire:confirm="Supprimer ?" class="text-red-600 shrink-0" />
+                        @endcan
+                    </div>
+                    <div class="mt-3">
+                        <div class="text-xs font-medium text-zinc-700">Rôles</div>
+                        <div class="mt-1 flex flex-wrap gap-1.5">
+                            @foreach($roles as $role)
+                                <label class="inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs {{ $user->hasRole($role) ? 'bg-[#003366] text-white border-[#003366]' : 'bg-zinc-50 text-zinc-600' }}">
+                                    <input type="checkbox" wire:click="toggleRole({{ $user->id }}, '{{ $role }}')" {{ $user->hasRole($role) ? 'checked' : '' }} class="rounded text-[#003366] size-3" />
+                                    {{ $role }}
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="mt-3 rounded-xl bg-zinc-50 p-2 text-[11px] text-zinc-600">
+                        {{ $user->getPermissionNames()->take(8)->join(', ') ?: '— aucune permission —' }}
+                        @if($user->getPermissionNames()->count() > 8) <span class="text-zinc-400">+{{ $user->getPermissionNames()->count()-8 }}</span> @endif
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full rounded-2xl border border-dashed p-10 text-center text-sm text-zinc-500">Aucun utilisateur.</div>
+            @endforelse
+        </div>
+    @else
+        <div class="overflow-x-auto rounded-xl border border-zinc-200 bg-white">
+            <table class="w-full text-sm">
+                <thead class="bg-zinc-50">
+                    <tr class="text-left">
+                        <th class="px-4 py-3">Utilisateur</th>
+                        <th class="px-4 py-3">Rôles</th>
+                        <th class="px-4 py-3">Permissions</th>
+                        <th class="px-4 py-3">Actions</th>
                     </tr>
-                @empty
-                    <tr><td colspan="4" class="px-4 py-10 text-center text-zinc-500">Aucun utilisateur.</td></tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @forelse($users as $user)
+                        <tr class="border-t border-zinc-100 hover:bg-zinc-50">
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-3">
+                                    <flux:avatar :name="$user->name" size="sm" />
+                                    <div class="min-w-0"><div class="truncate font-medium">{{ $user->name }}</div><div class="truncate text-xs text-zinc-500">{{ $user->email }}</div></div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex flex-wrap gap-1">
+                                    @foreach($roles as $role)
+                                        <label class="inline-flex items-center gap-1 text-xs">
+                                            <input type="checkbox" wire:click="toggleRole({{ $user->id }}, '{{ $role }}')" {{ $user->hasRole($role) ? 'checked' : '' }} class="rounded" />
+                                            {{ $role }}
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-xs text-zinc-500 max-w-[260px] truncate">{{ $user->getPermissionNames()->take(6)->join(', ') }}</td>
+                            <td class="px-4 py-3">@can('users.delete')<flux:button size="xs" variant="ghost" wire:click="delete({{ $user->id }})" wire:confirm="Supprimer ?">Supprimer</flux:button>@endcan</td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="4" class="px-4 py-10 text-center text-zinc-500">Aucun utilisateur.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    @endif
     <div class="mt-4">{{ $users->links() }}</div>
 </section>
