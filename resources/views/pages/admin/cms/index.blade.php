@@ -1610,6 +1610,36 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
         @endforeach
     </div>
 
+    <div class="mt-4 flex gap-2">
+        <flux:button size="xs" variant="ghost" icon="chevron-down" onclick="document.querySelectorAll('section .rounded-xl').forEach(c=>{const h=c.querySelector('flux\\:heading'); if(h) c.querySelectorAll(':scope > *:not(flux\\:heading)').forEach(n=>n.style.display='');})">Tout déplier</flux:button>
+        <flux:button size="xs" variant="ghost" icon="chevron-up" onclick="document.querySelectorAll('section .rounded-xl').forEach(c=>{const h=c.querySelector('flux\\:heading'); if(h) c.querySelectorAll(':scope > *:not(flux\\:heading)').forEach(n=>n.style.display='none');})">Tout replier</flux:button>
+        <span class="text-xs text-zinc-400 self-center">Cards repliables — clique sur le titre pour replier</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const init = () => {
+                document.querySelectorAll('section .rounded-xl.border').forEach(card => {
+                    const heading = card.querySelector('flux\\:heading');
+                    if (!heading || heading.dataset.collapsible) return;
+                    heading.dataset.collapsible = '1';
+                    heading.style.cursor = 'pointer';
+                    heading.title = 'Cliquer pour replier/déplier';
+                    heading.addEventListener('click', () => {
+                        const toToggle = Array.from(card.children).filter(el => el !== heading && !el.matches('summary'));
+                        const hidden = toToggle[0]?.style.display === 'none';
+                        toToggle.forEach(el => el.style.display = hidden ? '' : 'none');
+                        heading.style.opacity = hidden ? '1' : '0.7';
+                    });
+                });
+            };
+            init();
+            // Re-init after Livewire updates
+            document.addEventListener('livewire:navigated', init);
+            if (window.Livewire) window.Livewire.hook('morph.updated', init);
+        });
+    </script>
+
     @if($activeTab === 'home')
         <div class="pt-6">
             <form wire:submit="saveHome" class="space-y-6 max-w-3xl">
