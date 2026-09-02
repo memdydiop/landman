@@ -54,7 +54,7 @@ new #[Layout('layouts.front')] class extends Component {
                 <div class="prose prose-zinc mt-6 max-w-none text-sm leading-relaxed">
                     @if(!empty($cmsService['desc']))
                         <p>{{ $cmsService['desc'] }}</p>
-                        <p class="text-xs text-zinc-500 mt-2">Fiche éditée depuis <a href="{{ route('admin.cms.services') }}" class="underline">CMS → Services</a> (clé : <code>{{ $cmsService['key'] }}</code>).</p>
+                        <p class="text-xs text-zinc-500 mt-2">Fiche éditée depuis <a href="{{ route('admin.cms.index') }}" class="underline">CMS → Services</a> (clé : <code>{{ $cmsService['key'] }}</code>).</p>
                     @else
                         <p>
                             @if($service === ServiceType::BTP) Notre expertise BTP couvre le gros œuvre, la construction de villas et tertiaire, le génie civil — études, suivi, livraison clés en main à Abidjan. Agréments ministériels, garantie décennale, RSE chantier.
