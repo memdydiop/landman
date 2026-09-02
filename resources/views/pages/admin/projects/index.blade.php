@@ -211,6 +211,31 @@ new #[Layout('layouts.app')] #[Title('Projets')] class extends Component {
         session()->flash('success', 'Projet mis à jour.');
     }
 
+    public function removeMedia(int $mediaId): void
+    {
+        $this->authorize('projects.update');
+        if (!$this->editingId) return;
+        $project = Project::findOrFail($this->editingId);
+        $media = $project->media()->findOrFail($mediaId);
+        \Illuminate\Support\Facades\Storage::disk($media->disk)->delete($media->path);
+        $media->delete();
+    }
+
+    public function moveMedia(int $mediaId, string $direction): void
+    {
+        $this->authorize('projects.update');
+        if (!$this->editingId) return;
+        $project = Project::findOrFail($this->editingId);
+        $media = $project->media()->findOrFail($mediaId);
+        $swap = $direction === 'up'
+            ? $project->media()->where('position', '<', $media->position)->orderByDesc('position')->first()
+            : $project->media()->where('position', '>', $media->position)->orderBy('position')->first();
+        if ($swap) {
+            [$media->position, $swap->position] = [$swap->position, $media->position];
+            $media->save(); $swap->save();
+        }
+    }
+
     public function render(): \Illuminate\View\View
     {
         $this->authorize('projects.view');
@@ -313,6 +338,27 @@ new #[Layout('layouts.app')] #[Title('Projets')] class extends Component {
             <flux:checkbox wire:model="is_published" label="Publié" />
             <flux:input type="file" wire:model="cover" label="Nouvelle couverture" accept="image/*" />
             <flux:input type="file" wire:model="gallery" label="Ajouter galerie" accept="image/*" multiple />
+            @if($editingId)
+                @php $editProj = \App\Models\Project::with('media')->find($editingId); @endphp
+                @if($editProj && $editProj->media()->exists())
+                    <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-3">
+                        <div class="text-xs font-bold text-zinc-700 mb-2">Galerie existante — {{ $editProj->media()->count() }} images (glisser ↑↓)</div>
+                        <div class="grid gap-2 md:grid-cols-3">
+                            @foreach($editProj->media()->ordered()->get() as $media)
+                                <div class="rounded-lg border bg-white p-2">
+                                    <img src="{{ Storage::disk($media->disk)->url($media->path) }}" class="h-20 w-full object-cover rounded" loading="lazy" />
+                                    <div class="mt-1 text-[11px] truncate">{{ $media->path }}</div>
+                                    <div class="mt-1 flex gap-1">
+                                        <flux:button size="xs" variant="ghost" wire:click="moveMedia({{ $media->id }}, 'up')">↑</flux:button>
+                                        <flux:button size="xs" variant="ghost" wire:click="moveMedia({{ $media->id }}, 'down')">↓</flux:button>
+                                        <flux:button size="xs" variant="ghost" wire:click="removeMedia({{ $media->id }})" wire:confirm="Supprimer ?" class="text-red-600">Suppr</flux:button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            @endif
             <div class="flex justify-end gap-2">
                 <flux:modal.close><flux:button variant="ghost">Annuler</flux:button></flux:modal.close>
                 <flux:button type="submit" variant="primary">Mettre à jour</flux:button>
