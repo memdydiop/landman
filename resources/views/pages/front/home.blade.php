@@ -315,9 +315,9 @@ new #[Layout('layouts.front')] #[Title('Accueil — BTP, Aménagement, Lotisseme
     <!-- EXPERTISES TECHNIQUES -->
     <div class="bg-zinc-50 py-16">
         <div class="mx-auto max-w-7xl px-4 lg:px-8">
-            <div class="max-w-2xl">
-                <h2 class="text-3xl font-black">EXPERTISES TECHNIQUES</h2>
-                <div class="mt-2 h-1 w-12 bg-secondary"></div>
+            <div class="text-center">
+                <flux:heading level="2" class="text-3xl! font-black! tracking-tight!">EXPERTISES TECHNIQUES</flux:heading>
+                <div class="mx-auto mt-2 h-1 w-12 bg-secondary"></div>
                 <p class="mt-4 text-sm text-zinc-600">BTP, VRD, Lotissement, Rénovation, Architecture, Électricité — 6 pôles SIBEA-CI en une vue.</p>
             </div>
             <div class="mt-8 overflow-x-auto rounded-2xl border border-zinc-200 bg-white">
