@@ -39,6 +39,13 @@ class SiteSettingSeeder extends Seeder
             ],
         ], 'home');
 
+        SiteSetting::set('home.team', [
+            ['name' => 'Ouattara Bassoma Ziegnougo', 'role' => 'Gérant — SARL', 'avatar' => 'cms/team/BzR6Djdb8CcshEB9hIiWvF4GDexN5noISJ8nOKyl.webp'],
+            ['name' => 'Kouamé Yao', 'role' => 'Ingénieur Civil VRD', 'avatar' => null],
+            ['name' => 'Awa Koné', 'role' => 'Conductrice Travaux', 'avatar' => null],
+            ['name' => 'Diabaté Moussa', 'role' => 'Électricien Chef', 'avatar' => null],
+        ], 'home');
+
         // About SIBEA-CI
         SiteSetting::set('about.hero', [
             'title' => 'À propos — SIBEA-CI',
@@ -91,6 +98,19 @@ class SiteSettingSeeder extends Seeder
             ],
             'cta_title' => 'Construisons Ensemble un Avenir Durable',
             'cta_desc' => 'Nous mettons tout en œuvre pour bâtir des infrastructures modernes, solides et respectueuses de l’environnement. Nos solutions intègrent les dernières innovations en matière de construction durable.',
+        ], 'about');
+
+        SiteSetting::set('about.equipe', [
+            'badge' => 'ÉQUIPE & GOUVERNANCE PLURIDISCIPLINAIRE',
+            'title' => 'Une chaîne d\'expertises intégrée de bout en bout',
+            'subtitle' => 'Une équipe pluridisciplinaire mobilisée autour de chaque opération pour sécuriser l\'investissement, maîtriser l\'exécution et valoriser durablement le patrimoine.',
+        ], 'about');
+
+        SiteSetting::set('about.cta', [
+            'title' => 'Parlons de votre projet',
+            'subtitle' => 'Devis sous 24h — BTP, VRD, lotissement, énergie.',
+            'button_label' => 'CONTACTER SIBEA-CI →',
+            'button_url' => '/contact',
         ], 'about');
 
         SiteSetting::set('seo', [
