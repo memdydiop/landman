@@ -62,6 +62,9 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
     public $about_image;
     public ?string $about_image_existing = null;
     public array $about_progress = [];
+    public array $about_engagement = ['eyebrow' => '', 'title' => '', 'subtitle' => '', 'desc1' => '', 'desc2_title' => '', 'desc2' => '', 'items' => [], 'floating' => ['number' => '', 'label' => '', 'desc' => '']];
+    public array $about_valeurs = ['title' => '', 'subtitle' => '', 'items' => []];
+    public array $about_pourquoi = ['eyebrow' => '', 'title' => '', 'subtitle' => '', 'items' => [], 'cta_title' => '', 'cta_desc' => ''];
 
     // Services
     public array $services = [];
@@ -230,6 +233,38 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
             ['label' => 'ÉLECTRICITÉ', 'pct' => 88],
             ['label' => 'PÉTROLE & ÉNERGIE', 'pct' => 85],
             ['label' => 'AGRO-INDUSTRIE', 'pct' => 90],
+        ]);
+        $this->about_engagement = SiteSetting::get('about.engagement', [
+            'eyebrow' => 'À propos de nous',
+            'title' => 'SIBEA-CI — Laboratoire urbain ivoirien',
+            'subtitle' => 'Construisons ensemble votre avenir en Côte d\'Ivoire',
+            'desc1' => 'Chez SIBEA-CI, nous transformons vos idées en réalité...',
+            'desc2_title' => 'Des Solutions Adaptées à Tous Vos Projets',
+            'desc2' => 'Que vous soyez un particulier...',
+            'items' => ['Construction de bâtiments résidentiels et commerciaux.', 'Travaux publics et infrastructures urbaines (VRD).', 'Rénovation et réhabilitation de structures existantes.', 'Génie civil et ouvrages industriels — ACD sécurisé.'],
+            'floating' => ['number' => '+10 projets', 'label' => 'Conformité technique à 100%', 'desc' => 'Livrés avec traçabilité totale.'],
+        ]);
+        $this->about_valeurs = SiteSetting::get('about.valeurs', [
+            'title' => 'Nos valeurs fondamentales',
+            'subtitle' => 'Des principes techniques et déontologiques stricts...',
+            'items' => [
+                ['title'=>'Intégrité & Rigueur','desc'=>'Traçabilité totale...','icon'=>'⬡'],
+                ['title'=>'Innovation Durable','desc'=>'Matériaux résistants...','icon'=>'◈'],
+                ['title'=>'Accompagnement Humain','desc'=>'Écoute...','icon'=>'◆'],
+            ],
+        ]);
+        $this->about_pourquoi = SiteSetting::get('about.pourquoi', [
+            'eyebrow' => 'Pourquoi SIBEA-CI ?',
+            'title' => 'Pourquoi nous choisir ?',
+            'subtitle' => 'Une chaîne d\'expertises intégrée...',
+            'items' => [
+                ['title'=>'Un accompagnement personnalisé','desc'=>'Chaque projet est unique...'],
+                ['title'=>'Des matériaux de qualité','desc'=>'Matériaux résistants...'],
+                ['title'=>'Une équipe d’experts qualifiés','desc'=>'Ingénieurs...'],
+                ['title'=>'Respect des délais et du budget','desc'=>'Nous livrons...'],
+            ],
+            'cta_title' => 'Construisons Ensemble un Avenir Durable',
+            'cta_desc' => 'Nous mettons tout en œuvre...',
         ]);
 
         $this->services = SiteSetting::get('services.list', []);
@@ -580,6 +615,31 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
             'about_progress' => ['required', 'array', 'size:4'],
             'about_progress.*.label' => ['required', 'string', 'max:100'],
             'about_progress.*.pct' => ['required', 'integer', 'min:0', 'max:100'],
+            'about_engagement.eyebrow' => ['nullable', 'string', 'max:255'],
+            'about_engagement.title' => ['nullable', 'string', 'max:255'],
+            'about_engagement.subtitle' => ['nullable', 'string', 'max:255'],
+            'about_engagement.desc1' => ['nullable', 'string', 'max:2000'],
+            'about_engagement.desc2_title' => ['nullable', 'string', 'max:255'],
+            'about_engagement.desc2' => ['nullable', 'string', 'max:2000'],
+            'about_engagement.items' => ['nullable', 'array', 'max:10'],
+            'about_engagement.items.*' => ['nullable', 'string', 'max:255'],
+            'about_engagement.floating.number' => ['nullable', 'string', 'max:50'],
+            'about_engagement.floating.label' => ['nullable', 'string', 'max:255'],
+            'about_engagement.floating.desc' => ['nullable', 'string', 'max:500'],
+            'about_valeurs.title' => ['nullable', 'string', 'max:255'],
+            'about_valeurs.subtitle' => ['nullable', 'string', 'max:1000'],
+            'about_valeurs.items' => ['nullable', 'array', 'max:10'],
+            'about_valeurs.items.*.title' => ['nullable', 'string', 'max:255'],
+            'about_valeurs.items.*.desc' => ['nullable', 'string', 'max:1000'],
+            'about_valeurs.items.*.icon' => ['nullable', 'string', 'max:10'],
+            'about_pourquoi.eyebrow' => ['nullable', 'string', 'max:255'],
+            'about_pourquoi.title' => ['nullable', 'string', 'max:255'],
+            'about_pourquoi.subtitle' => ['nullable', 'string', 'max:1000'],
+            'about_pourquoi.items' => ['nullable', 'array', 'max:10'],
+            'about_pourquoi.items.*.title' => ['nullable', 'string', 'max:255'],
+            'about_pourquoi.items.*.desc' => ['nullable', 'string', 'max:1000'],
+            'about_pourquoi.cta_title' => ['nullable', 'string', 'max:255'],
+            'about_pourquoi.cta_desc' => ['nullable', 'string', 'max:1000'],
         ]);
         $hero = SiteSetting::get('about.hero', []);
         if ($this->about_image) {
@@ -593,6 +653,11 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
         $hero['badge'] = $validated['about_badge'] ?? $this->about_badge ?? '';
         SiteSetting::set('about.hero', $hero, 'about');
         SiteSetting::set('about.progress', $validated['about_progress'], 'about');
+        if (isset($validated['about_engagement'])) SiteSetting::set('about.engagement', $validated['about_engagement'], 'about');
+        if (isset($validated['about_valeurs'])) SiteSetting::set('about.valeurs', $validated['about_valeurs'], 'about');
+        if (isset($validated['about_pourquoi'])) SiteSetting::set('about.pourquoi', $validated['about_pourquoi'], 'about');
+        // Invalide cache front
+        \Illuminate\Support\Facades\Cache::forget('about.hero');
         $this->successMsg = 'À propos enregistré.';
         session()->flash('success', $this->successMsg);
     }
@@ -1920,6 +1985,60 @@ new #[Layout('layouts.app')] #[Title('CMS — Tout-en-un')] class extends Compon
                         </div>
                     @endforeach
                 </div>
+
+                <div class="rounded-2xl border border-zinc-200 p-4">
+                    <flux:heading size="sm" class="mb-3">Engagement — Section À propos (alignée front)</flux:heading>
+                    <flux:input wire:model="about_engagement.eyebrow" label="Eyebrow" placeholder="À propos de nous" />
+                    <flux:input wire:model="about_engagement.title" label="Titre" placeholder="SIBEA-CI — Laboratoire urbain ivoirien" class="mt-2" />
+                    <flux:input wire:model="about_engagement.subtitle" label="Sous-titre" placeholder="Construisons ensemble votre avenir..." class="mt-2" />
+                    <flux:textarea wire:model="about_engagement.desc1" label="Description 1" rows="3" class="mt-2" />
+                    <flux:input wire:model="about_engagement.desc2_title" label="Sous-titre 2" placeholder="Des Solutions Adaptées..." class="mt-2" />
+                    <flux:textarea wire:model="about_engagement.desc2" label="Description 2" rows="2" class="mt-2" />
+                    <div class="mt-3">
+                        <flux:heading size="xs" class="mb-1">Items — 4 puces</flux:heading>
+                        @foreach(range(0,3) as $ii)
+                            <flux:input wire:model="about_engagement.items.{{ $ii }}" placeholder="Item {{ $ii+1 }}" class="mb-1" />
+                        @endforeach
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-2 mt-3">
+                        <flux:input wire:model="about_engagement.floating.number" label="Floating — Nombre" placeholder="+10 projets" />
+                        <flux:input wire:model="about_engagement.floating.label" label="Floating — Label" placeholder="Conformité technique à 100%" />
+                        <flux:input wire:model="about_engagement.floating.desc" label="Floating — Desc" placeholder="Traçabilité totale..." />
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-zinc-200 p-4">
+                    <flux:heading size="sm" class="mb-3">Valeurs — 3 cards</flux:heading>
+                    <flux:input wire:model="about_valeurs.title" label="Titre" placeholder="Nos valeurs fondamentales" />
+                    <flux:textarea wire:model="about_valeurs.subtitle" label="Sous-titre" rows="2" class="mt-2" />
+                    @foreach(range(0,2) as $vi)
+                        <div class="mt-3 rounded-xl border p-3">
+                            <div class="text-xs font-bold">Valeur {{ $vi+1 }}</div>
+                            <div class="grid md:grid-cols-[60px_1fr] gap-2 mt-1">
+                                <flux:input wire:model="about_valeurs.items.{{ $vi }}.icon" label="Icône" placeholder="⬡" />
+                                <flux:input wire:model="about_valeurs.items.{{ $vi }}.title" label="Titre" placeholder="Intégrité & Rigueur" />
+                            </div>
+                            <flux:textarea wire:model="about_valeurs.items.{{ $vi }}.desc" label="Description" rows="2" class="mt-1" />
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="rounded-2xl border border-zinc-200 p-4">
+                    <flux:heading size="sm" class="mb-3">Pourquoi nous choisir — 4 items + CTA</flux:heading>
+                    <flux:input wire:model="about_pourquoi.eyebrow" label="Eyebrow" placeholder="Pourquoi SIBEA-CI ?" />
+                    <flux:input wire:model="about_pourquoi.title" label="Titre" placeholder="Pourquoi nous choisir ?" class="mt-2" />
+                    <flux:textarea wire:model="about_pourquoi.subtitle" label="Sous-titre" rows="2" class="mt-2" />
+                    @foreach(range(0,3) as $pi)
+                        <div class="mt-3 rounded-xl border p-3">
+                            <div class="text-xs font-bold">Item {{ $pi+1 }}</div>
+                            <flux:input wire:model="about_pourquoi.items.{{ $pi }}.title" label="Titre" class="mt-1" />
+                            <flux:textarea wire:model="about_pourquoi.items.{{ $pi }}.desc" label="Description" rows="2" class="mt-1" />
+                        </div>
+                    @endforeach
+                    <flux:input wire:model="about_pourquoi.cta_title" label="CTA — Titre" placeholder="Construisons Ensemble..." class="mt-3" />
+                    <flux:textarea wire:model="about_pourquoi.cta_desc" label="CTA — Description" rows="2" class="mt-2" />
+                </div>
+
                 <flux:button type="submit" variant="primary">Enregistrer À propos</flux:button>
             </form>
         </div>

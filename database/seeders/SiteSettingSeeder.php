@@ -53,6 +53,46 @@ class SiteSettingSeeder extends Seeder
             ['label' => 'AGRO-INDUSTRIE', 'pct' => 90],
         ], 'about');
 
+        SiteSetting::set('about.engagement', [
+            'eyebrow' => 'À propos de nous',
+            'title' => 'SIBEA-CI — Laboratoire urbain ivoirien',
+            'subtitle' => 'Construisons ensemble votre avenir en Côte d\'Ivoire',
+            'desc1' => 'Chez SIBEA-CI, nous transformons vos idées en réalité en combinant expertise, innovation et qualité. Spécialistes du BTP, du génie civil et des infrastructures, nous accompagnons nos clients dans la conception et la réalisation de projets durables, adaptés aux exigences techniques et environnementales ivoiriennes.',
+            'desc2_title' => 'Des Solutions Adaptées à Tous Vos Projets',
+            'desc2' => 'Que vous soyez un particulier, une entreprise ou une collectivité, nous mettons notre savoir-faire à votre service pour construire, rénover ou moderniser vos bâtiments et infrastructures. Nous intervenons dans plusieurs domaines :',
+            'items' => [
+                'Construction de bâtiments résidentiels et commerciaux.',
+                'Travaux publics et infrastructures urbaines (VRD).',
+                'Rénovation et réhabilitation de structures existantes.',
+                'Génie civil et ouvrages industriels — ACD sécurisé.',
+            ],
+            'floating' => ['number' => '+10 projets', 'label' => 'Conformité technique à 100%', 'desc' => 'Livrés avec traçabilité totale — zéro litige foncier, zéro défaut de structure.'],
+        ], 'about');
+
+        SiteSetting::set('about.valeurs', [
+            'title' => 'Nos valeurs fondamentales',
+            'subtitle' => 'Des principes techniques et déontologiques stricts au service de la sécurisation de vos investissements fonciers et BTP.',
+            'items' => [
+                ['title' => 'Intégrité & Rigueur', 'desc' => 'Traçabilité totale, zéro intermédiaire douteux, surveillance rigoureuse ACD, titres fonciers, permis et purges coutumières.', 'icon' => '⬡'],
+                ['title' => 'Innovation Durable', 'desc' => 'Matériaux résistants et écologiques, BIM, drone, WebP/AVIF, éco-conception pour durabilité.', 'icon' => '◈'],
+                ['title' => 'Accompagnement Humain', 'desc' => 'Écoute, étude personnalisée, suivi de chantier et SAV — de l\'étude à la remise des clés.', 'icon' => '◆'],
+            ],
+        ], 'about');
+
+        SiteSetting::set('about.pourquoi', [
+            'eyebrow' => 'Pourquoi SIBEA-CI ?',
+            'title' => 'Pourquoi nous choisir ?',
+            'subtitle' => 'Une chaîne d\'expertises intégrée — de l\'audit foncier à la livraison — pour sécuriser chaque étape.',
+            'items' => [
+                ['title' => 'Un accompagnement personnalisé', 'desc' => 'Chaque projet est unique. Nous étudions vos besoins pour proposer des solutions sur mesure.'],
+                ['title' => 'Des matériaux de qualité', 'desc' => 'Matériaux résistants et écologiques pour garantir la durabilité de vos infrastructures.'],
+                ['title' => 'Une équipe d’experts qualifiés', 'desc' => 'Ingénieurs, architectes et techniciens engagés pour livrer des ouvrages fiables et conformes aux normes.'],
+                ['title' => 'Respect des délais et du budget', 'desc' => 'Nous livrons dans les meilleures conditions, en tenant compte de vos contraintes financières.'],
+            ],
+            'cta_title' => 'Construisons Ensemble un Avenir Durable',
+            'cta_desc' => 'Nous mettons tout en œuvre pour bâtir des infrastructures modernes, solides et respectueuses de l’environnement. Nos solutions intègrent les dernières innovations en matière de construction durable.',
+        ], 'about');
+
         SiteSetting::set('seo', [
             'home_title' => 'SIBEA-CI — BTP, Électricité, Pétrole, Agro-industrie | Abidjan Bingerville',
             'home_desc' => 'SIBEA-CI — BTP, électricité, pétrole, agro-industrie. Terrains viabilisés Bingerville Abatta, BTP & VRD Abidjan. ACD sécurisé.',
